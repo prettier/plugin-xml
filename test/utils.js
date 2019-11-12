@@ -7,7 +7,9 @@ const here = code => {
   return content.map(line => line.slice(indent)).join("\n");
 };
 
-const long = Array(80).fill("a").join("");
+const long = Array(80)
+  .fill("a")
+  .join("");
 
 module.exports = {
   here,

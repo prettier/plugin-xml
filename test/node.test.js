@@ -16,10 +16,9 @@ describe("leaf", () => {
   });
 
   test("empty, self-closing not allowed", () => {
-    expect('<node foo="bar" />').toChangeFormat(
-      '<node foo="bar"></node>',
-      { xmlSelfClosingTags: false }
-    );
+    expect('<node foo="bar" />').toChangeFormat('<node foo="bar"></node>', {
+      xmlSelfClosingTags: false
+    });
   });
 
   test("attrs", () => {

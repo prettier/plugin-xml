@@ -20,10 +20,9 @@ describe("leaf", () => {
   });
 
   test("empty, self-closing not allowed", () => {
-    expect("<leaf />").toChangeFormat(
-      "<leaf></leaf>",
-      { xmlSelfClosingTags: false }
-    );
+    expect("<leaf />").toChangeFormat("<leaf></leaf>", {
+      xmlSelfClosingTags: false
+    });
   });
 
   test("attrs", () => {
