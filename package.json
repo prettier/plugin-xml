@@ -1,5 +1,5 @@
 {
-  "name": "@prettier/plugin-xml",
+  "name": "prettier-plugin-xml",
   "version": "0.1.0",
   "description": "prettier plugin for XML",
   "main": "src/plugin.js",
@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/prettier/plugin-xml.git"
+    "url": "git+https://github.com/kddeisz/prettier-plugin-xml.git"
   },
   "author": "Kevin Deisz",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/prettier/plugin-xml/issues"
+    "url": "https://github.com/kddeisz/prettier-plugin-xml/issues"
   },
-  "homepage": "https://github.com/prettier/plugin-xml#readme",
+  "homepage": "https://github.com/kddeisz/prettier-plugin-xml#readme",
   "dependencies": {
     "fast-xml-parser": "^3.14.0",
     "prettier": ">=1.10"
