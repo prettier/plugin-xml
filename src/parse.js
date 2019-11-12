@@ -6,13 +6,17 @@ const translate = (node, name) => {
   }
 
   const attrs = {};
-  const value = [];
+  let value = [];
 
   Object.keys(node).forEach(key => {
+    const children = node[key];
+
     if (key.startsWith("@_")) {
-      attrs[key.slice(2)] = node[key];
+      attrs[key.slice(2)] = children;
+    } else if (Array.isArray(children)) {
+      value = value.concat(children.map(child => translate(child, key)));
     } else if (key !== "#text") {
-      value.push(translate(node[key], key));
+      value.push(translate(children, key));
     }
   });
 
