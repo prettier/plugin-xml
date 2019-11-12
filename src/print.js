@@ -1,8 +1,15 @@
-const { concat, group, hardline, indent, join, line, softline } = require("prettier").doc.builders;
+const {
+  concat,
+  group,
+  hardline,
+  indent,
+  join,
+  line,
+  softline
+} = require("prettier").doc.builders;
 
-const getFirstNonBlankLine = originalText => originalText.split("\n").find(
-  text => text.trim().length !== 0
-);
+const getFirstNonBlankLine = originalText =>
+  originalText.split("\n").find(text => text.trim().length !== 0);
 
 const printAttrs = attrs => {
   if (Object.keys(attrs).length === 0) {
@@ -26,48 +33,41 @@ const genericPrint = (path, opts, print) => {
 
   switch (type) {
     case "leaf": {
-      const parts = [
-        "<",
-        name,
-        printAttrs(attrs)
-      ];
+      const parts = ["<", name, printAttrs(attrs)];
 
       if (!value && opts.xmlSelfClosingTags) {
         return group(concat(parts.concat(" />")));
       }
 
-      return group(concat(parts.concat(
-        ">",
-        indent(concat([
-          softline,
-          value
-        ])),
-        softline,
-        "</",
-        name,
-        ">"
-      )));
+      return group(
+        concat(
+          parts.concat(
+            ">",
+            indent(concat([softline, value])),
+            softline,
+            "</",
+            name,
+            ">"
+          )
+        )
+      );
     }
     case "node":
-      return group(concat([
-        "<",
-        name,
-        printAttrs(attrs),
-        ">",
-        indent(concat([
+      return group(
+        concat([
+          "<",
+          name,
+          printAttrs(attrs),
+          ">",
+          indent(concat([hardline, join(hardline, path.map(print, "value"))])),
           hardline,
-          join(hardline, path.map(print, "value"))
-        ])),
-        hardline,
-        "</",
-        name,
-        ">"
-      ]));
+          "</",
+          name,
+          ">"
+        ])
+      );
     case "root": {
-      const parts = [
-        join(hardline, path.map(print, "value")),
-        hardline
-      ];
+      const parts = [join(hardline, path.map(print, "value")), hardline];
 
       const firstNonBlankLine = getFirstNonBlankLine(opts.originalText);
       if (firstNonBlankLine && firstNonBlankLine.startsWith("<?xml")) {

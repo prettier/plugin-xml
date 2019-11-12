@@ -23,16 +23,19 @@ const translate = (node, name) => {
   return { type: "node", name, attrs, value };
 };
 
-const parse = (text, _parsers, _opts) => Object.assign(
-  {},
-  translate(parser.parse(text, {
-    allowBooleanAttributes: true,
-    attributeNamePrefix : "@_",
-    ignoreAttributes: false,
-    parseAttributeValue: true,
-    textNodeName: "#text"
-  })),
-  { type: "root" }
-);
+const parse = (text, _parsers, _opts) =>
+  Object.assign(
+    {},
+    translate(
+      parser.parse(text, {
+        allowBooleanAttributes: true,
+        attributeNamePrefix: "@_",
+        ignoreAttributes: false,
+        parseAttributeValue: true,
+        textNodeName: "#text"
+      })
+    ),
+    { type: "root" }
+  );
 
 module.exports = parse;
