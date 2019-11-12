@@ -1,0 +1,32 @@
+{
+  "name": "@prettier/plugin-xml",
+  "version": "0.1.0",
+  "description": "prettier plugin for XML",
+  "main": "src/plugin.js",
+  "scripts": {
+    "lint": "eslint --cache .",
+    "print": "prettier --plugin=.",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prettier/plugin-xml.git"
+  },
+  "author": "Kevin Deisz",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/prettier/plugin-xml/issues"
+  },
+  "homepage": "https://github.com/prettier/plugin-xml#readme",
+  "dependencies": {
+    "fast-xml-parser": "^3.14.0",
+    "prettier": ">=1.10"
+  },
+  "devDependencies": {
+    "eslint": "^6.0.1",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-plugin-import": "^2.16.0",
+    "jest": "^24.0.0"
+  }
+}
