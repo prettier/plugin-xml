@@ -1,0 +1,9 @@
+language: node_js
+branches:
+  only: master
+script:
+  - yarn test
+  - yarn lint
+  - yarn print --check '**/*'
+cache:
+  - yarn
