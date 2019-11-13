@@ -90,46 +90,51 @@ const parse = (xmlData, _parsers, _opts) => {
   let nextTag = tagsRegx.exec(xmlData);
 
   while (tag) {
-    const tagType = getTagType(tag);
+    switch (getTagType(tag)) {
+      case TagType.CLOSING: {
+        if (currentNode.parent && tag[14]) {
+          currentNode.parent.val = getValue(currentNode.parent.val) + '' + getTrimmedTagValue(tag);
+        }
+        currentNode = currentNode.parent;
+        break;
+      }
+      case TagType.CDATA: {
+        //add cdata node
+        const childNode = new XMLNode("#cdata", currentNode, tag[3]);
+        childNode.addAttrs(tag[8]);
+        currentNode.addChild(childNode);
+        //for backtracking
+        currentNode.val = getValue(currentNode.val) + '\\c';
+        //add rest value to parent node
+        if (tag[14]) {
+          currentNode.val += getTrimmedTagValue(tag);
+        }
+        break;
+      } 
+      case TagType.SELF: {
+        if (currentNode && tag[14]) {
+          currentNode.val = getValue(currentNode.val) + '' + getTrimmedTagValue(tag);
+        }
 
-    if (tagType === TagType.CLOSING) {
-      //add parsed data to parent node
-      if (currentNode.parent && tag[14]) {
-        currentNode.parent.val = getValue(currentNode.parent.val) + '' + getTrimmedTagValue(tag);
+        const childNode = new XMLNode(tag[5], currentNode, '');
+        if (tag[8] && tag[8].length > 0) {
+          tag[8] = tag[8].substr(0, tag[8].length - 1);
+        }
+        childNode.addAttrs(tag[8]);
+        currentNode.addChild(childNode);
+        break;
       }
-      currentNode = currentNode.parent;
-    } else if (tagType === TagType.CDATA) {
-      //add cdata node
-      const childNode = new XMLNode("#cdata", currentNode, tag[3]);
-      childNode.addAttrs(tag[8]);
-      currentNode.addChild(childNode);
-      //for backtracking
-      currentNode.val = getValue(currentNode.val) + '\\c';
-      //add rest value to parent node
-      if (tag[14]) {
-        currentNode.val += getTrimmedTagValue(tag);
+      case TagType.OPENING: {
+        const childNode = new XMLNode(
+          tag[5],
+          currentNode,
+          getTrimmedTagValue(tag)
+        );
+        childNode.addAttrs(tag[8]);
+        currentNode.addChild(childNode);
+        currentNode = childNode;
+        break;
       }
-    } else if (tagType === TagType.SELF) {
-      if (currentNode && tag[14]) {
-        currentNode.val = getValue(currentNode.val) + '' + getTrimmedTagValue(tag);
-      }
-
-      const childNode = new XMLNode(tag[5], currentNode, '');
-      if (tag[8] && tag[8].length > 0) {
-        tag[8] = tag[8].substr(0, tag[8].length - 1);
-      }
-      childNode.addAttrs(tag[8]);
-      currentNode.addChild(childNode);
-    } else {
-      //TagType.OPENING
-      const childNode = new XMLNode(
-        tag[5],
-        currentNode,
-        getTrimmedTagValue(tag)
-      );
-      childNode.addAttrs(tag[8]);
-      currentNode.addChild(childNode);
-      currentNode = childNode;
     }
 
     tag = nextTag;
