@@ -8,9 +8,6 @@ const {
   softline
 } = require("prettier").doc.builders;
 
-const getFirstNonBlankLine = originalText =>
-  originalText.split("\n").find(text => text.trim().length !== 0);
-
 const printAttrs = attrs => {
   if (Object.keys(attrs).length === 0) {
     return "";
@@ -35,32 +32,29 @@ const printOpeningTag = (name, attrs) => {
   return group(concat(["<", name, printAttrs(attrs), softline, ">"]));
 };
 
+const printSelfClosingTag = (name, attrs) => {
+  if (name === "!?xml" || name === "!?xml-model") {
+    return group(concat(["<", name.slice(1), printAttrs(attrs), line, "?>"]));
+  }
+
+  return group(concat(["<", name, printAttrs(attrs), line, "/>"]));
+};
+
 const genericPrint = (path, opts, print) => {
   const { tagname, children, attrs, value } = path.getValue();
 
-  // Handle the root node
-  if (tagname === "!xml") {
-    const parts = [join(hardline, path.map(print, "children")), hardline];
-
-    const firstNonBlankLine = getFirstNonBlankLine(opts.originalText);
-    if (firstNonBlankLine && firstNonBlankLine.startsWith("<?xml")) {
-      parts.unshift(firstNonBlankLine, hardline);
-    }
-
-    return concat(parts);
+  if (tagname === "!root") {
+    return concat([join(hardline, path.map(print, "children")), hardline]);
   }
 
-  // Handle comment nodes
   if (tagname === "!comment") {
-    return group(concat([
-      "<!--",
-      indent(concat([line, value])),
-      concat([line, "-->"])
-    ]));
+    return group(
+      concat(["<!--", indent(concat([line, value])), concat([line, "-->"])])
+    );
   }
 
-  if ((Object.keys(children).length === 0) && !value && opts.xmlSelfClosingTags) {
-    return group(concat(["<", tagname, printAttrs(attrs), line, "/>"]));
+  if (Object.keys(children).length === 0 && !value && opts.xmlSelfClosingTags) {
+    return printSelfClosingTag(tagname, attrs);
   }
 
   const openingTag = printOpeningTag(tagname, attrs);
@@ -83,10 +77,7 @@ const genericPrint = (path, opts, print) => {
     inner = softline;
   } else {
     inner = concat([
-      indent(concat([
-        hardline,
-        join(hardline, path.map(print, "children"))
-      ])),
+      indent(concat([hardline, join(hardline, path.map(print, "children"))])),
       hardline
     ]);
   }

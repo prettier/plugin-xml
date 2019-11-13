@@ -13,7 +13,9 @@ describe("location", () => {
     const content = "<foo><bar><baz /></bar></foo>";
     const index = content.indexOf("<baz />");
 
-    const { locStart, locEnd } = parse(content).children[0].children[0].children[0];
+    const { locStart, locEnd } = parse(
+      content
+    ).children[0].children[0].children[0];
 
     expect(locStart).toEqual(index);
     expect(locEnd).toEqual(index + "<bar />".length);
