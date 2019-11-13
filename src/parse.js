@@ -7,9 +7,9 @@ class XMLNode {
     this.parent = parent;
     this.child = {};
     this.attrs = {};
-    this.val = val;
+    this.val = val || "";
 
-    if (typeof attrs === "string") {
+    if (typeof attrs === "string" && attrs) {
       const normal = attrs.replace(/\r?\n/g, " ");
       const attrsRegex = new RegExp(attrsPattern, "g");
       let match;
@@ -32,56 +32,38 @@ class XMLNode {
   }
 }
 
-const getValue = v => typeof v !== "undefined" ? v : "";
-const getTagValue = tag => (tag[14] || "").trim();
-
 const parse = (text, _parsers, _opts) => {
   const xmlData = text.replace(/<!--[\s\S]*?-->/g, ''); // Remove comments
 
-  const xmlNode = new XMLNode("!xml");
-  let currentNode = xmlNode;
+  const rootNode = new XMLNode("!xml");
+  let currentNode = rootNode;
 
   const tagsRegx = new RegExp(tagPattern, "g");
   let tag;
 
   while (tag = tagsRegx.exec(xmlData)) {
+    const tagValue = (tag[14] || "").trim();
+
     if (tag[4] === "]]>") {
-      //add cdata node
-      const childNode = new XMLNode("!cdata", currentNode, tag[3], tag[8]);
-      currentNode.addChild(childNode);
-
-      //for backtracking
-      currentNode.val = getValue(currentNode.val) + '\\c';
-
-      //add rest value to parent node
-      if (tag[14]) {
-        currentNode.val += getTagValue(tag);
-      }
+      currentNode.addChild(new XMLNode("!cdata", currentNode, tag[3], tag[8]));
+      currentNode.val += `\\c${tagValue}`;
     } else if (tag[10] === "/") {
-      if (currentNode.parent && tag[14]) {
-        currentNode.parent.val = `${getValue(currentNode.parent.val)}${getTagValue(tag)}`;
+      if (currentNode.parent) {
+        currentNode.parent.val += tagValue;
       }
       currentNode = currentNode.parent;
     } else if (typeof tag[8] !== "undefined" && tag[8].substr(tag[8].length - 1) === "/") {
-      if (currentNode && tag[14]) {
-        currentNode.val = `${getValue(currentNode.val)}${getTagValue(tag)}`;
+      if (currentNode) {
+        currentNode.val += tagValue;
       }
-
-      if (tag[8] && tag[8].length > 0) {
-        tag[8] = tag[8].substr(0, tag[8].length - 1);
-      }
-
-      const childNode = new XMLNode(tag[5], currentNode, "", tag[8]);
-      currentNode.addChild(childNode);
+      currentNode.addChild(new XMLNode(tag[5], currentNode, "", (tag[8] || "").slice(0, -1)));
     } else {
-      const childNode = new XMLNode(tag[5], currentNode, getTagValue(tag), tag[8]);
-
-      currentNode.addChild(childNode);
-      currentNode = childNode;
+      currentNode = new XMLNode(tag[5], currentNode, tagValue, tag[8]);
+      currentNode.parent.addChild(currentNode);
     }
   }
 
-  return xmlNode;
+  return rootNode;
 };
 
 module.exports = parse;
