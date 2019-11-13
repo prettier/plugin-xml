@@ -38,6 +38,7 @@ const printOpeningTag = (name, attrs) => {
 const genericPrint = (path, opts, print) => {
   const { tagname, children, attrs, value } = path.getValue();
 
+  // Handle the root node
   if (tagname === "!xml") {
     const parts = [join(hardline, path.map(print, "children")), hardline];
 
@@ -47,6 +48,15 @@ const genericPrint = (path, opts, print) => {
     }
 
     return concat(parts);
+  }
+
+  // Handle comment nodes
+  if (tagname === "!comment") {
+    return group(concat([
+      "<!--",
+      indent(concat([line, value])),
+      concat([line, "-->"])
+    ]));
   }
 
   if ((Object.keys(children).length === 0) && !value && opts.xmlSelfClosingTags) {
@@ -73,7 +83,10 @@ const genericPrint = (path, opts, print) => {
     inner = softline;
   } else {
     inner = concat([
-      indent(concat([hardline, join(hardline, path.map(print, "children"))])),
+      indent(concat([
+        hardline,
+        join(hardline, path.map(print, "children"))
+      ])),
       hardline
     ]);
   }

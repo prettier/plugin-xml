@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 - Support for cdata tags.
 - Support for the `locStart` and `locEnd` functions by tracking node metadata in the new parser.
+- Support for comment nodes.
 
 ### Changed
 

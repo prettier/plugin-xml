@@ -1,5 +1,5 @@
 const attrsPattern = '([^\\s=]+)\\s*(=\\s*([\'"])(.*?)\\3)?';
-const tagPattern = '<((!\\[CDATA\\[([\\s\\S]*?)(]]>))|(([\\w:\\-._]*:)?([\\w:\\-._]+))([^>]*)>|((\\/)(([\\w:\\-._]*:)?([\\w:\\-._]+))\\s*>))([^<]*)';
+const tagPattern = '<((!\\[CDATA\\[([\\s\\S]*?)(]]>))|(([\\w:\\-._]*:)?([\\w:\\-._]+))([^>]*)>|((\\/)(([\\w:\\-._]*:)?([\\w:\\-._]+))\\s*>)|(!--)(.+)-->)([^<]*)';
 
 class XMLNode {
   constructor(tagname, opts) {
@@ -42,9 +42,16 @@ const parse = (text, _parsers, _opts) => {
   let tag;
 
   while (tag = tagRegex.exec(text)) {
-    const value = (tag[14] || "").trim();
+    const value = (tag[16] || "").trim();
 
-    if (tag[4] === "]]>") {
+    if (tag[14] === "!--") {
+      node.children.push(new XMLNode("!comment", {
+        parent: node,
+        value: tag[15].trim(),
+        locStart: tag.index,
+        locEnd: tag.index + tag[0].trim().length
+      }));
+    } else if (tag[4] === "]]>") {
       node.children.push(new XMLNode("!cdata", {
         parent: node,
         value: tag[3],
