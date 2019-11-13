@@ -5,6 +5,7 @@
     "node": true
   },
   "rules": {
+    "no-cond-assign": "off",
     "no-unused-vars": [
       "error",
       {
