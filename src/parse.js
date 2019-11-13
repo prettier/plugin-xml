@@ -75,10 +75,7 @@ const defaultOptions = {
   attrNodeName: false,
   textNodeName: '#text',
   ignoreNameSpace: false,
-  parseNodeValue: true,
-  parseAttributeValue: false,
   arrayMode: false,
-  trimValues: true,
   cdataTagName: false,
   cdataPositionChar: '\\c',
   tagValueProcessor: function(a, tagName) {
@@ -86,24 +83,18 @@ const defaultOptions = {
   },
   attrValueProcessor: function(a, attrName) {
     return a;
-  },
-  stopNodes: []
+  }
 };
 
 const props = [
   'attrNodeName',
   'textNodeName',
   'ignoreNameSpace',
-  'parseNodeValue',
-  'parseAttributeValue',
   'arrayMode',
-  'trimValues',
   'cdataTagName',
   'cdataPositionChar',
   'tagValueProcessor',
-  'attrValueProcessor',
-  'parseTrueNumberOnly',
-  'stopNodes'
+  'attrValueProcessor'
 ];
 
 const getTraversalObj = function(xmlData, options) {
@@ -123,11 +114,6 @@ const getTraversalObj = function(xmlData, options) {
       //add parsed data to parent node
       if (currentNode.parent && tag[14]) {
         currentNode.parent.val = getValue(currentNode.parent.val) + '' + processTagValue(tag, options, currentNode.parent.tagname);
-      }
-      if (options.stopNodes.length && options.stopNodes.includes(currentNode.tagname)) {
-        currentNode.child = []
-        if (currentNode.attrsMap == undefined) { currentNode.attrsMap = {}}
-        currentNode.val = xmlData.substr(currentNode.startIndex + 1, tag.index - currentNode.startIndex - 1)
       }
       currentNode = currentNode.parent;
     } else if (tagType === TagType.CDATA) {
@@ -163,9 +149,6 @@ const getTraversalObj = function(xmlData, options) {
         currentNode,
         processTagValue(tag, options)
       );
-      if (options.stopNodes.length && options.stopNodes.includes(childNode.tagname)) {
-        childNode.startIndex=tag.index + tag[1].length
-      }
       childNode.attrsMap = buildAttributesMap(tag[8], options);
       currentNode.addChild(childNode);
       currentNode = childNode;
@@ -182,11 +165,8 @@ function processTagValue(parsedTags, options, parentTagName) {
   const tagName = parsedTags[7] || parentTagName;
   let val = parsedTags[14];
   if (val) {
-    if (options.trimValues) {
-      val = val.trim();
-    }
+    val = val.trim();
     val = options.tagValueProcessor(val, tagName);
-    val = parseValue(val, options.parseNodeValue, options.parseTrueNumberOnly);
   }
 
   return val;
@@ -218,30 +198,6 @@ function resolveNameSpace(tagname, options) {
   return tagname;
 }
 
-function parseValue(val, shouldParse, parseTrueNumberOnly) {
-  if (shouldParse && typeof val === 'string') {
-    let parsed;
-    if (val.trim() === '' || isNaN(val)) {
-      parsed = val === 'true' ? true : val === 'false' ? false : val;
-    } else {
-      if (val.indexOf('0x') !== -1) {
-        //support hexa decimal
-        parsed = Number.parseInt(val, 16);
-      } else if (val.indexOf('.') !== -1) {
-        parsed = Number.parseFloat(val);
-      } else {
-        parsed = Number.parseInt(val, 10);
-      }
-      if (parseTrueNumberOnly) {
-        parsed = String(parsed) === val ? parsed : val;
-      }
-    }
-    return parsed;
-  }
-
-  return typeof v !== "undefined" ? val : "";
-}
-
 const attrsRegx = new RegExp('([^\\s=]+)\\s*(=\\s*([\'"])(.*?)\\3)?', 'g');
 
 function buildAttributesMap(attrStr, options) {
@@ -255,15 +211,9 @@ function buildAttributesMap(attrStr, options) {
       const attrName = resolveNameSpace(matches[i][1], options);
       if (attrName.length) {
         if (matches[i][4] !== undefined) {
-          if (options.trimValues) {
-            matches[i][4] = matches[i][4].trim();
-          }
+          matches[i][4] = matches[i][4].trim();
           matches[i][4] = options.attrValueProcessor(matches[i][4], attrName);
-          attrs[attrName] = parseValue(
-            matches[i][4],
-            options.parseAttributeValue,
-            options.parseTrueNumberOnly
-          );
+          attrs[attrName] = matches[i][4];
         } else {
           attrs[attrName] = true;
         }
@@ -284,7 +234,6 @@ function buildAttributesMap(attrStr, options) {
 const parse = (text, _parsers, _opts) =>
   getTraversalObj(text, {
     cdataTagName: "#cdata",
-    parseAttributeValue: true,
     textNodeName: "#text"
   });
 
