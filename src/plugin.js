@@ -12,7 +12,8 @@ const plugin = {
     {
       name: "XML",
       parsers: ["xml"],
-      extensions: [".xml"]
+      extensions: [".xml"],
+      vscodeLanguageIds: ["xml"]
     }
   ],
   parsers: {
