@@ -44,20 +44,6 @@ const isExist = v => typeof v !== 'undefined';
 
 const isEmptyObject = obj => Object.keys(obj).length === 0;
 
-const merge = function(target, a, arrayMode) {
-  if (a) {
-    const keys = Object.keys(a); // will return an array of own properties
-    const len = keys.length; //don't make it inline
-    for (let i = 0; i < len; i++) {
-      if(arrayMode === 'strict'){
-        target[keys[i]] = [ a[keys[i]] ];
-      }else{
-        target[keys[i]] = a[keys[i]];
-      }
-    }
-  }
-};
-
 const getValue = v => {
   if (isExist(v)) {
     return v;
@@ -83,23 +69,18 @@ const buildOptions = (options, defaultOptions, props) => {
 };
 
 const TagType = {OPENING: 1, CLOSING: 2, SELF: 3, CDATA: 4};
-let regx =
-  '<((!\\[CDATA\\[([\\s\\S]*?)(]]>))|(([\\w:\\-._]*:)?([\\w:\\-._]+))([^>]*)>|((\\/)(([\\w:\\-._]*:)?([\\w:\\-._]+))\\s*>))([^<]*)';
+let regx = '<((!\\[CDATA\\[([\\s\\S]*?)(]]>))|(([\\w:\\-._]*:)?([\\w:\\-._]+))([^>]*)>|((\\/)(([\\w:\\-._]*:)?([\\w:\\-._]+))\\s*>))([^<]*)';
 
 const defaultOptions = {
   attrNodeName: false,
   textNodeName: '#text',
-  ignoreAttributes: true,
   ignoreNameSpace: false,
-  allowBooleanAttributes: false, //a tag can have attributes without any value
-  //ignoreRootElement : false,
   parseNodeValue: true,
   parseAttributeValue: false,
   arrayMode: false,
-  trimValues: true, //Trim string values of tag and attributes
+  trimValues: true,
   cdataTagName: false,
   cdataPositionChar: '\\c',
-  localeRange: '',
   tagValueProcessor: function(a, tagName) {
     return a;
   },
@@ -107,22 +88,18 @@ const defaultOptions = {
     return a;
   },
   stopNodes: []
-  //decodeStrict: false,
 };
 
 const props = [
   'attrNodeName',
   'textNodeName',
-  'ignoreAttributes',
   'ignoreNameSpace',
-  'allowBooleanAttributes',
   'parseNodeValue',
   'parseAttributeValue',
   'arrayMode',
   'trimValues',
   'cdataTagName',
   'cdataPositionChar',
-  'localeRange',
   'tagValueProcessor',
   'attrValueProcessor',
   'parseTrueNumberOnly',
@@ -131,13 +108,11 @@ const props = [
 
 const getTraversalObj = function(xmlData, options) {
   options = buildOptions(options, defaultOptions, props);
-  //xmlData = xmlData.replace(/\r?\n/g, " ");//make it single line
-  xmlData = xmlData.replace(/<!--[\s\S]*?-->/g, ''); //Remove  comments
+  xmlData = xmlData.replace(/<!--[\s\S]*?-->/g, ''); //Remove comments
 
   const xmlObj = new XMLNode('!xml');
   let currentNode = xmlObj;
 
-  regx = regx.replace(/\[\\w/g, '[' + options.localeRange + '\\w');
   const tagsRegx = new RegExp(regx, 'g');
   let tag = tagsRegx.exec(xmlData);
   let nextTag = tagsRegx.exec(xmlData);
@@ -262,21 +237,16 @@ function parseValue(val, shouldParse, parseTrueNumberOnly) {
       }
     }
     return parsed;
-  } else {
-    if (isExist(val)) {
-      return val;
-    } else {
-      return '';
-    }
   }
+
+  return typeof v !== "undefined" ? val : "";
 }
 
 const attrsRegx = new RegExp('([^\\s=]+)\\s*(=\\s*([\'"])(.*?)\\3)?', 'g');
 
 function buildAttributesMap(attrStr, options) {
-  if (!options.ignoreAttributes && typeof attrStr === 'string') {
+  if (typeof attrStr === 'string') {
     attrStr = attrStr.replace(/\r?\n/g, ' ');
-    //attrStr = attrStr || attrStr.trim();
 
     const matches = getAllMatches(attrStr, attrsRegx);
     const len = matches.length; //don't make it inline
@@ -294,7 +264,7 @@ function buildAttributesMap(attrStr, options) {
             options.parseAttributeValue,
             options.parseTrueNumberOnly
           );
-        } else if (options.allowBooleanAttributes) {
+        } else {
           attrs[attrName] = true;
         }
       }
@@ -313,9 +283,7 @@ function buildAttributesMap(attrStr, options) {
 
 const parse = (text, _parsers, _opts) =>
   getTraversalObj(text, {
-    allowBooleanAttributes: true,
     cdataTagName: "#cdata",
-    ignoreAttributes: false,
     parseAttributeValue: true,
     textNodeName: "#text"
   });
