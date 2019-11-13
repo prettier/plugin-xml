@@ -28,6 +28,15 @@ const printAttrs = attrs => {
   return group(indent(concat(parts)));
 };
 
+const printClosingTag = name => (name === "#cdata" ? "]]>" : `</${name}>`);
+
+const printOpeningTag = (name, attrs) => {
+  if (name === "#cdata") {
+    return "<![CDATA[";
+  }
+  return group(concat(["<", name, printAttrs(attrs), softline, ">"]));
+};
+
 const printSelfClosingTag = (name, attrs) =>
   group(concat(["<", name, printAttrs(attrs), line, "/>"]));
 
@@ -42,12 +51,10 @@ const genericPrint = (path, opts, print) => {
 
       return group(
         concat([
-          group(concat(["<", name, printAttrs(attrs), softline, ">"])),
+          printOpeningTag(name, attrs),
           indent(concat([softline, value])),
           softline,
-          "</",
-          name,
-          ">"
+          printClosingTag(name)
         ])
       );
     }
@@ -68,13 +75,7 @@ const genericPrint = (path, opts, print) => {
       }
 
       return group(
-        concat([
-          group(concat(["<", name, printAttrs(attrs), softline, ">"])),
-          inner,
-          "</",
-          name,
-          ">"
-        ])
+        concat([printOpeningTag(name, attrs), inner, printClosingTag(name)])
       );
     }
     case "root": {

@@ -1,6 +1,7 @@
 const parser = require("fast-xml-parser");
 
 const attributeNamePrefix = "@_";
+const cdataTagName = "#cdata";
 const textNodeName = "#text";
 
 const translate = (node, name) => {
@@ -37,6 +38,7 @@ const parse = (text, _parsers, _opts) =>
       parser.parse(text, {
         allowBooleanAttributes: true,
         attributeNamePrefix,
+        cdataTagName,
         ignoreAttributes: false,
         parseAttributeValue: true,
         textNodeName
