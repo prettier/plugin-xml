@@ -39,7 +39,7 @@ class XMLNode {
 const getValue = v => typeof v !== "undefined" ? v : "";
 
 const TagType = { OPENING: 1, CLOSING: 2, SELF: 3, CDATA: 4 };
-let regx = '<((!\\[CDATA\\[([\\s\\S]*?)(]]>))|(([\\w:\\-._]*:)?([\\w:\\-._]+))([^>]*)>|((\\/)(([\\w:\\-._]*:)?([\\w:\\-._]+))\\s*>))([^<]*)';
+const tagPattern = '<((!\\[CDATA\\[([\\s\\S]*?)(]]>))|(([\\w:\\-._]*:)?([\\w:\\-._]+))([^>]*)>|((\\/)(([\\w:\\-._]*:)?([\\w:\\-._]+))\\s*>))([^<]*)';
 
 const getTagType = tag => {
   if (tag[4] === "]]>") {
@@ -57,20 +57,19 @@ const getTagType = tag => {
 const getTrimmedTagValue = tag => (tag[14] || "").trim();
 
 const parse = (xmlData, _parsers, _opts) => {
-  xmlData = xmlData.replace(/<!--[\s\S]*?-->/g, ''); //Remove comments
+  xmlData = xmlData.replace(/<!--[\s\S]*?-->/g, ''); // Remove comments
 
   const xmlNode = new XMLNode('!xml');
   let currentNode = xmlNode;
 
-  const tagsRegx = new RegExp(regx, 'g');
+  const tagsRegx = new RegExp(tagPattern, 'g');
   let tag = tagsRegx.exec(xmlData);
-  let nextTag = tagsRegx.exec(xmlData);
 
   while (tag) {
     switch (getTagType(tag)) {
       case TagType.CLOSING: {
         if (currentNode.parent && tag[14]) {
-          currentNode.parent.val = getValue(currentNode.parent.val) + '' + getTrimmedTagValue(tag);
+          currentNode.parent.val = `${getValue(currentNode.parent.val)}${getTrimmedTagValue(tag)}`;
         }
         currentNode = currentNode.parent;
         break;
@@ -80,25 +79,30 @@ const parse = (xmlData, _parsers, _opts) => {
         const childNode = new XMLNode("#cdata", currentNode, tag[3]);
         childNode.addAttrs(tag[8]);
         currentNode.addChild(childNode);
+
         //for backtracking
         currentNode.val = getValue(currentNode.val) + '\\c';
+
         //add rest value to parent node
         if (tag[14]) {
           currentNode.val += getTrimmedTagValue(tag);
         }
+
         break;
-      } 
+      }
       case TagType.SELF: {
         if (currentNode && tag[14]) {
-          currentNode.val = getValue(currentNode.val) + '' + getTrimmedTagValue(tag);
+          currentNode.val = `${getValue(currentNode.val)}${getTrimmedTagValue(tag)}`;
         }
 
         const childNode = new XMLNode(tag[5], currentNode, '');
+
         if (tag[8] && tag[8].length > 0) {
           tag[8] = tag[8].substr(0, tag[8].length - 1);
         }
         childNode.addAttrs(tag[8]);
         currentNode.addChild(childNode);
+
         break;
       }
       case TagType.OPENING: {
@@ -107,15 +111,16 @@ const parse = (xmlData, _parsers, _opts) => {
           currentNode,
           getTrimmedTagValue(tag)
         );
+
         childNode.addAttrs(tag[8]);
         currentNode.addChild(childNode);
         currentNode = childNode;
+
         break;
       }
     }
 
-    tag = nextTag;
-    nextTag = tagsRegx.exec(xmlData);
+    tag = tagsRegx.exec(xmlData);
   }
 
   return xmlNode;
