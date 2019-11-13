@@ -12,7 +12,7 @@ const getFirstNonBlankLine = originalText =>
   originalText.split("\n").find(text => text.trim().length !== 0);
 
 const printAttrs = attrs => {
-  if (!attrs) {
+  if (Object.keys(attrs).length === 0) {
     return "";
   }
 
