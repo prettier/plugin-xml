@@ -12,7 +12,7 @@ const getFirstNonBlankLine = originalText =>
   originalText.split("\n").find(text => text.trim().length !== 0);
 
 const printAttrs = attrs => {
-  if (Object.keys(attrs).length === 0) {
+  if (!attrs) {
     return "";
   }
 
@@ -28,8 +28,6 @@ const printAttrs = attrs => {
   return group(indent(concat(parts)));
 };
 
-const printClosingTag = name => (name === "#cdata" ? "]]>" : `</${name}>`);
-
 const printOpeningTag = (name, attrs) => {
   if (name === "#cdata") {
     return "<![CDATA[";
@@ -37,60 +35,66 @@ const printOpeningTag = (name, attrs) => {
   return group(concat(["<", name, printAttrs(attrs), softline, ">"]));
 };
 
-const printSelfClosingTag = (name, attrs) =>
-  group(concat(["<", name, printAttrs(attrs), line, "/>"]));
+const printChildren = (path, print, child) => {
+  let children = [];
+
+  Object.keys(child).forEach(key => {
+    children = children.concat(path.map(print, "child", key));
+  });
+
+  return children;
+};
 
 const genericPrint = (path, opts, print) => {
-  const { type, name, attrs, value } = path.getValue();
+  const { tagname, child, attrsMap, val } = path.getValue();
 
-  switch (type) {
-    case "leaf": {
-      if (!value && opts.xmlSelfClosingTags) {
-        return printSelfClosingTag(name, attrs);
-      }
+  if (tagname === "!xml") {
+    const children = printChildren(path, print, child);
+    const parts = [join(hardline, children), hardline];
 
-      return group(
-        concat([
-          printOpeningTag(name, attrs),
-          indent(concat([softline, value])),
-          softline,
-          printClosingTag(name)
-        ])
-      );
+    const firstNonBlankLine = getFirstNonBlankLine(opts.originalText);
+    if (firstNonBlankLine && firstNonBlankLine.startsWith("<?xml")) {
+      parts.unshift(firstNonBlankLine, hardline);
     }
-    case "node": {
-      if (value.length === 0 && opts.xmlSelfClosingTags) {
-        return printSelfClosingTag(name, attrs);
-      }
 
-      let inner;
-
-      if (value.length === 0) {
-        inner = softline;
-      } else {
-        inner = concat([
-          indent(concat([hardline, join(hardline, path.map(print, "value"))])),
-          hardline
-        ]);
-      }
-
-      return group(
-        concat([printOpeningTag(name, attrs), inner, printClosingTag(name)])
-      );
-    }
-    case "root": {
-      const parts = [join(hardline, path.map(print, "value")), hardline];
-
-      const firstNonBlankLine = getFirstNonBlankLine(opts.originalText);
-      if (firstNonBlankLine && firstNonBlankLine.startsWith("<?xml")) {
-        parts.unshift(firstNonBlankLine, hardline);
-      }
-
-      return concat(parts);
-    }
-    default:
-      throw new Error(`Unsupported node encountered: ${type}`);
+    return concat(parts);
   }
+
+  if (
+    (!child || Object.keys(child).length === 0) &&
+    !val &&
+    opts.xmlSelfClosingTags
+  ) {
+    return group(concat(["<", tagname, printAttrs(attrsMap), line, "/>"]));
+  }
+
+  const openingTag = printOpeningTag(tagname, attrsMap);
+  const closingTag = tagname === "#cdata" ? "]]>" : `</${tagname}>`;
+
+  if (Object.keys(child).length === 0) {
+    return group(
+      concat([
+        openingTag,
+        indent(concat([softline, val.toString()])),
+        softline,
+        closingTag
+      ])
+    );
+  }
+
+  let inner;
+  const children = printChildren(path, print, child);
+
+  if (children.length === 0) {
+    inner = softline;
+  } else {
+    inner = concat([
+      indent(concat([hardline, join(hardline, children)])),
+      hardline
+    ]);
+  }
+
+  return group(concat([openingTag, inner, closingTag]));
 };
 
 module.exports = genericPrint;
