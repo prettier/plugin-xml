@@ -82,24 +82,11 @@ const buildOptions = (options, defaultOptions, props) => {
   return newOptions;
 };
 
-
 const TagType = {OPENING: 1, CLOSING: 2, SELF: 3, CDATA: 4};
 let regx =
   '<((!\\[CDATA\\[([\\s\\S]*?)(]]>))|(([\\w:\\-._]*:)?([\\w:\\-._]+))([^>]*)>|((\\/)(([\\w:\\-._]*:)?([\\w:\\-._]+))\\s*>))([^<]*)';
 
-//const tagsRegx = new RegExp("<(\\/?[\\w:\\-\._]+)([^>]*)>(\\s*"+cdataRegx+")*([^<]+)?","g");
-//const tagsRegx = new RegExp("<(\\/?)((\\w*:)?([\\w:\\-\._]+))([^>]*)>([^<]*)("+cdataRegx+"([^<]*))*([^<]+)?","g");
-
-//polyfill
-if (!Number.parseInt && window.parseInt) {
-  Number.parseInt = window.parseInt;
-}
-if (!Number.parseFloat && window.parseFloat) {
-  Number.parseFloat = window.parseFloat;
-}
-
 const defaultOptions = {
-  attributeNamePrefix: '@_',
   attrNodeName: false,
   textNodeName: '#text',
   ignoreAttributes: true,
@@ -124,7 +111,6 @@ const defaultOptions = {
 };
 
 const props = [
-  'attributeNamePrefix',
   'attrNodeName',
   'textNodeName',
   'ignoreAttributes',
@@ -142,7 +128,6 @@ const props = [
   'parseTrueNumberOnly',
   'stopNodes'
 ];
-exports.props = props;
 
 const getTraversalObj = function(xmlData, options) {
   options = buildOptions(options, defaultOptions, props);
@@ -304,13 +289,13 @@ function buildAttributesMap(attrStr, options) {
             matches[i][4] = matches[i][4].trim();
           }
           matches[i][4] = options.attrValueProcessor(matches[i][4], attrName);
-          attrs[options.attributeNamePrefix + attrName] = parseValue(
+          attrs[attrName] = parseValue(
             matches[i][4],
             options.parseAttributeValue,
             options.parseTrueNumberOnly
           );
         } else if (options.allowBooleanAttributes) {
-          attrs[options.attributeNamePrefix + attrName] = true;
+          attrs[attrName] = true;
         }
       }
     }
@@ -326,33 +311,9 @@ function buildAttributesMap(attrStr, options) {
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 const parse = (text, _parsers, _opts) =>
   getTraversalObj(text, {
     allowBooleanAttributes: true,
-    attributeNamePrefix: "",
     cdataTagName: "#cdata",
     ignoreAttributes: false,
     parseAttributeValue: true,
