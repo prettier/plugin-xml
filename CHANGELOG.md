@@ -12,7 +12,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ### Changed
 
-- Now using `parser.getTraversalObject` instead of `parser.parse`. This way there's less transformation and it leaves the option open to eventually just use the parser directly.
+- Dropped the dependency on `fast-xml-parser` in favor of writing our own for better control over comments and node location.
 
 ## [0.2.0] - 2019-11-12
 
