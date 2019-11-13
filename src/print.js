@@ -46,7 +46,7 @@ const printChildren = (path, print, child) => {
 };
 
 const genericPrint = (path, opts, print) => {
-  const { tagname, child, attrsMap, val } = path.getValue();
+  const { tagname, child, attrs, val } = path.getValue();
 
   if (tagname === "!xml") {
     const children = printChildren(path, print, child);
@@ -65,10 +65,10 @@ const genericPrint = (path, opts, print) => {
     !val &&
     opts.xmlSelfClosingTags
   ) {
-    return group(concat(["<", tagname, printAttrs(attrsMap), line, "/>"]));
+    return group(concat(["<", tagname, printAttrs(attrs), line, "/>"]));
   }
 
-  const openingTag = printOpeningTag(tagname, attrsMap);
+  const openingTag = printOpeningTag(tagname, attrs);
   const closingTag = tagname === "#cdata" ? "]]>" : `</${tagname}>`;
 
   if (Object.keys(child).length === 0) {
