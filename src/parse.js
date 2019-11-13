@@ -2,12 +2,12 @@ const attrsPattern = '([^\\s=]+)\\s*(=\\s*([\'"])(.*?)\\3)?';
 const tagPattern = '<((!\\[CDATA\\[([\\s\\S]*?)(]]>))|(([\\w:\\-._]*:)?([\\w:\\-._]+))([^>]*)>|((\\/)(([\\w:\\-._]*:)?([\\w:\\-._]+))\\s*>))([^<]*)';
 
 class XMLNode {
-  constructor(tagname, parent, val, attrs) {
+  constructor(tagname, parent, value, attrs) {
     this.tagname = tagname;
     this.parent = parent;
     this.child = {};
     this.attrs = {};
-    this.val = val || "";
+    this.value = value || "";
 
     if (typeof attrs === "string" && attrs) {
       const normal = attrs.replace(/\r?\n/g, " ");
@@ -36,7 +36,7 @@ const parse = (text, _parsers, _opts) => {
   const xmlData = text.replace(/<!--[\s\S]*?-->/g, ''); // Remove comments
 
   const rootNode = new XMLNode("!xml");
-  let currentNode = rootNode;
+  let node = rootNode;
 
   const tagsRegx = new RegExp(tagPattern, "g");
   let tag;
@@ -45,21 +45,21 @@ const parse = (text, _parsers, _opts) => {
     const tagValue = (tag[14] || "").trim();
 
     if (tag[4] === "]]>") {
-      currentNode.addChild(new XMLNode("!cdata", currentNode, tag[3], tag[8]));
-      currentNode.val += `\\c${tagValue}`;
+      node.addChild(new XMLNode("!cdata", node, tag[3], tag[8]));
+      node.value += `\\c${tagValue}`;
     } else if (tag[10] === "/") {
-      if (currentNode.parent) {
-        currentNode.parent.val += tagValue;
+      if (node.parent) {
+        node.parent.value += tagValue;
       }
-      currentNode = currentNode.parent;
+      node = node.parent;
     } else if (typeof tag[8] !== "undefined" && tag[8].substr(tag[8].length - 1) === "/") {
-      if (currentNode) {
-        currentNode.val += tagValue;
+      if (node) {
+        node.value += tagValue;
       }
-      currentNode.addChild(new XMLNode(tag[5], currentNode, "", (tag[8] || "").slice(0, -1)));
+      node.addChild(new XMLNode(tag[5], node, "", (tag[8] || "").slice(0, -1)));
     } else {
-      currentNode = new XMLNode(tag[5], currentNode, tagValue, tag[8]);
-      currentNode.parent.addChild(currentNode);
+      node = new XMLNode(tag[5], node, tagValue, tag[8]);
+      node.parent.addChild(node);
     }
   }
 

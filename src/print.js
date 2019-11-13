@@ -46,7 +46,7 @@ const printChildren = (path, print, child) => {
 };
 
 const genericPrint = (path, opts, print) => {
-  const { tagname, child, attrs, val } = path.getValue();
+  const { tagname, child, attrs, value } = path.getValue();
 
   if (tagname === "!xml") {
     const children = printChildren(path, print, child);
@@ -62,7 +62,7 @@ const genericPrint = (path, opts, print) => {
 
   if (
     (!child || Object.keys(child).length === 0) &&
-    !val &&
+    !value &&
     opts.xmlSelfClosingTags
   ) {
     return group(concat(["<", tagname, printAttrs(attrs), line, "/>"]));
@@ -75,7 +75,7 @@ const genericPrint = (path, opts, print) => {
     return group(
       concat([
         openingTag,
-        indent(concat([softline, val.toString()])),
+        indent(concat([softline, value])),
         softline,
         closingTag
       ])
