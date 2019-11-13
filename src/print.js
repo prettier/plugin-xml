@@ -35,22 +35,11 @@ const printOpeningTag = (name, attrs) => {
   return group(concat(["<", name, printAttrs(attrs), softline, ">"]));
 };
 
-const printChildren = (path, print, child) => {
-  let children = [];
-
-  Object.keys(child).forEach(key => {
-    children = children.concat(path.map(print, "child", key));
-  });
-
-  return children;
-};
-
 const genericPrint = (path, opts, print) => {
-  const { tagname, child, attrs, value } = path.getValue();
+  const { tagname, children, attrs, value } = path.getValue();
 
   if (tagname === "!xml") {
-    const children = printChildren(path, print, child);
-    const parts = [join(hardline, children), hardline];
+    const parts = [join(hardline, path.map(print, "children")), hardline];
 
     const firstNonBlankLine = getFirstNonBlankLine(opts.originalText);
     if (firstNonBlankLine && firstNonBlankLine.startsWith("<?xml")) {
@@ -60,18 +49,14 @@ const genericPrint = (path, opts, print) => {
     return concat(parts);
   }
 
-  if (
-    (!child || Object.keys(child).length === 0) &&
-    !value &&
-    opts.xmlSelfClosingTags
-  ) {
+  if ((Object.keys(children).length === 0) && !value && opts.xmlSelfClosingTags) {
     return group(concat(["<", tagname, printAttrs(attrs), line, "/>"]));
   }
 
   const openingTag = printOpeningTag(tagname, attrs);
   const closingTag = tagname === "!cdata" ? "]]>" : `</${tagname}>`;
 
-  if (Object.keys(child).length === 0) {
+  if (Object.keys(children).length === 0) {
     return group(
       concat([
         openingTag,
@@ -83,13 +68,12 @@ const genericPrint = (path, opts, print) => {
   }
 
   let inner;
-  const children = printChildren(path, print, child);
 
   if (children.length === 0) {
     inner = softline;
   } else {
     inner = concat([
-      indent(concat([hardline, join(hardline, children)])),
+      indent(concat([hardline, join(hardline, path.map(print, "children"))])),
       hardline
     ]);
   }
