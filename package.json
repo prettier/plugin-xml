@@ -19,7 +19,6 @@
   },
   "homepage": "https://github.com/prettier/plugin-xml#readme",
   "dependencies": {
-    "fast-xml-parser": "^3.14.0",
     "prettier": ">=1.10"
   },
   "devDependencies": {
