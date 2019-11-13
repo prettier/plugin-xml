@@ -12,7 +12,7 @@ const plugin = {
     {
       name: "XML",
       parsers: ["xml"],
-      extensions: [".xml"],
+      extensions: [".dita", ".ditamap", ".ditaval", ".xml"],
       vscodeLanguageIds: ["xml"]
     }
   ],
