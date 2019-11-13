@@ -1,5 +1,14 @@
 const attrsPattern = '([^\\s=]+)\\s*(=\\s*([\'"])(.*?)\\3)?';
-const tagPattern = '<((!\\[CDATA\\[([\\s\\S]*?)(]]>))|(([\\w:\\-._]*:)?([\\w:\\-._]+))([^>]*)>|((\\/)(([\\w:\\-._]*:)?([\\w:\\-._]+))\\s*>)|(!--)(.+)-->)([^<]*)';
+
+const cDataPattern = "(!\\[CDATA\\[([\\s\\S]*?)(]]>))";
+
+const tagNamePattern =  "(([\\w:\\-._]*:)?([\\w:\\-._]+))";
+const startTagPattern = `${tagNamePattern}([^>]*)>`;
+const endTagPattern = `((\\/)${tagNamePattern}\\s*>)`;
+
+const commentPattern = "(!--)(.+?)-->";
+
+const tagPattern = `<(${cDataPattern}|${startTagPattern}|${endTagPattern}|${commentPattern})([^<]*)`;
 
 class XMLNode {
   constructor(tagname, opts) {
