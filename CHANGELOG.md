@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 ### Added
 
 - Support for cdata tags.
+- Support for the `locStart` and `locEnd` functions by tracking node metadata in the new parser.
 
 ### Changed
 

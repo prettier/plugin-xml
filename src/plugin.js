@@ -1,11 +1,8 @@
 const parse = require("./parse");
 const print = require("./print");
 
-// These functions are necessary or the print with cursor function breaks.
-// Eventually we should fill them in with the correct metadata, but the parser
-// doesn't provide it at the moment.
-const locStart = _node => 0;
-const locEnd = _node => 0;
+const locStart = node => node.locStart;
+const locEnd = node => node.locEnd;
 
 const plugin = {
   languages: [

@@ -2,19 +2,25 @@ const attrsPattern = '([^\\s=]+)\\s*(=\\s*([\'"])(.*?)\\3)?';
 const tagPattern = '<((!\\[CDATA\\[([\\s\\S]*?)(]]>))|(([\\w:\\-._]*:)?([\\w:\\-._]+))([^>]*)>|((\\/)(([\\w:\\-._]*:)?([\\w:\\-._]+))\\s*>))([^<]*)';
 
 class XMLNode {
-  constructor(tagname, parent, value, attrs) {
+  constructor(tagname, opts) {
     this.tagname = tagname;
-    this.parent = parent;
     this.children = [];
-    this.attrs = {};
-    this.value = value || "";
 
-    if (typeof attrs === "string" && attrs) {
-      this._parseAttrs(attrs);
-    }
+    this.parent = opts.parent;
+    this.value = opts.value || "";
+
+    this.locStart = opts.locStart || 0;
+    this.locEnd = opts.locEnd || 0;
+
+    this.attrs = {};
+    this.parseAttrs(opts.attrs);
   }
 
-  _parseAttrs(attrs) {
+  parseAttrs(attrs) {
+    if (typeof attrs !== "string" || !attrs) {
+      return;
+    }
+
     const normal = attrs.replace(/\r?\n/g, " ");
     const attrsRegex = new RegExp(attrsPattern, "g");
     let match;
@@ -29,32 +35,45 @@ class XMLNode {
 }
 
 const parse = (text, _parsers, _opts) => {
-  const xmlData = text.replace(/<!--[\s\S]*?-->/g, ''); // Remove comments
-
-  const rootNode = new XMLNode("!xml");
+  const rootNode = new XMLNode("!xml", { locStart: 0, locEnd: text.length });
   let node = rootNode;
 
-  const tagsRegx = new RegExp(tagPattern, "g");
+  const tagRegex = new RegExp(tagPattern, "g");
   let tag;
 
-  while (tag = tagsRegx.exec(xmlData)) {
-    const tagValue = (tag[14] || "").trim();
+  while (tag = tagRegex.exec(text)) {
+    const value = (tag[14] || "").trim();
 
     if (tag[4] === "]]>") {
-      node.children.push(new XMLNode("!cdata", node, tag[3], tag[8]));
-      node.value += `\\c${tagValue}`;
+      node.children.push(new XMLNode("!cdata", {
+        parent: node,
+        value: tag[3],
+        attrs: tag[8],
+        locStart: tag.index,
+        locEnd: tag.index + tag[0].trim().length
+      }));
+
+      node.value += `\\c${value}`;
     } else if (tag[10] === "/") {
-      if (node.parent) {
-        node.parent.value += tagValue;
-      }
+      node.locEnd = tag.index + tag[0].trim().length;
+      node.parent.value += value;
       node = node.parent;
     } else if (typeof tag[8] !== "undefined" && tag[8].charAt(tag[8].length - 1) === "/") {
-      if (node) {
-        node.value += tagValue;
-      }
-      node.children.push(new XMLNode(tag[5], node, "", tag[8].slice(0, -1)));
+      node.value += value;
+      node.children.push(new XMLNode(tag[5], {
+        parent: node,
+        attrs: tag[8].slice(0, -1),
+        locStart: tag.index,
+        locEnd: tag.index + tag[0].trim().length
+      }));
     } else {
-      node = new XMLNode(tag[5], node, tagValue, tag[8]);
+      node = new XMLNode(tag[5], {
+        parent: node,
+        value,
+        attrs: tag[8],
+        locStart: tag.index
+      });
+
       node.parent.children.push(node);
     }
   }
