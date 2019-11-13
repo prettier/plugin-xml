@@ -1,20 +1,5 @@
 const attrsRegx = new RegExp('([^\\s=]+)\\s*(=\\s*([\'"])(.*?)\\3)?', 'g');
 
-const getAllMatches = function(string, regex) {
-  const matches = [];
-  let match = regex.exec(string);
-  while (match) {
-    const allmatches = [];
-    const len = match.length;
-    for (let index = 0; index < len; index++) {
-      allmatches.push(match[index]);
-    }
-    matches.push(allmatches);
-    match = regex.exec(string);
-  }
-  return matches;
-};
-
 class XMLNode {
   constructor(tagname, parent, val) {
     this.tagname = tagname;
@@ -24,19 +9,21 @@ class XMLNode {
     this.val = val;
   }
 
-  addAttrs(attrStr) {
-    if (typeof attrStr !== "string") {
+  addAttrs(attrs) {
+    if (typeof attrs !== "string") {
       return;
     }
 
-    const matches = getAllMatches(attrStr.replace(/\r?\n/g, ' '), attrsRegx);
-    const len = matches.length; //don't make it inline
+    const normalized = attrs.replace(/\r?\n/g, " ");
+    let match = attrsRegx.exec(normalized);
 
-    for (let i = 0; i < len; i++) {
-      const attrName = matches[i][1];
+    while (match) {
+      const attrName = match[1];
       if (attrName.length) {
-        this.attrsMap[attrName] = matches[i][4] === undefined ? true : matches[i][4].trim();
+        this.attrsMap[attrName] = match[4] === undefined ? true : match[4].trim();
       }
+
+      match = attrsRegx.exec(normalized);
     }
   }
 
@@ -49,19 +36,9 @@ class XMLNode {
   }
 }
 
-const isExist = v => typeof v !== 'undefined';
+const getValue = v => typeof v !== "undefined" ? v : "";
 
-const isEmptyObject = obj => Object.keys(obj).length === 0;
-
-const getValue = v => {
-  if (isExist(v)) {
-    return v;
-  } else {
-    return '';
-  }
-};
-
-const TagType = {OPENING: 1, CLOSING: 2, SELF: 3, CDATA: 4};
+const TagType = { OPENING: 1, CLOSING: 2, SELF: 3, CDATA: 4 };
 let regx = '<((!\\[CDATA\\[([\\s\\S]*?)(]]>))|(([\\w:\\-._]*:)?([\\w:\\-._]+))([^>]*)>|((\\/)(([\\w:\\-._]*:)?([\\w:\\-._]+))\\s*>))([^<]*)';
 
 const getTagType = tag => {
@@ -82,8 +59,8 @@ const getTrimmedTagValue = tag => (tag[14] || "").trim();
 const parse = (xmlData, _parsers, _opts) => {
   xmlData = xmlData.replace(/<!--[\s\S]*?-->/g, ''); //Remove comments
 
-  const xmlObj = new XMLNode('!xml');
-  let currentNode = xmlObj;
+  const xmlNode = new XMLNode('!xml');
+  let currentNode = xmlNode;
 
   const tagsRegx = new RegExp(regx, 'g');
   let tag = tagsRegx.exec(xmlData);
@@ -141,7 +118,7 @@ const parse = (xmlData, _parsers, _opts) => {
     nextTag = tagsRegx.exec(xmlData);
   }
 
-  return xmlObj;
+  return xmlNode;
 };
 
 module.exports = parse;
