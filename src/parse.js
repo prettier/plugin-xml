@@ -41,13 +41,13 @@ const parse = (text, _parsers, _opts) => {
   const xmlNode = new XMLNode("!xml");
   let currentNode = xmlNode;
 
-  const tagsRegx = new RegExp(tagPattern, 'g');
+  const tagsRegx = new RegExp(tagPattern, "g");
   let tag;
 
   while (tag = tagsRegx.exec(xmlData)) {
     if (tag[4] === "]]>") {
       //add cdata node
-      const childNode = new XMLNode("#cdata", currentNode, tag[3], tag[8]);
+      const childNode = new XMLNode("!cdata", currentNode, tag[3], tag[8]);
       currentNode.addChild(childNode);
 
       //for backtracking

@@ -29,7 +29,7 @@ const printAttrs = attrs => {
 };
 
 const printOpeningTag = (name, attrs) => {
-  if (name === "#cdata") {
+  if (name === "!cdata") {
     return "<![CDATA[";
   }
   return group(concat(["<", name, printAttrs(attrs), softline, ">"]));
@@ -69,7 +69,7 @@ const genericPrint = (path, opts, print) => {
   }
 
   const openingTag = printOpeningTag(tagname, attrs);
-  const closingTag = tagname === "#cdata" ? "]]>" : `</${tagname}>`;
+  const closingTag = tagname === "!cdata" ? "]]>" : `</${tagname}>`;
 
   if (Object.keys(child).length === 0) {
     return group(
