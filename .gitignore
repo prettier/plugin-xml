@@ -1,3 +1,5 @@
 /.eslintcache
 /coverage/
 /node_modules/
+
+.idea
