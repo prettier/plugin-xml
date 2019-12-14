@@ -6,7 +6,7 @@ const tagNamePattern = "(([\\w:\\-._]*:)?([\\w:\\-._]+))";
 const startTagPattern = `${tagNamePattern}([^>]*)>`;
 const endTagPattern = `((\\/)${tagNamePattern}\\s*>)`;
 
-const commentPattern = "(!--)(.+?)-->";
+const commentPattern = "(!--)([\\s\\S\\n]*?)-->";
 const declPattern = "((\\?xml)(-model)?)(.+)\\?>";
 
 const tagPattern = `<(${cDataPattern}|${startTagPattern}|${endTagPattern}|${commentPattern}|${declPattern})([^<]*)`;
@@ -67,7 +67,7 @@ const parse = (text, _parsers, _opts) => {
       node.children.push(
         new XMLNode("!comment", {
           parent: node,
-          value: tag[15].trim(),
+          value: tag[0].trim(),
           locStart: tag.index,
           locEnd: tag.index + tag[0].trim().length
         })

@@ -49,7 +49,7 @@ const genericPrint = (path, opts, print) => {
 
   if (tagname === "!comment") {
     return group(
-      concat(["<!--", indent(concat([line, value])), concat([line, "-->"])])
+      concat([value])
     );
   }
 
