@@ -6,7 +6,7 @@ const tagNamePattern = "(([\\w:\\-._]*:)?([\\w:\\-._]+))";
 const startTagPattern = `${tagNamePattern}([^>]*)>`;
 const endTagPattern = `((\\/)${tagNamePattern}\\s*>)`;
 
-const commentPattern = "(!--)(.+?)-->";
+const commentPattern = "(!--)([\\s\\S]*?)-->";
 const declPattern = "((\\?xml)(-model)?)(.+)\\?>";
 
 const tagPattern = `<(${cDataPattern}|${startTagPattern}|${endTagPattern}|${commentPattern}|${declPattern})([^<]*)`;
