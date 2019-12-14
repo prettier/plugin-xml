@@ -48,9 +48,7 @@ const genericPrint = (path, opts, print) => {
   }
 
   if (tagname === "!comment") {
-    return group(
-      concat([value])
-    );
+    return group(concat([value]));
   }
 
   if (Object.keys(children).length === 0 && !value && opts.xmlSelfClosingTags) {
