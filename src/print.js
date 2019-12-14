@@ -6,7 +6,7 @@ const {
   join,
   line,
   softline
-} = require("prettier").doc.builders;
+} = require("prettier/standalone").doc.builders;
 
 const printAttrs = attrs => {
   if (Object.keys(attrs).length === 0) {
