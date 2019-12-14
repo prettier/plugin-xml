@@ -12,14 +12,14 @@ describe("comment", () => {
       <foo>
         <!-- This is a single line comment -->
         <bar />
-        <!-- The spring-boot version should match the one managed by
-        https://someurl.com/yada/\${blah-yada.etc} -->
+        <!-- This comment contains links, is multiline and comment opening on the same line
+        as the text of the comment https://someurl.com/yada/\${blah-yada.etc} -->
         <baz>
           <!--Single line no inner space-->
           <qux />
         </baz>
         <!--
-        Enable the line below to have remote debugging of your application on port 5005
+        Comment contains commented tags and is multi line 
         <commented-tag>-abc:def=something=gh_ih,jk=y,number=5005</commented-tag>
         -->
       </foo>
