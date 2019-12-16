@@ -73,12 +73,12 @@ const parse = (text, _parsers, _opts) => {
           locEnd: tag.index + tag[0].trim().length
         })
       );
-    } else if ((tag[21]||'').toLowerCase() === 'doctype') {
+    } else if ((tag[21] || "").toLowerCase() === "doctype") {
       node.children.push(
         new XMLNode(`!doctype`, {
           parent: node,
           value: tag[0].trim(),
-          attrs: tag[22].trim().replace(/>$/, ''),
+          attrs: tag[22].trim().replace(/>$/, ""),
           locStart: tag.index,
           locEnd: tag.index + tag[0].trim().length
         })
