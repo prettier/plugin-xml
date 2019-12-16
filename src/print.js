@@ -47,7 +47,7 @@ const genericPrint = (path, opts, print) => {
     return concat([join(hardline, path.map(print, "children")), hardline]);
   }
 
-  if (tagname === "!comment") {
+  if (tagname === "!comment" || tagname === '!doctype') {
     return group(concat([value]));
   }
 

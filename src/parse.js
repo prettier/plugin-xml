@@ -8,8 +8,9 @@ const endTagPattern = `((\\/)${tagNamePattern}\\s*>)`;
 
 const commentPattern = "(!--)([\\s\\S\\n]*?)-->";
 const declPattern = "((\\?xml)(-model)?)(.+)\\?>";
+const docTypePattern = "(!(doctype|DOCTYPE))";
 
-const tagPattern = `<(${cDataPattern}|${startTagPattern}|${endTagPattern}|${commentPattern}|${declPattern})([^<]*)`;
+const tagPattern = `<(${cDataPattern}|${startTagPattern}|${endTagPattern}|${commentPattern}|${declPattern}|${docTypePattern})([^<]*)`;
 
 class XMLNode {
   constructor(tagname, opts) {
@@ -68,6 +69,16 @@ const parse = (text, _parsers, _opts) => {
         new XMLNode("!comment", {
           parent: node,
           value: tag[0].trim(),
+          locStart: tag.index,
+          locEnd: tag.index + tag[0].trim().length
+        })
+      );
+    } else if ((tag[21]||'').toLowerCase() === 'doctype') {
+      node.children.push(
+        new XMLNode(`!doctype`, {
+          parent: node,
+          value: tag[0].trim(),
+          attrs: tag[22].trim().replace(/>$/, ''),
           locStart: tag.index,
           locEnd: tag.index + tag[0].trim().length
         })
