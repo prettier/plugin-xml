@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+### Added
+
+- A dependency on the `@xml-tools/parser` package to handle parsing.
+
 ## [0.3.0] - 2019-11-14
 
 ### Added

@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/prettier/plugin-xml#readme",
   "dependencies": {
+    "@xml-tools/parser": "^0.4.0",
     "prettier": ">=1.10"
   },
   "devDependencies": {
@@ -29,9 +30,6 @@
     "jest": "^24.0.0"
   },
   "jest": {
-    "setupFilesAfterEnv": [
-      "./test/setup.js"
-    ],
     "testRegex": ".test.js$"
   }
 }
