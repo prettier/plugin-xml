@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+## [0.4.0] - 2020-01-19
+
 ### Added
 
 - A dependency on the `@xml-tools/parser` package to handle parsing.
@@ -37,7 +39,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 - Initial release 🎉
 
-[unreleased]: https://github.com/prettier/plugin-xml/compare/v0.3.0...HEAD
+[unreleased]: https://github.com/prettier/plugin-xml/compare/v0.4.0...HEAD
+[0.4.0]: https://github.com/prettier/plugin-xml/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/prettier/plugin-xml/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/prettier/plugin-xml/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/prettier/plugin-xml/compare/289f2a...v0.1.0
