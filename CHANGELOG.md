@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 ### Added
 
 - A dependency on the `@xml-tools/parser` package to handle parsing.
+- We now register as supporting `.svg` and `.xsd` files.
 
 ## [0.3.0] - 2019-11-14
 
