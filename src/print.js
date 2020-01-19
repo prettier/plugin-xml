@@ -145,11 +145,13 @@ const nodes = {
     }
 
     if (SLASH_CLOSE) {
-      return group(concat(parts.concat(line, SLASH_CLOSE[0].image)));
+      const space = opts.xmlSelfClosingSpace ? line : softline;
+      return group(concat(parts.concat(space, SLASH_CLOSE[0].image)));
     }
 
     if (Object.keys(content[0].children).length === 0) {
-      return group(concat(parts.concat(line, "/>")));
+      const space = opts.xmlSelfClosingSpace ? line : softline;
+      return group(concat(parts.concat(space, "/>")));
     }
 
     return group(
@@ -162,7 +164,6 @@ const nodes = {
   },
   prolog: (path, opts, print) => {
     const { XMLDeclOpen, attribute, SPECIAL_CLOSE } = path.getValue().children;
-
     const parts = [XMLDeclOpen[0].image];
 
     if (attribute) {
@@ -176,7 +177,8 @@ const nodes = {
       );
     }
 
-    parts.push(softline, SPECIAL_CLOSE[0].image);
+    const space = opts.xmlSelfClosingSpace ? line : softline;
+    parts.push(space, SPECIAL_CLOSE[0].image);
 
     return group(concat(parts));
   }

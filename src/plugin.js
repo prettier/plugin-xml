@@ -37,7 +37,14 @@ const plugin = {
       print
     }
   },
-  options: {},
+  options: {
+    xmlSelfClosingSpace: {
+      type: "boolean",
+      category: "Global",
+      default: true,
+      description: "Adds a space before self-closing tags."
+    }
+  },
   defaultOptions: {
     printWidth: 80,
     tabWidth: 2
