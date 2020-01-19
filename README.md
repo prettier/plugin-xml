@@ -46,10 +46,10 @@ The `prettier` executable is now installed and ready for use:
 
 Below are the options (from [`src/plugin.js`](src/plugin.js)) that `@prettier/plugin-xml` currently supports:
 
-| Name                 | Default | Description                                                                                      |
-| -------------------- | :-----: | ------------------------------------------------------------------------------------------------ |
-| `printWidth`         |  `80`   | Same as in Prettier ([see prettier docs](https://prettier.io/docs/en/options.html#print-width)). |
-| `tabWidth`           |   `2`   | Same as in Prettier ([see prettier docs](https://prettier.io/docs/en/options.html#tab-width)).   |
+| Name         | Default | Description                                                                                      |
+| ------------ | :-----: | ------------------------------------------------------------------------------------------------ |
+| `printWidth` |  `80`   | Same as in Prettier ([see prettier docs](https://prettier.io/docs/en/options.html#print-width)). |
+| `tabWidth`   |   `2`   | Same as in Prettier ([see prettier docs](https://prettier.io/docs/en/options.html#tab-width)).   |
 
 Any of these can be added to your existing [prettier configuration
 file](https://prettier.io/docs/en/configuration.html). For example:

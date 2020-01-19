@@ -19,9 +19,11 @@ const nodes = {
     const { SEA_WS, TEXT } = path.getValue().children;
     const [{ image }] = SEA_WS || TEXT;
 
-    return concat(image.split(/(\n)/g).map((value, index) => (
-      index % 2 === 0 ? value : literalline
-    )));
+    return concat(
+      image
+        .split(/(\n)/g)
+        .map((value, index) => (index % 2 === 0 ? value : literalline))
+    );
   },
   content: (path, opts, print) => {
     const {
@@ -135,10 +137,11 @@ const nodes = {
     const parts = [OPEN[0].image, Name[0].image];
 
     if (attribute) {
-      parts.push(indent(concat([
-        line,
-        join(line, path.map(print, "children", "attribute"))
-      ])));
+      parts.push(
+        indent(
+          concat([line, join(line, path.map(print, "children", "attribute"))])
+        )
+      );
     }
 
     if (SLASH_CLOSE) {
@@ -149,11 +152,13 @@ const nodes = {
       return group(concat(parts.concat(line, "/>")));
     }
 
-    return group(concat([
-      group(concat(parts.concat(softline, START_CLOSE[0].image))),
-      indent(path.call(print, "children", "content", 0)),
-      group(concat([SLASH_OPEN[0].image, END_NAME[0].image, END[0].image]))
-    ]));
+    return group(
+      concat([
+        group(concat(parts.concat(softline, START_CLOSE[0].image))),
+        indent(path.call(print, "children", "content", 0)),
+        group(concat([SLASH_OPEN[0].image, END_NAME[0].image, END[0].image]))
+      ])
+    );
   },
   prolog: (path, opts, print) => {
     const { XMLDeclOpen, attribute, SPECIAL_CLOSE } = path.getValue().children;
@@ -161,10 +166,14 @@ const nodes = {
     const parts = [XMLDeclOpen[0].image];
 
     if (attribute) {
-      parts.push(indent(concat([
-        softline,
-        join(line, path.map(print, "children", "attribute"))
-      ])));
+      parts.push(
+        indent(
+          concat([
+            softline,
+            join(line, path.map(print, "children", "attribute"))
+          ])
+        )
+      );
     }
 
     parts.push(softline, SPECIAL_CLOSE[0].image);
