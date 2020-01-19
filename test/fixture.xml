@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="project.rnc" type="application/relax-ng-compact-syntax"?>
+<!-- foo -->
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="200"
+  height="100"
+  viewBox="0 0 200 100"
+>
+  <title>Style inheritance and the use element</title>
+  <desc>
+    &anp; &#12345;
+    <![CDATA[foo]]>
+    bar
+  </desc>
+  <style></style>
+  <style type="text/css">
+    circle          { stroke-opacity: 0.7; }
+    .special circle { stroke: green; }
+    use             { stroke: purple;
+                      fill: orange; }
+  </style>
+  <g class="special" style="fill: blue">
+    <circle id="c" cy="50" cx="50" r="40" stroke-width="20" />
+  </g>
+  <use xlink:href="#c" x="100" />
+</svg>
+<!-- bar -->
