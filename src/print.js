@@ -80,9 +80,26 @@ const nodes = {
 
     return group(concat(parts));
   },
+  docTypeDecl: (path, opts, print) => {
+    const { DocType, Name, externalID, CLOSE } = path.getValue().children;
+    const parts = [DocType[0].image, " ", Name[0].image];
+
+    if (externalID) {
+      parts.push(" ", path.call(print, "children", "externalID", 0));
+    }
+
+    return group(concat(parts.concat(CLOSE[0].image)));
+  },
   document: (path, opts, print) => {
-    const { element, misc, prolog } = path.getValue().children;
+    const { docTypeDecl, element, misc, prolog } = path.getValue().children;
     let parts = [];
+
+    if (docTypeDecl) {
+      parts.push({
+        offset: docTypeDecl[0].location.startOffset,
+        printed: path.call(print, "children", "docTypeDecl", 0)
+      });
+    }
 
     if (prolog) {
       parts.push({
@@ -98,9 +115,7 @@ const nodes = {
             offset: node.location.startOffset,
             printed: node.children.PROCESSING_INSTRUCTION[0].image
           });
-        }
-
-        if (node.children.Comment) {
+        } else if (node.children.Comment) {
           parts.push({
             offset: node.location.startOffset,
             printed: node.children.Comment[0].image
@@ -159,6 +174,35 @@ const nodes = {
         group(concat(parts.concat(softline, START_CLOSE[0].image))),
         indent(path.call(print, "children", "content", 0)),
         group(concat([SLASH_OPEN[0].image, END_NAME[0].image, END[0].image]))
+      ])
+    );
+  },
+  externalID: (path, _opts, _print) => {
+    const {
+      Public,
+      PubIDLiteral,
+      System,
+      SystemLiteral
+    } = path.getValue().children;
+
+    if (System) {
+      return group(
+        concat([
+          System[0].image,
+          indent(concat([line, SystemLiteral[0].image]))
+        ])
+      );
+    }
+
+    return group(
+      concat([
+        group(
+          concat([
+            Public[0].image,
+            indent(concat([line, PubIDLiteral[0].image]))
+          ])
+        ),
+        indent(concat([line, SystemLiteral[0].image]))
       ])
     );
   },
