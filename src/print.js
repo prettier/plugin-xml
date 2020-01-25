@@ -1,4 +1,5 @@
 const {
+  breakParent,
   concat,
   group,
   hardline,
@@ -8,6 +9,43 @@ const {
   literalline,
   softline
 } = require("prettier").doc.builders;
+
+const elementOnly = node => {
+  const { CData, Comment, chardata, element, reference } = node.children;
+
+  return (
+    !CData &&
+    !Comment &&
+    (!chardata || chardata.every(node => !node.children.TEXT)) &&
+    element &&
+    !reference
+  );
+};
+
+const printCData = node => ({
+  offset: node.startOffset,
+  printed: node.image
+});
+
+const printComment = node => ({
+  offset: node.startOffset,
+  printed: node.image
+});
+
+const printCharData = (path, print) => (node, index) => ({
+  offset: node.location.startOffset,
+  printed: path.call(print, "children", "chardata", index)
+});
+
+const printElement = (path, print) => (node, index) => ({
+  offset: node.location.startOffset,
+  printed: path.call(print, "children", "element", index)
+});
+
+const printReference = node => ({
+  offset: node.location.startOffset,
+  printed: (node.children.CharRef || node.children.EntityRef)[0].image
+});
 
 const nodes = {
   attribute: (path, _opts, _print) => {
@@ -27,58 +65,25 @@ const nodes = {
   },
   content: (path, opts, print) => {
     const {
-      CData,
-      Comment,
-      chardata,
-      element,
-      reference
+      CData = [],
+      Comment = [],
+      chardata = [],
+      element = [],
+      reference = []
     } = path.getValue().children;
 
-    let parts = [];
-
-    if (CData) {
-      CData.forEach(node => {
-        parts.push({ offset: node.startOffset, printed: node.image });
-      });
-    }
-
-    if (Comment) {
-      Comment.forEach(node => {
-        parts.push({ offset: node.startOffset, printed: node.image });
-      });
-    }
-
-    if (chardata) {
-      chardata.forEach((node, index) => {
-        parts.push({
-          offset: node.location.startOffset,
-          printed: path.call(print, "children", "chardata", index)
-        });
-      });
-    }
-
-    if (element) {
-      element.forEach((node, index) => {
-        parts.push({
-          offset: node.location.startOffset,
-          printed: path.call(print, "children", "element", index)
-        });
-      });
-    }
-
-    if (reference) {
-      reference.forEach(node => {
-        parts.push({
-          offset: node.location.startOffset,
-          printed: (node.children.CharRef || node.children.EntityRef)[0].image
-        });
-      });
-    }
-
-    parts.sort((left, right) => left.offset - right.offset);
-    parts = parts.map(({ printed }) => printed);
-
-    return group(concat(parts));
+    return group(
+      concat(
+        []
+          .concat(CData.map(printCData))
+          .concat(Comment.map(printComment))
+          .concat(chardata.map(printCharData(path, print)))
+          .concat(element.map(printElement(path, print)))
+          .concat(reference.map(printReference))
+          .sort((left, right) => left.offset - right.offset)
+          .map(({ printed }) => printed)
+      )
+    );
   },
   docTypeDecl: (path, opts, print) => {
     const { DocType, Name, externalID, CLOSE } = path.getValue().children;
@@ -169,11 +174,37 @@ const nodes = {
       return group(concat(parts.concat(space, "/>")));
     }
 
+    const openTag = group(concat(parts.concat(softline, START_CLOSE[0].image)));
+    const closeTag = group(
+      concat([SLASH_OPEN[0].image, END_NAME[0].image, END[0].image])
+    );
+
+    // If we're ignoring whitespace and we're printing a node that only contains
+    // other elements, then we can just print out the child elements directly.
+    if (opts.xmlWhitespaceSensitivity === "ignore" && elementOnly(content[0])) {
+      return group(
+        concat([
+          openTag,
+          indent(
+            concat([
+              hardline,
+              join(
+                hardline,
+                path.map(print, "children", "content", 0, "children", "element")
+              )
+            ])
+          ),
+          hardline,
+          closeTag
+        ])
+      );
+    }
+
     return group(
       concat([
-        group(concat(parts.concat(softline, START_CLOSE[0].image))),
+        openTag,
         indent(path.call(print, "children", "content", 0)),
-        group(concat([SLASH_OPEN[0].image, END_NAME[0].image, END[0].image]))
+        closeTag
       ])
     );
   },
