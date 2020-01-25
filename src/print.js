@@ -1,5 +1,4 @@
 const {
-  breakParent,
   concat,
   group,
   hardline,
@@ -16,7 +15,7 @@ const elementOnly = node => {
   return (
     !CData &&
     !Comment &&
-    (!chardata || chardata.every(node => !node.children.TEXT)) &&
+    (!chardata || chardata.every(datum => !datum.children.TEXT)) &&
     element &&
     !reference
   );
