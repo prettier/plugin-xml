@@ -1,6 +1,6 @@
 {
   "name": "@prettier/plugin-xml",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "prettier plugin for XML",
   "main": "src/plugin.js",
   "scripts": {
