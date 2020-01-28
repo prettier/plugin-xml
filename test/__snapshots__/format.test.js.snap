@@ -19,6 +19,7 @@ exports[`defaults 1`] = `
     <![CDATA[foo]]>
     bar
   </desc>
+  <?pagebreak?>
   <style />
   <style type=\\"text/css\\">
     circle          { stroke-opacity: 0.7; }
@@ -26,6 +27,7 @@ exports[`defaults 1`] = `
     use             { stroke: purple;
                       fill: orange; }
   </style>
+  <?pagebreak?>
     <g class=\\"special\\" style=\\"fill: blue\\">
         <circle id=\\"c\\" cy=\\"50\\" cx=\\"50\\" r=\\"40\\" stroke-width=\\"20\\" />
     </g>
@@ -54,6 +56,7 @@ exports[`xmlWhitespaceSensitivity => ignore 1`] = `
     <![CDATA[foo]]>
     bar
   </desc>
+  <?pagebreak?>
   <style />
   <style type=\\"text/css\\">
     circle          { stroke-opacity: 0.7; }
@@ -61,6 +64,7 @@ exports[`xmlWhitespaceSensitivity => ignore 1`] = `
     use             { stroke: purple;
                       fill: orange; }
   </style>
+  <?pagebreak?>
   <g class=\\"special\\" style=\\"fill: blue\\">
     <circle id=\\"c\\" cy=\\"50\\" cx=\\"50\\" r=\\"40\\" stroke-width=\\"20\\" />
   </g>
