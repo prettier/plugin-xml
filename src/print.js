@@ -41,6 +41,11 @@ const printElement = (path, print) => (node, index) => ({
   printed: path.call(print, "children", "element", index)
 });
 
+const printProcessingInstruction = node => ({
+  offset: node.startOffset,
+  printed: node.image
+});
+
 const printReference = node => ({
   offset: node.location.startOffset,
   printed: (node.children.CharRef || node.children.EntityRef)[0].image
@@ -68,6 +73,7 @@ const nodes = {
       Comment = [],
       chardata = [],
       element = [],
+      PROCESSING_INSTRUCTION = [],
       reference = []
     } = path.getValue().children;
 
@@ -78,6 +84,7 @@ const nodes = {
           .concat(Comment.map(printComment))
           .concat(chardata.map(printCharData(path, print)))
           .concat(element.map(printElement(path, print)))
+          .concat(PROCESSING_INSTRUCTION.map(printProcessingInstruction))
           .concat(reference.map(printReference))
           .sort((left, right) => left.offset - right.offset)
           .map(({ printed }) => printed)
@@ -181,18 +188,30 @@ const nodes = {
     // If we're ignoring whitespace and we're printing a node that only contains
     // other elements, then we can just print out the child elements directly.
     if (opts.xmlWhitespaceSensitivity === "ignore" && elementOnly(content[0])) {
+      const { element, PROCESSING_INSTRUCTION = [] } = content[0].children;
+      const children = []
+        .concat(
+          element.map((node, index) => ({
+            offset: node.location.startOffset,
+            printed: path.call(
+              print,
+              "children",
+              "content",
+              0,
+              "children",
+              "element",
+              index
+            )
+          }))
+        )
+        .concat(PROCESSING_INSTRUCTION.map(printProcessingInstruction))
+        .sort((left, right) => left.offset - right.offset)
+        .map(({ printed }) => printed);
+
       return group(
         concat([
           openTag,
-          indent(
-            concat([
-              hardline,
-              join(
-                hardline,
-                path.map(print, "children", "content", 0, "children", "element")
-              )
-            ])
-          ),
+          indent(concat([hardline, join(hardline, children)])),
           hardline,
           closeTag
         ])

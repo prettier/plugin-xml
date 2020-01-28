@@ -46,7 +46,7 @@ The `prettier` executable is now installed and ready for use:
 
 Below are the options (from [`src/plugin.js`](src/plugin.js)) that `@prettier/plugin-xml` currently supports:
 
-| API Option                 | CLI Option                     | Default    | Description                                                                                      |
+| API Option                 | CLI Option                     |  Default   | Description                                                                                      |
 | -------------------------- | ------------------------------ | :--------: | ------------------------------------------------------------------------------------------------ |
 | `printWidth`               | `--print-width`                |    `80`    | Same as in Prettier ([see prettier docs](https://prettier.io/docs/en/options.html#print-width)). |
 | `tabWidth`                 | `--tab-width`                  |    `2`     | Same as in Prettier ([see prettier docs](https://prettier.io/docs/en/options.html#tab-width)).   |
