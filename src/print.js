@@ -10,11 +10,10 @@ const {
 } = require("prettier").doc.builders;
 
 const elementOnly = node => {
-  const { CData, Comment, chardata, element, reference } = node.children;
+  const { CData, chardata, element, reference } = node.children;
 
   return (
     !CData &&
-    !Comment &&
     (!chardata || chardata.every(datum => !datum.children.TEXT)) &&
     element &&
     !reference
@@ -188,8 +187,14 @@ const nodes = {
     // If we're ignoring whitespace and we're printing a node that only contains
     // other elements, then we can just print out the child elements directly.
     if (opts.xmlWhitespaceSensitivity === "ignore" && elementOnly(content[0])) {
-      const { element, PROCESSING_INSTRUCTION = [] } = content[0].children;
+      const {
+        Comment = [],
+        element,
+        PROCESSING_INSTRUCTION = []
+      } = content[0].children;
+
       const children = []
+        .concat(Comment.map(printComment))
         .concat(
           element.map((node, index) => ({
             offset: node.location.startOffset,

@@ -13,7 +13,9 @@
   <title>Style inheritance and the use element</title>
   <desc>
     &anp; &#12345;
-    <![CDATA[foo]]>
+    <![CDATA[
+      foo
+    ]]>
     bar
   </desc>
   <?pagebreak?>

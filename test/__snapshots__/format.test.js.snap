@@ -16,7 +16,9 @@ exports[`defaults 1`] = `
   <title>Style inheritance and the use element</title>
   <desc>
     &anp; &#12345;
-    <![CDATA[foo]]>
+    <![CDATA[
+      foo
+    ]]>
     bar
   </desc>
   <?pagebreak?>
@@ -53,7 +55,9 @@ exports[`xmlWhitespaceSensitivity => ignore 1`] = `
   <title>Style inheritance and the use element</title>
   <desc>
     &anp; &#12345;
-    <![CDATA[foo]]>
+    <![CDATA[
+      foo
+    ]]>
     bar
   </desc>
   <?pagebreak?>

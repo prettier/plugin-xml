@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 ### Added
 
 - Handle processing instructions inside elements.
+- Properly handle mult-line CData tags.
 
 ## [0.6.0] - 2020-01-27
 
