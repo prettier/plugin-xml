@@ -408,9 +408,9 @@
     "@types/yargs-parser" "*"
 
 "@xml-tools/parser@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@xml-tools/parser/-/parser-1.0.0.tgz#56143ee90efbae81be5be659ae3a0b9c0aebf431"
-  integrity sha512-Q2sFNXdpk1wWkyTEC9wvH6jypu2A+nXY1kcQXBRvFKQlR+PfqKtFBL9nb5J+ILpr4/VP2yPfh9Orn9Y/9Rbosw==
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@xml-tools/parser/-/parser-1.0.1.tgz#1e5ff0050e04c8fd8fd6389c3c68a0a7c5b0614b"
+  integrity sha512-ADsyToDF0zGeLmCa4ZSVMVIHCEvaPfWX+vOGlwjtMrN2FGML8pg4xdT55myep+z1InIVguhMr0Wm+IH1Dg730g==
   dependencies:
     chevrotain "6.5.0"
 
