@@ -282,15 +282,7 @@ const nodes = {
   }
 };
 
-const genericPrint = (path, opts, print) => {
-  const { name } = path.getValue();
-  const printer = nodes[name];
-
-  if (!printer) {
-    throw new Error(`Unimplemented: ${name}`);
-  }
-
-  return printer(path, opts, print);
-};
+const genericPrint = (path, opts, print) =>
+  nodes[path.getValue().name](path, opts, print);
 
 module.exports = genericPrint;
