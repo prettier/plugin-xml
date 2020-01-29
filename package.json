@@ -19,13 +19,13 @@
   },
   "homepage": "https://github.com/prettier/plugin-xml#readme",
   "dependencies": {
-    "@xml-tools/parser": "^1.0.0",
+    "@xml-tools/parser": "^1.0.1",
     "prettier": ">=1.10"
   },
   "devDependencies": {
     "eslint": "^6.0.1",
     "eslint-config-airbnb-base": "^14.0.0",
-    "eslint-config-prettier": "^6.0.0",
+    "eslint-config-prettier": "^6.10.0",
     "eslint-plugin-import": "^2.16.0",
     "jest": "^25.1.0"
   },
