@@ -7,7 +7,7 @@ const {
   line,
   literalline,
   softline
-} = require("prettier").doc.builders;
+} = require("prettier/doc").builders;
 
 const elementOnly = node => {
   const { CData, chardata, element, reference } = node.children;
