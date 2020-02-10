@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+## [0.7.1] - 2020-02-10
+
+### Changed
+
+- Require `prettier/doc` instead of `prettier` to load less code in standalone mode.
+
 ## [0.7.0] - 2020-01-29
 
 ### Added
@@ -58,7 +64,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 - Initial release 🎉
 
-[unreleased]: https://github.com/prettier/plugin-xml/compare/v0.7.0...HEAD
+[unreleased]: https://github.com/prettier/plugin-xml/compare/v0.7.1...HEAD
+[0.7.1]: https://github.com/prettier/plugin-xml/compare/v0.7.0...v0.7.1
 [0.7.0]: https://github.com/prettier/plugin-xml/compare/v0.6.0...v0.7.0
 [0.6.0]: https://github.com/prettier/plugin-xml/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/prettier/plugin-xml/compare/v0.4.0...v0.5.0
