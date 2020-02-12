@@ -1,6 +1,6 @@
 {
   "name": "@prettier/plugin-xml",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "description": "prettier plugin for XML",
   "main": "src/plugin.js",
   "scripts": {
@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/prettier/plugin-xml#readme",
   "dependencies": {
-    "@xml-tools/parser": "^1.0.1",
+    "@xml-tools/parser": "^1.0.2",
     "prettier": ">=1.10"
   },
   "devDependencies": {

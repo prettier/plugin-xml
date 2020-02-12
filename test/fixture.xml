@@ -11,7 +11,7 @@
   viewBox="0 0 200 100"
 >
   <title>Style inheritance and the use element</title>
-  <desc>
+  <desc _attr="attr">
     &anp; &#12345;
     <![CDATA[
       foo
