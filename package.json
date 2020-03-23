@@ -24,12 +24,36 @@
   },
   "devDependencies": {
     "eslint": "^6.0.1",
-    "eslint-config-airbnb-base": "^14.0.0",
-    "eslint-config-prettier": "^6.10.0",
-    "eslint-plugin-import": "^2.16.0",
+    "eslint-config-prettier": "^6.10.1",
     "jest": "^25.1.0"
+  },
+  "eslintConfig": {
+    "extends": [
+      "eslint:recommended",
+      "prettier"
+    ],
+    "env": {
+      "es6": true,
+      "jest": true,
+      "node": true
+    },
+    "parserOptions": {
+      "ecmaVersion": 2018
+    },
+    "rules": {
+      "no-unused-vars": [
+        "error",
+        {
+          "argsIgnorePattern": "^_",
+          "varsIgnorePattern": "^_"
+        }
+      ]
+    }
   },
   "jest": {
     "testRegex": ".test.js$"
+  },
+  "prettier": {
+    "trailingComma": "none"
   }
 }

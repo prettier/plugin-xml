@@ -9,23 +9,23 @@ const {
   softline
 } = require("prettier/doc").builders;
 
-const elementOnly = node => {
+const elementOnly = (node) => {
   const { CData, chardata, element, reference } = node.children;
 
   return (
     !CData &&
-    (!chardata || chardata.every(datum => !datum.children.TEXT)) &&
+    (!chardata || chardata.every((datum) => !datum.children.TEXT)) &&
     element &&
     !reference
   );
 };
 
-const printCData = node => ({
+const printCData = (node) => ({
   offset: node.startOffset,
   printed: node.image
 });
 
-const printComment = node => ({
+const printComment = (node) => ({
   offset: node.startOffset,
   printed: node.image
 });
@@ -40,12 +40,12 @@ const printElement = (path, print) => (node, index) => ({
   printed: path.call(print, "children", "element", index)
 });
 
-const printProcessingInstruction = node => ({
+const printProcessingInstruction = (node) => ({
   offset: node.startOffset,
   printed: node.image
 });
 
-const printReference = node => ({
+const printReference = (node) => ({
   offset: node.location.startOffset,
   printed: (node.children.CharRef || node.children.EntityRef)[0].image
 });
@@ -119,7 +119,7 @@ const nodes = {
     }
 
     if (misc) {
-      misc.forEach(node => {
+      misc.forEach((node) => {
         if (node.children.PROCESSING_INSTRUCTION) {
           parts.push({
             offset: node.location.startOffset,
