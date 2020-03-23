@@ -4,8 +4,8 @@
   <a href="https://gitter.im/jlongster/prettier">
     <img alt="Gitter" src="https://img.shields.io/gitter/room/jlongster/prettier.svg?style=flat-square">
   </a>
-  <a href="https://travis-ci.org/prettier/plugin-xml">
-    <img alt="Travis" src="https://img.shields.io/travis/prettier/plugin-xml/master.svg?style=flat-square">
+  <a href="https://github.com/prettier/plugin-xml/actions">
+    <img alt="GitHub Actions" src="https://img.shields.io/github/workflow/status/prettier/plugin-xml/Main?style=flat-square">
   </a>
   <a href="https://www.npmjs.com/package/@prettier/plugin-xml">
     <img alt="NPM Version" src="https://img.shields.io/npm/v/@prettier/plugin-xml.svg?style=flat-square">
