@@ -20,7 +20,7 @@ const plugin = {
     {
       name: "XML",
       parsers: ["xml"],
-      extensions: [".dita", ".ditamap", ".ditaval", ".svg", ".xml", ".xsd"],
+      extensions: [".dita", ".ditamap", ".ditaval", ".svg", ".wsdl", ".xml", ".xsd"],
       vscodeLanguageIds: ["xml", "forcesourcemanifest"]
     }
   ],

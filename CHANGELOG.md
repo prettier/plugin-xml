@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+## [0.8.0] - 2020-07-03
+
+### Added
+
+- Support `.wsdl` files.
+
 ## [0.7.2] - 2020-02-12
 
 ### Changed
@@ -70,7 +76,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 - Initial release 🎉
 
-[unreleased]: https://github.com/prettier/plugin-xml/compare/v0.7.1...HEAD
+[unreleased]: https://github.com/prettier/plugin-xml/compare/v0.8.0...HEAD
+[0.8.0]: https://github.com/prettier/plugin-xml/compare/v0.7.2...v0.8.0
+[0.7.2]: https://github.com/prettier/plugin-xml/compare/v0.7.1...v0.7.2
 [0.7.1]: https://github.com/prettier/plugin-xml/compare/v0.7.0...v0.7.1
 [0.7.0]: https://github.com/prettier/plugin-xml/compare/v0.6.0...v0.7.0
 [0.6.0]: https://github.com/prettier/plugin-xml/compare/v0.5.0...v0.6.0
