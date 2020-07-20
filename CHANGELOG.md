@@ -6,6 +6,20 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+### Added
+
+- Ignored print ranges using the special `<!-- prettier-ignore-start -->` and `<!-- prettier-ignore-end -->` comments. For example, you can now do:
+
+```xml
+<foo>
+  <!-- prettier-ignore-start -->
+    < this-content-will-not-be-formatted />
+  <!-- prettier-ignore-end -->
+</foo>
+```
+
+and it will maintain your formatting.
+
 ## [0.8.0] - 2020-07-03
 
 ### Added
