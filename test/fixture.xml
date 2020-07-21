@@ -36,5 +36,15 @@
       <   ignored   />
     <!-- prettier-ignore-end -->
   </ignored>
+  <p>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at est eget enim consectetur accumsan. Aliquam pretium sodales ipsum quis dignissim. Sed id sem vel diam luctus fringilla. Aliquam quis egestas magna. Curabitur molestie lorem et odio porta, et molestie libero laoreet. Morbi rhoncus sagittis cursus. Nullam vehicula pretium consequat. Praesent porta ante at posuere sollicitudin. Nullam commodo tempor arcu, at condimentum neque elementum ut.
+  </p>
+  <span>
+    content
+  </span>
+  <div>
+    even more
+    <content />
+  </div>
 </svg>
 <!-- bar -->
