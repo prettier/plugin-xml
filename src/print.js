@@ -1,5 +1,6 @@
 const {
   concat,
+  fill,
   group,
   hardline,
   indent,
@@ -31,16 +32,10 @@ const hasIgnoreRanges = (comments) => {
   return false;
 };
 
-const elementOnly = (node) => {
-  const { CData, Comment, chardata, element, reference } = node.children;
+const whitespaceIgnorable = (node) => {
+  const { CData, Comment, reference } = node.children;
 
-  return (
-    !CData &&
-    (!chardata || chardata.every((datum) => !datum.children.TEXT)) &&
-    element &&
-    !reference &&
-    !hasIgnoreRanges(Comment)
-  );
+  return !CData && !reference && !hasIgnoreRanges(Comment);
 };
 
 const printCData = (node) => ({
@@ -252,17 +247,47 @@ const nodes = {
       concat([SLASH_OPEN[0].image, END_NAME[0].image, END[0].image])
     );
 
-    // If we're ignoring whitespace and we're printing a node that only contains
-    // other elements, then we can just print out the child elements directly.
-    if (opts.xmlWhitespaceSensitivity === "ignore" && elementOnly(content[0])) {
+    if (
+      opts.xmlWhitespaceSensitivity === "ignore" &&
+      whitespaceIgnorable(content[0])
+    ) {
       const {
         Comment = [],
-        element,
+        chardata = [],
+        element = [],
         PROCESSING_INSTRUCTION = []
       } = content[0].children;
 
+      const chardatas = [];
+      chardata.forEach((chardatum) => {
+        if (chardatum.children.TEXT) {
+          const content = chardatum.children.TEXT[0].image.trim();
+          const printed = group(
+            concat(
+              content.split(/(\n)/g).map((value) => {
+                if (value === "\n") {
+                  return literalline;
+                }
+
+                return fill(
+                  value
+                    .split(/( )/g)
+                    .map((segment, index) => (index % 2 === 0 ? segment : line))
+                );
+              })
+            )
+          );
+
+          chardatas.push({
+            offset: chardatum.location.startOffset,
+            printed
+          });
+        }
+      });
+
       const children = []
         .concat(Comment.map(printComment))
+        .concat(chardatas)
         .concat(
           element.map((node, index) => ({
             offset: node.location.startOffset,
@@ -281,11 +306,14 @@ const nodes = {
         .sort((left, right) => left.offset - right.offset)
         .map(({ printed }) => printed);
 
+      const separator =
+        children.length == 1 && chardatas.length == 1 ? softline : hardline;
+
       return group(
         concat([
           openTag,
-          indent(concat([hardline, join(hardline, children)])),
-          hardline,
+          indent(concat([separator, join(separator, children)])),
+          separator,
           closeTag
         ])
       );
