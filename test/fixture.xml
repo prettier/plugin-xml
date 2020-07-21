@@ -31,5 +31,10 @@
         <circle id="c" cy="50" cx="50" r="40" stroke-width="20" />
     </g>
   <use xlink:href="#c" x="100" />
+  <ignored>
+    <!-- prettier-ignore-start -->
+      <   ignored   />
+    <!-- prettier-ignore-end -->
+  </ignored>
 </svg>
 <!-- bar -->

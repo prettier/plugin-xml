@@ -68,6 +68,18 @@ Or, they can be passed to `prettier` as arguments:
 prettier --tab-width 4 --write '**/*.xml'
 ```
 
+### Ignore ranges
+
+You can use two special comments to get prettier to ignore formatting a specific piece of the document, as in the following example:
+
+```xml
+<foo>
+  <!-- prettier-ignore-start -->
+    < this-content-will-not-be-formatted />
+  <!-- prettier-ignore-end -->
+</foo>
+```
+
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/prettier/plugin-xml.

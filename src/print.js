@@ -9,14 +9,37 @@ const {
   softline
 } = require("prettier/doc").builders;
 
+const ignoreStartComment = "<!-- prettier-ignore-start -->";
+const ignoreEndComment = "<!-- prettier-ignore-end -->";
+
+const hasIgnoreRanges = (comments) => {
+  if (!comments || comments.length === 0) {
+    return;
+  }
+
+  comments.sort((left, right) => left.offset - right.offset);
+
+  let startFound = false;
+  for (let idx = 0; idx < comments.length; idx += 1) {
+    if (comments[idx].image === ignoreStartComment) {
+      startFound = true;
+    } else if (startFound && comments[idx].image === ignoreEndComment) {
+      return true;
+    }
+  }
+
+  return false;
+};
+
 const elementOnly = (node) => {
-  const { CData, chardata, element, reference } = node.children;
+  const { CData, Comment, chardata, element, reference } = node.children;
 
   return (
     !CData &&
     (!chardata || chardata.every((datum) => !datum.children.TEXT)) &&
     element &&
-    !reference
+    !reference &&
+    !hasIgnoreRanges(Comment)
   );
 };
 
@@ -50,6 +73,13 @@ const printReference = (node) => ({
   printed: (node.children.CharRef || node.children.EntityRef)[0].image
 });
 
+const replaceNewlinesWithLiteralLines = (content) =>
+  concat(
+    content
+      .split(/(\n)/g)
+      .map((value, idx) => (idx % 2 === 0 ? value : literalline))
+  );
+
 const nodes = {
   attribute: (path, _opts, _print) => {
     const { Name, EQUALS, STRING } = path.getValue().children;
@@ -76,19 +106,57 @@ const nodes = {
       reference = []
     } = path.getValue().children;
 
-    return group(
-      concat(
-        []
-          .concat(CData.map(printCData))
-          .concat(Comment.map(printComment))
-          .concat(chardata.map(printCharData(path, print)))
-          .concat(element.map(printElement(path, print)))
-          .concat(PROCESSING_INSTRUCTION.map(printProcessingInstruction))
-          .concat(reference.map(printReference))
-          .sort((left, right) => left.offset - right.offset)
-          .map(({ printed }) => printed)
-      )
-    );
+    let children = []
+      .concat(CData.map(printCData))
+      .concat(Comment.map(printComment))
+      .concat(chardata.map(printCharData(path, print)))
+      .concat(element.map(printElement(path, print)))
+      .concat(PROCESSING_INSTRUCTION.map(printProcessingInstruction))
+      .concat(reference.map(printReference));
+
+    if (hasIgnoreRanges(Comment)) {
+      Comment.sort((left, right) => left.offset - right.offset);
+
+      const ignoreRanges = [];
+      let ignoreStart = null;
+
+      // Build up a list of ignored ranges from the original text based on the
+      // special prettier-ignore-* comments
+      Comment.forEach((comment) => {
+        if (comment.image === ignoreStartComment) {
+          ignoreStart = comment;
+        } else if (ignoreStart && comment.image === ignoreEndComment) {
+          ignoreRanges.push({
+            start: ignoreStart.startOffset,
+            end: comment.endOffset
+          });
+
+          ignoreStart = null;
+        }
+      });
+
+      // Filter the printed children to only include the ones that are outside
+      // of each of the ignored ranges
+      children = children.filter((child) =>
+        ignoreRanges.every(
+          ({ start, end }) => child.offset < start || child.offset > end
+        )
+      );
+
+      // Push each of the ignored ranges into the child list as its own element
+      // so that the original content is still included
+      ignoreRanges.forEach(({ start, end }) => {
+        const content = opts.originalText.slice(start, end + 1);
+
+        children.push({
+          offset: start,
+          printed: replaceNewlinesWithLiteralLines(content)
+        });
+      });
+    }
+
+    children.sort((left, right) => left.offset - right.offset);
+    return group(concat(children.map(({ printed }) => printed)));
   },
   docTypeDecl: (path, opts, print) => {
     const { DocType, Name, externalID, CLOSE } = path.getValue().children;
