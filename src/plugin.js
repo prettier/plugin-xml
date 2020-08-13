@@ -27,7 +27,9 @@ const plugin = {
         ".svg",
         ".wsdl",
         ".xml",
-        ".xsd"
+        ".xsd",
+        ".xsl",
+        ".xslt"
       ],
       vscodeLanguageIds: ["xml", "forcesourcemanifest"]
     }
