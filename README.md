@@ -75,7 +75,7 @@ You can use two special comments to get prettier to ignore formatting a specific
 ```xml
 <foo>
   <!-- prettier-ignore-start -->
-    < this-content-will-not-be-formatted />
+    <this-content-will-not-be-formatted     />
   <!-- prettier-ignore-end -->
 </foo>
 ```

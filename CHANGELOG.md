@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+## [0.11.0] - 2020-08-14
+
+### Changed
+
+- Support for a whole wide variety of file types, as per linguist.
+
 ## [0.10.0] - 2020-07-24
 
 ### Changed
