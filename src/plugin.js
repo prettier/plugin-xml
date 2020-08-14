@@ -1,48 +1,15 @@
-const parse = require("./parse");
-const print = require("./print");
-
-const locStart = (node) => {
-  if (node.location) {
-    return node.location.startOffset;
-  }
-  return node.startOffset;
-};
-
-const locEnd = (node) => {
-  if (node.location) {
-    return node.location.endOffset;
-  }
-  return node.endOffset;
-};
+const languages = require("./languages");
+const parser = require("./parser");
+const printer = require("./printer");
 
 const plugin = {
-  languages: [
-    {
-      name: "XML",
-      parsers: ["xml"],
-      extensions: [
-        ".dita",
-        ".ditamap",
-        ".ditaval",
-        ".svg",
-        ".wsdl",
-        ".xml",
-        ".xsd"
-      ],
-      vscodeLanguageIds: ["xml", "forcesourcemanifest"]
-    }
-  ],
+  languages,
   parsers: {
-    xml: {
-      parse,
-      astFormat: "xml",
-      locStart,
-      locEnd
-    }
+    xml: parser
   },
   printers: {
     xml: {
-      print
+      print: printer
     }
   },
   options: {
