@@ -33,6 +33,7 @@ const languages = [
       ".gmx",
       ".grxml",
       ".iml",
+      ".inx",
       ".ivy",
       ".jelly",
       ".jsproj",
