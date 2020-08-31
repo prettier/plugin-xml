@@ -6,6 +6,19 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+### Added
+
+- Allow embedded parsers to handle content if element tags contain only text content and the tag name matches the name of an existing parser. For example:
+
+```xml
+<style type="text/css">
+.box {
+  height: 100px;
+  width: 100px;
+}
+</style>
+```
+
 ## [0.11.0] - 2020-08-14
 
 ### Changed

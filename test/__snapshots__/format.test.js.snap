@@ -24,10 +24,16 @@ exports[`defaults 1`] = `
   <?pagebreak?>
   <style />
   <style type=\\"text/css\\">
-    circle          { stroke-opacity: 0.7; }
-    .special circle { stroke: green; }
-    use             { stroke: purple;
-                      fill: orange; }
+circle {
+  stroke-opacity: 0.7;
+}
+.special circle {
+  stroke: green;
+}
+use {
+  stroke: purple;
+  fill: orange;
+}
   </style>
   <?pagebreak?>
     <g class=\\"special\\" style=\\"fill: blue\\">
@@ -78,10 +84,16 @@ exports[`xmlWhitespaceSensitivity => ignore 1`] = `
   <?pagebreak?>
   <style />
   <style type=\\"text/css\\">
-    circle          { stroke-opacity: 0.7; }
-    .special circle { stroke: green; }
-    use             { stroke: purple;
-                      fill: orange; }
+circle {
+  stroke-opacity: 0.7;
+}
+.special circle {
+  stroke: green;
+}
+use {
+  stroke: purple;
+  fill: orange;
+}
   </style>
   <?pagebreak?>
   <g class=\\"special\\" style=\\"fill: blue\\">
