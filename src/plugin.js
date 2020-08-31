@@ -1,3 +1,4 @@
+const embed = require("./embed");
 const languages = require("./languages");
 const parser = require("./parser");
 const printer = require("./printer");
@@ -9,6 +10,7 @@ const plugin = {
   },
   printers: {
     xml: {
+      embed,
       print: printer
     }
   },
