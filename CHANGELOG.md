@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+## [0.12.0] - 2020-08-31
+
 ### Added
 
 - Allow embedded parsers to handle content if element tags contain only text content and the tag name matches the name of an existing parser. For example:
