@@ -1,10 +1,12 @@
 name: Main
-on: push
+on:
+- push
+- pull_request
 jobs:
   ci:
     name: CI
     runs-on: ubuntu-latest
-    env: 
+    env:
       CI: true
     steps:
     - uses: actions/checkout@master
@@ -19,8 +21,24 @@ jobs:
         key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
         restore-keys: |
           ${{ runner.os }}-yarn-
-    - run: |
-        yarn install --frozen-lockfile
+    - name: Install dependencies
+      run: yarn install --frozen-lockfile
+    - name: Lint and test
+      run: |
         yarn lint
         yarn print --check '**/*'
         yarn test
+  automerge:
+    name: AutoMerge
+    needs: ci
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && github.actor == 'dependabot[bot]'
+    steps:
+    - uses: actions/github-script@v3
+      with:
+        script: |
+          github.pulls.merge({
+            owner: context.payload.repository.owner.login,
+            repo: context.payload.repository.name,
+            pull_number: context.payload.pull_request.number
+          })
