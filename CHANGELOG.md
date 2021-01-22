@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+### Added
+
+- Maintain newlines if there are some in the original source.
+
 ## [0.12.0] - 2020-08-31
 
 ### Added

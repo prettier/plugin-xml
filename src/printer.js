@@ -40,31 +40,43 @@ const whitespaceIgnorable = (node) => {
 
 const printCData = (node) => ({
   offset: node.startOffset,
+  startLine: node.startLine,
+  endLine: node.endLine,
   printed: node.image
 });
 
 const printComment = (node) => ({
   offset: node.startOffset,
+  startLine: node.startLine,
+  endLine: node.endLine,
   printed: node.image
 });
 
 const printCharData = (path, print) => (node, index) => ({
   offset: node.location.startOffset,
+  startLine: node.location.startLine,
+  endLine: node.location.endLine,
   printed: path.call(print, "children", "chardata", index)
 });
 
 const printElement = (path, print) => (node, index) => ({
   offset: node.location.startOffset,
+  startLine: node.location.startLine,
+  endLine: node.location.endLine,
   printed: path.call(print, "children", "element", index)
 });
 
 const printProcessingInstruction = (node) => ({
   offset: node.startOffset,
+  startLine: node.startLine,
+  endLine: node.endLine,
   printed: node.image
 });
 
 const printReference = (node) => ({
   offset: node.location.startOffset,
+  startLine: node.location.startLine,
+  endLine: node.location.endLine,
   printed: (node.children.CharRef || node.children.EntityRef)[0].image
 });
 
@@ -291,6 +303,8 @@ const nodes = {
         .concat(
           element.map((node, index) => ({
             offset: node.location.startOffset,
+            startLine: node.location.startLine,
+            endLine: node.location.endLine,
             printed: path.call(
               print,
               "children",
@@ -303,20 +317,36 @@ const nodes = {
           }))
         )
         .concat(PROCESSING_INSTRUCTION.map(printProcessingInstruction))
-        .sort((left, right) => left.offset - right.offset)
-        .map(({ printed }) => printed);
+        .sort((left, right) => left.offset - right.offset);
 
-      const separator =
-        children.length == 1 && chardatas.length == 1 ? softline : hardline;
+      // If the only content of this tag is chardata, then use a softline so
+      // that we won't necessarily break (to allow <foo>bar</foo>).
+      if (children.length === 1 && chardatas.length === 1) {
+        return group(
+          concat([
+            openTag,
+            indent(concat([softline, children[0].printed])),
+            softline,
+            closeTag
+          ])
+        );
+      }
 
-      return group(
-        concat([
-          openTag,
-          indent(concat([separator, join(separator, children)])),
-          separator,
-          closeTag
-        ])
-      );
+      const docs = [];
+      let lastLine = children[0].startLine;
+
+      children.forEach((node) => {
+        if (node.startLine - lastLine >= 2) {
+          docs.push(hardline, hardline);
+        } else {
+          docs.push(hardline);
+        }
+
+        docs.push(node.printed);
+        lastLine = node.endLine;
+      });
+
+      return group(concat([openTag, indent(concat(docs)), hardline, closeTag]));
     }
 
     return group(
