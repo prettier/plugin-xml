@@ -19,6 +19,7 @@
     bar
   </desc>
   <?pagebreak?>
+
   <style></style>
   <style type="text/css">
     circle          { stroke-opacity: 0.7; }
@@ -26,6 +27,7 @@
     use             { stroke: purple;
                       fill: orange; }
   </style>
+
   <?pagebreak?>
     <g class="special" style="fill: blue">
         <circle id="c" cy="50" cx="50" r="40" stroke-width="20" />
@@ -42,6 +44,8 @@
   <span>
     content
   </span>
+
+
   <div>
     even more
     <content />
