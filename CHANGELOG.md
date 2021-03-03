@@ -11,6 +11,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 ### Changed
 
 - Fixed a bug with newlines when there is empty content.
+
 ## [0.13.0] - 2021-01-22
 
 ### Added
