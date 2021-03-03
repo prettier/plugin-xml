@@ -21,6 +21,7 @@
   <?pagebreak?>
 
   <style></style>
+  <style> </style>
   <style type="text/css">
     circle          { stroke-opacity: 0.7; }
     .special circle { stroke: green; }
