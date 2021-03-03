@@ -333,7 +333,7 @@ const nodes = {
       }
 
       if (children.length === 0){
-        return group(concat([openTag, hardline, closeTag]));
+        return group(concat(parts.concat(opts.xmlSelfClosingSpace ? line : softline, "/>")));
       }
 
       const docs = [];
