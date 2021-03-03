@@ -24,6 +24,7 @@ exports[`defaults 1`] = `
   <?pagebreak?>
 
   <style />
+  <style> </style>
   <style type=\\"text/css\\">
 circle {
   stroke-opacity: 0.7;
@@ -88,6 +89,8 @@ exports[`xmlWhitespaceSensitivity => ignore 1`] = `
   <?pagebreak?>
 
   <style />
+  <style>
+  </style>
   <style type=\\"text/css\\">
 circle {
   stroke-opacity: 0.7;

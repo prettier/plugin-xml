@@ -332,6 +332,10 @@ const nodes = {
         );
       }
 
+      if (children.length === 0){
+        return group(concat([openTag, hardline, closeTag]));
+      }
+
       const docs = [];
       let lastLine = children[0].startLine;
 
