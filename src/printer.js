@@ -332,6 +332,11 @@ const nodes = {
         );
       }
 
+      if (children.length === 0) {
+        const space = opts.xmlSelfClosingSpace ? line : softline;
+        return group(concat(parts.concat(space, "/>")));
+      }
+
       const docs = [];
       let lastLine = children[0].startLine;
 
