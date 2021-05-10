@@ -363,12 +363,8 @@ const nodes = {
     );
   },
   externalID: (path, _opts, _print) => {
-    const {
-      Public,
-      PubIDLiteral,
-      System,
-      SystemLiteral
-    } = path.getValue().children;
+    const { Public, PubIDLiteral, System, SystemLiteral } =
+      path.getValue().children;
 
     if (System) {
       return group(

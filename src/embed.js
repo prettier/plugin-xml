@@ -28,15 +28,8 @@ const replaceNewlines = (doc) =>
 // Get the start and end element tags from the current node on the tree
 const getElementTags = (path, print) => {
   const node = path.getValue();
-  const {
-    OPEN,
-    Name,
-    attribute,
-    START_CLOSE,
-    SLASH_OPEN,
-    END_NAME,
-    END
-  } = node.children;
+  const { OPEN, Name, attribute, START_CLOSE, SLASH_OPEN, END_NAME, END } =
+    node.children;
 
   const parts = [OPEN[0].image, Name[0].image];
 
