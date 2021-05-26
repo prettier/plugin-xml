@@ -25,7 +25,7 @@
   "devDependencies": {
     "eslint": "^7.0.0",
     "eslint-config-prettier": "^8.0.0",
-    "jest": "^26.0.0"
+    "jest": "^27.0.1"
   },
   "eslintConfig": {
     "extends": [
