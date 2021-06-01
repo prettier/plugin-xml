@@ -23,9 +23,14 @@
     "prettier": ">=1.10"
   },
   "devDependencies": {
+    "@types/jest": "^26.0.23",
+    "@types/prettier": "^2.2.3",
     "eslint": "^7.0.0",
     "eslint-config-prettier": "^8.0.0",
-    "jest": "^27.0.1"
+    "jest": "^27.0.1",
+    "ts-jest": "^27.0.2",
+    "ts-node": "^10.0.0",
+    "typescript": "^4.3.2"
   },
   "eslintConfig": {
     "extends": [
@@ -51,7 +56,8 @@
     }
   },
   "jest": {
-    "testRegex": ".test.js$"
+    "preset": "ts-jest",
+    "testRegex": ".test.ts$"
   },
   "prettier": {
     "trailingComma": "none"
