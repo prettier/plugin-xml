@@ -2,7 +2,7 @@
   "name": "@prettier/plugin-xml",
   "version": "0.13.1",
   "description": "prettier plugin for XML",
-  "main": "dist/src/plugin.js",
+  "main": "dist/plugin.js",
   "scripts": {
     "lint": "eslint --cache .",
     "prepublishOnly": "tsc -p tsconfig.build.json",
