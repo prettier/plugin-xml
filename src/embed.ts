@@ -31,7 +31,10 @@ function replaceNewlines(doc: Doc) {
 }
 
 // Get the start and end element tags from the current node on the tree
-function getElementTags(path: FastPath<XMLAST>, print: (path: FastPath<XMLAST>) => Doc) {
+function getElementTags(
+  path: FastPath<XMLAST>,
+  print: (path: FastPath<XMLAST>) => Doc
+) {
   const node = path.getValue() as ElementCstNode;
   const { OPEN, Name, attribute, START_CLOSE, SLASH_OPEN, END_NAME, END } =
     node.children;
@@ -52,7 +55,7 @@ function getElementTags(path: FastPath<XMLAST>, print: (path: FastPath<XMLAST>) 
       concat([SLASH_OPEN[0].image, END_NAME[0].image, END[0].image])
     )
   };
-};
+}
 
 // Get the name of the parser that is represented by the given element node,
 // return null if a matching parser cannot be found
