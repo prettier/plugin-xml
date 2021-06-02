@@ -1,5 +1,6 @@
 /.github/
 /coverage/
+/dist/
 /.eslintcache
 /.*ignore
 /yarn.lock

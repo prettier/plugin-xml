@@ -2,9 +2,10 @@
   "name": "@prettier/plugin-xml",
   "version": "0.13.1",
   "description": "prettier plugin for XML",
-  "main": "src/plugin.js",
+  "main": "dist/plugin.js",
   "scripts": {
     "lint": "eslint --cache .",
+    "prepublishOnly": "tsc -p tsconfig.build.json",
     "print": "prettier --plugin=.",
     "test": "jest"
   },
@@ -12,7 +13,7 @@
     "type": "git",
     "url": "git+https://github.com/prettier/plugin-xml.git"
   },
-  "author": "Kevin Deisz",
+  "author": "Kevin Newton",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/prettier/plugin-xml/issues"
@@ -23,13 +24,22 @@
     "prettier": ">=1.10"
   },
   "devDependencies": {
+    "@types/jest": "^26.0.23",
+    "@types/node": "^15.6.1",
+    "@types/prettier": "^2.2.3",
+    "@typescript-eslint/eslint-plugin": "^4.26.0",
+    "@typescript-eslint/parser": "^4.26.0",
     "eslint": "^7.0.0",
     "eslint-config-prettier": "^8.0.0",
-    "jest": "^27.0.1"
+    "jest": "^27.0.1",
+    "ts-jest": "^27.0.2",
+    "ts-node": "^10.0.0",
+    "typescript": "^4.3.2"
   },
   "eslintConfig": {
     "extends": [
       "eslint:recommended",
+      "plugin:@typescript-eslint/recommended",
       "prettier"
     ],
     "env": {
@@ -37,23 +47,23 @@
       "jest": true,
       "node": true
     },
-    "parserOptions": {
-      "ecmaVersion": 2018
-    },
+    "parser": "@typescript-eslint/parser",
     "rules": {
-      "no-unused-vars": [
-        "error",
-        {
-          "argsIgnorePattern": "^_",
-          "varsIgnorePattern": "^_"
-        }
-      ]
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-non-null-assertion": "off"
     }
   },
+  "eslintIgnore": [
+    "dist"
+  ],
   "jest": {
-    "testRegex": ".test.js$"
+    "preset": "ts-jest",
+    "testRegex": ".test.ts$"
   },
   "prettier": {
+    "plugins": [
+      "."
+    ],
     "trailingComma": "none"
   }
 }

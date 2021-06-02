@@ -25,6 +25,7 @@ jobs:
       run: yarn install --frozen-lockfile
     - name: Lint and test
       run: |
+        yarn prepublishOnly
         yarn lint
         yarn print --check '**/*'
         yarn test

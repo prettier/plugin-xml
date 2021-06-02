@@ -1,4 +1,9 @@
-const { builders, utils } = require("prettier/doc");
+import { ContentCtx, ElementCstNode } from "@xml-tools/parser";
+import type { Doc, FastPath, ParserOptions, Printer } from "prettier";
+import { builders, utils } from "prettier/doc";
+
+import { XMLAST } from "./types";
+
 const {
   concat,
   dedentToRoot,
@@ -10,12 +15,11 @@ const {
   literalline,
   softline
 } = builders;
-const { mapDoc, stripTrailingHardline } = utils;
 
 // Replace the string content newlines within a doc tree with literallines so
 // that all of the indentation lines up appropriately
-const replaceNewlines = (doc) =>
-  mapDoc(doc, (currentDoc) =>
+function replaceNewlines(doc: Doc) {
+  return utils.mapDoc(doc, (currentDoc) =>
     typeof currentDoc === "string" && currentDoc.includes("\n")
       ? concat(
           currentDoc
@@ -24,14 +28,18 @@ const replaceNewlines = (doc) =>
         )
       : currentDoc
   );
+}
 
 // Get the start and end element tags from the current node on the tree
-const getElementTags = (path, print) => {
-  const node = path.getValue();
+function getElementTags(
+  path: FastPath<XMLAST>,
+  print: (path: FastPath<XMLAST>) => Doc
+) {
+  const node = path.getValue() as ElementCstNode;
   const { OPEN, Name, attribute, START_CLOSE, SLASH_OPEN, END_NAME, END } =
     node.children;
 
-  const parts = [OPEN[0].image, Name[0].image];
+  const parts: Doc[] = [OPEN[0].image, Name[0].image];
 
   if (attribute) {
     parts.push(
@@ -47,11 +55,11 @@ const getElementTags = (path, print) => {
       concat([SLASH_OPEN[0].image, END_NAME[0].image, END[0].image])
     )
   };
-};
+}
 
 // Get the name of the parser that is represented by the given element node,
 // return null if a matching parser cannot be found
-const getParser = (node, opts) => {
+function getParser(node: ElementCstNode, opts: ParserOptions<XMLAST>) {
   const { Name, attribute } = node.children;
   const parser = Name[0].image.toLowerCase();
 
@@ -81,6 +89,7 @@ const getParser = (node, opts) => {
   if (
     opts.plugins.some(
       (plugin) =>
+        typeof plugin !== "string" &&
         plugin.parsers &&
         Object.prototype.hasOwnProperty.call(plugin.parsers, parser)
     )
@@ -89,26 +98,27 @@ const getParser = (node, opts) => {
   }
 
   return null;
-};
+}
 
 // Get the source string that will be passed into the embedded parser from the
 // content of the inside of the element node
-const getSource = (content) =>
-  content.chardata
+function getSource(content: ContentCtx) {
+  return content.chardata
     .map((node) => {
       const { SEA_WS, TEXT } = node.children;
       const [{ image }] = SEA_WS || TEXT;
 
       return {
-        offset: node.location.startOffset,
+        offset: node.location!.startOffset,
         printed: image
       };
     })
     .sort(({ offset }) => offset)
     .map(({ printed }) => printed)
     .join("");
+}
 
-const embed = (path, print, textToDoc, opts) => {
+const embed: Printer<XMLAST>["embed"] = (path, print, textToDoc, opts) => {
   const node = path.getValue();
 
   // If the node isn't an element node, then skip
@@ -140,7 +150,7 @@ const embed = (path, print, textToDoc, opts) => {
       literalline,
       dedentToRoot(
         replaceNewlines(
-          stripTrailingHardline(textToDoc(getSource(content), { parser }))
+          utils.stripTrailingHardline(textToDoc(getSource(content), { parser }))
         )
       ),
       hardline,
@@ -149,4 +159,4 @@ const embed = (path, print, textToDoc, opts) => {
   );
 };
 
-module.exports = embed;
+export default embed;
