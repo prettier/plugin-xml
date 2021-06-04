@@ -829,9 +829,9 @@
     eslint-visitor-keys "^2.0.0"
 
 "@xml-tools/parser@^1.0.2":
-  version "1.0.10"
-  resolved "https://registry.yarnpkg.com/@xml-tools/parser/-/parser-1.0.10.tgz#d1dd3a4323d713fcca5279005c96b37058ccbc33"
-  integrity sha512-9oRb68wEKT+MRB7e2GwTiKicRKVXKzquBDGgH6YcGafvnSYXorWi2oaTVtbv2109RlGiQSnoXaQFUXCnHwFS7Q==
+  version "1.0.11"
+  resolved "https://registry.yarnpkg.com/@xml-tools/parser/-/parser-1.0.11.tgz#a118a14099ea5c3c537e4781fad2fc195b57f8ff"
+  integrity sha512-aKqQ077XnR+oQtHJlrAflaZaL7qZsulWc/i/ZEooar5JiWj1eLt0+Wg28cpa+XLney107wXqneC+oG1IZvxkTA==
   dependencies:
     chevrotain "7.1.1"
 
