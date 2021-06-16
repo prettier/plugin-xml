@@ -4,24 +4,15 @@ import type {
   ReferenceCstNode
 } from "@xml-tools/parser";
 import type { IToken } from "chevrotain";
-import type { Doc, FastPath, Printer } from "prettier";
+import type { AstPath, Doc, Printer } from "prettier";
 import { builders } from "prettier/doc";
 
 import embed from "./embed";
 
-import { ContentCstNodeExt, XMLAST, XMLOptions } from "./types";
+import { ContentCstNodeExt, XMLAst, XMLOptions } from "./types";
 
-const {
-  concat,
-  fill,
-  group,
-  hardline,
-  indent,
-  join,
-  line,
-  literalline,
-  softline
-} = builders;
+const { fill, group, hardline, indent, join, line, literalline, softline } =
+  builders;
 
 const ignoreStartComment = "<!-- prettier-ignore-start -->";
 const ignoreEndComment = "<!-- prettier-ignore-end -->";
@@ -51,7 +42,7 @@ function isWhitespaceIgnorable(node: ContentCstNode) {
   return !CData && !reference && !hasIgnoreRanges(Comment);
 }
 
-function printIToken(path: FastPath<XMLAST>) {
+function printIToken(path: AstPath<XMLAst>) {
   const node = path.getValue() as any as IToken;
 
   return {
@@ -63,14 +54,12 @@ function printIToken(path: FastPath<XMLAST>) {
 }
 
 function replaceNewlinesWithLiteralLines(content: string) {
-  return concat(
-    content
-      .split(/(\n)/g)
-      .map((value, idx) => (idx % 2 === 0 ? value : literalline))
-  );
+  return content
+    .split(/(\n)/g)
+    .map((value, idx) => (idx % 2 === 0 ? value : literalline));
 }
 
-const printer: Printer<XMLAST> = {
+const printer: Printer<XMLAst> = {
   embed,
   print(path, opts: XMLOptions, print) {
     const node = path.getValue();
@@ -79,23 +68,21 @@ const printer: Printer<XMLAST> = {
       case "attribute": {
         const { Name, EQUALS, STRING } = node.children;
 
-        return concat([Name[0].image, EQUALS[0].image, STRING[0].image]);
+        return [Name[0].image, EQUALS[0].image, STRING[0].image];
       }
       case "chardata": {
         const { SEA_WS, TEXT } = node.children;
         const [{ image }] = SEA_WS || TEXT;
 
-        return concat(
-          image
-            .split(/(\n)/g)
-            .map((value, index) => (index % 2 === 0 ? value : literalline))
-        );
+        return image
+          .split(/(\n)/g)
+          .map((value, index) => (index % 2 === 0 ? value : literalline));
       }
       case "content": {
         let fragments = path.call((childrenPath) => {
+          let response: { offset: number; printed: Doc }[] = [];
           const children =
             childrenPath.getValue() as any as ContentCstNodeExt["children"];
-          let response: { offset: number; printed: Doc }[] = [];
 
           if (children.CData) {
             response = response.concat(path.map(printIToken, "CData"));
@@ -202,7 +189,7 @@ const printer: Printer<XMLAST> = {
         }
 
         fragments.sort((left, right) => left.offset - right.offset);
-        return group(concat(fragments.map(({ printed }) => printed)));
+        return group(fragments.map(({ printed }) => printed));
       }
       case "docTypeDecl": {
         const { DocType, Name, externalID, CLOSE } = node.children;
@@ -212,7 +199,7 @@ const printer: Printer<XMLAST> = {
           parts.push(" ", path.call(print, "children", "externalID", 0));
         }
 
-        return group(concat(parts.concat(CLOSE[0].image)));
+        return group([...parts, CLOSE[0].image]);
       }
       case "document": {
         const { docTypeDecl, element, misc, prolog } = node.children;
@@ -257,13 +244,13 @@ const printer: Printer<XMLAST> = {
 
         parts.sort((left, right) => left.offset - right.offset);
 
-        return concat([
+        return [
           join(
             hardline,
             parts.map(({ printed }) => printed)
           ),
           hardline
-        ]);
+        ];
       }
       case "element": {
         const {
@@ -282,31 +269,26 @@ const printer: Printer<XMLAST> = {
 
         if (attribute) {
           parts.push(
-            indent(
-              concat([
-                line,
-                join(line, path.map(print, "children", "attribute"))
-              ])
-            )
+            indent([line, join(line, path.map(print, "children", "attribute"))])
           );
         }
 
         if (SLASH_CLOSE) {
           const space = opts.xmlSelfClosingSpace ? line : softline;
-          return group(concat(parts.concat(space, SLASH_CLOSE[0].image)));
+          return group([...parts, space, SLASH_CLOSE[0].image]);
         }
 
         if (Object.keys(content[0].children).length === 0) {
           const space = opts.xmlSelfClosingSpace ? line : softline;
-          return group(concat(parts.concat(space, "/>")));
+          return group([...parts, space, "/>"]);
         }
 
-        const openTag = group(
-          concat(parts.concat(softline, START_CLOSE[0].image))
-        );
-        const closeTag = group(
-          concat([SLASH_OPEN[0].image, END_NAME[0].image, END[0].image])
-        );
+        const openTag = group([...parts, softline, START_CLOSE[0].image]);
+        const closeTag = group([
+          SLASH_OPEN[0].image,
+          END_NAME[0].image,
+          END[0].image
+        ]);
 
         if (
           opts.xmlWhitespaceSensitivity === "ignore" &&
@@ -336,21 +318,19 @@ const printer: Printer<XMLAST> = {
 
                   const content = chardata.children.TEXT[0].image.trim();
                   const printed = group(
-                    concat(
-                      content.split(/(\n)/g).map((value) => {
-                        if (value === "\n") {
-                          return literalline;
-                        }
+                    content.split(/(\n)/g).map((value) => {
+                      if (value === "\n") {
+                        return literalline;
+                      }
 
-                        return fill(
-                          value
-                            .split(/( )/g)
-                            .map((segment, index) =>
-                              index % 2 === 0 ? segment : line
-                            )
-                        );
-                      })
-                    )
+                      return fill(
+                        value
+                          .split(/( )/g)
+                          .map((segment, index) =>
+                            index % 2 === 0 ? segment : line
+                          )
+                      );
+                    })
                   );
 
                   const location = chardata.location!;
@@ -402,19 +382,17 @@ const printer: Printer<XMLAST> = {
               (chardata) => chardata.children.TEXT
             ).length === 1
           ) {
-            return group(
-              concat([
-                openTag,
-                indent(concat([softline, fragments[0].printed])),
-                softline,
-                closeTag
-              ])
-            );
+            return group([
+              openTag,
+              indent([softline, fragments[0].printed]),
+              softline,
+              closeTag
+            ]);
           }
 
           if (fragments.length === 0) {
             const space = opts.xmlSelfClosingSpace ? line : softline;
-            return group(concat(parts.concat(space, "/>")));
+            return group([...parts, space, "/>"]);
           }
 
           const docs: Doc[] = [];
@@ -431,42 +409,29 @@ const printer: Printer<XMLAST> = {
             lastLine = node.endLine;
           });
 
-          return group(
-            concat([openTag, indent(concat(docs)), hardline, closeTag])
-          );
+          return group([openTag, indent(docs), hardline, closeTag]);
         }
 
-        return group(
-          concat([
-            openTag,
-            indent(path.call(print, "children", "content", 0)),
-            closeTag
-          ])
-        );
+        return group([
+          openTag,
+          indent(path.call(print, "children", "content", 0)),
+          closeTag
+        ]);
       }
       case "externalID": {
         const { Public, PubIDLiteral, System, SystemLiteral } = node.children;
 
         if (System) {
-          return group(
-            concat([
-              System[0].image,
-              indent(concat([line, SystemLiteral[0].image]))
-            ])
-          );
+          return group([
+            System[0].image,
+            indent([line, SystemLiteral[0].image])
+          ]);
         }
 
-        return group(
-          concat([
-            group(
-              concat([
-                Public[0].image,
-                indent(concat([line, PubIDLiteral[0].image]))
-              ])
-            ),
-            indent(concat([line, SystemLiteral[0].image]))
-          ])
-        );
+        return group([
+          group([Public[0].image, indent([line, PubIDLiteral[0].image])]),
+          indent([line, SystemLiteral[0].image])
+        ]);
       }
       case "prolog": {
         const { XMLDeclOpen, attribute, SPECIAL_CLOSE } = node.children;
@@ -474,19 +439,15 @@ const printer: Printer<XMLAST> = {
 
         if (attribute) {
           parts.push(
-            indent(
-              concat([
-                softline,
-                join(line, path.map(print, "children", "attribute"))
-              ])
-            )
+            indent([
+              softline,
+              join(line, path.map(print, "children", "attribute"))
+            ])
           );
         }
 
         const space = opts.xmlSelfClosingSpace ? line : softline;
-        parts.push(space, SPECIAL_CLOSE[0].image);
-
-        return group(concat(parts));
+        return group([...parts, space, SPECIAL_CLOSE[0].image]);
       }
     }
   }

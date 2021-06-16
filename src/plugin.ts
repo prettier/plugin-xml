@@ -1,10 +1,10 @@
 import type { Plugin } from "prettier";
 
-import type { XMLAST } from "./types";
+import type { XMLAst } from "./types";
 import parser from "./parser";
 import printer from "./printer";
 
-const plugin: Plugin<XMLAST> = {
+const plugin: Plugin<XMLAst> = {
   languages: [
     {
       name: "XML",

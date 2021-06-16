@@ -21,12 +21,12 @@
   "homepage": "https://github.com/prettier/plugin-xml#readme",
   "dependencies": {
     "@xml-tools/parser": "^1.0.2",
-    "prettier": ">=1.10"
+    "prettier": ">=2.3"
   },
   "devDependencies": {
     "@types/jest": "^26.0.23",
     "@types/node": "^15.6.1",
-    "@types/prettier": "^2.2.3",
+    "@types/prettier": "^2.3.0",
     "@typescript-eslint/eslint-plugin": "^4.26.0",
     "@typescript-eslint/parser": "^4.26.0",
     "eslint": "^7.0.0",

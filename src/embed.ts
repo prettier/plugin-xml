@@ -1,11 +1,10 @@
 import { ContentCtx, ElementCstNode } from "@xml-tools/parser";
-import type { Doc, FastPath, ParserOptions, Printer } from "prettier";
+import type { AstPath, Doc, ParserOptions, Printer } from "prettier";
 import { builders, utils } from "prettier/doc";
 
-import { XMLAST } from "./types";
+import { XMLAst } from "./types";
 
 const {
-  concat,
   dedentToRoot,
   group,
   hardline,
@@ -21,19 +20,15 @@ const {
 function replaceNewlines(doc: Doc) {
   return utils.mapDoc(doc, (currentDoc) =>
     typeof currentDoc === "string" && currentDoc.includes("\n")
-      ? concat(
-          currentDoc
-            .split(/(\n)/g)
-            .map((v, i) => (i % 2 === 0 ? v : literalline))
-        )
+      ? currentDoc.split(/(\n)/g).map((v, i) => (i % 2 === 0 ? v : literalline))
       : currentDoc
   );
 }
 
 // Get the start and end element tags from the current node on the tree
 function getElementTags(
-  path: FastPath<XMLAST>,
-  print: (path: FastPath<XMLAST>) => Doc
+  path: AstPath<XMLAst>,
+  print: (path: AstPath<XMLAst>) => Doc
 ) {
   const node = path.getValue() as ElementCstNode;
   const { OPEN, Name, attribute, START_CLOSE, SLASH_OPEN, END_NAME, END } =
@@ -43,23 +38,19 @@ function getElementTags(
 
   if (attribute) {
     parts.push(
-      indent(
-        concat([line, join(line, path.map(print, "children", "attribute"))])
-      )
+      indent([line, join(line, path.map(print, "children", "attribute"))])
     );
   }
 
   return {
-    openTag: group(concat(parts.concat(softline, START_CLOSE[0].image))),
-    closeTag: group(
-      concat([SLASH_OPEN[0].image, END_NAME[0].image, END[0].image])
-    )
+    openTag: group([...parts, softline, START_CLOSE[0].image]),
+    closeTag: group([SLASH_OPEN[0].image, END_NAME[0].image, END[0].image])
   };
 }
 
 // Get the name of the parser that is represented by the given element node,
 // return null if a matching parser cannot be found
-function getParser(node: ElementCstNode, opts: ParserOptions<XMLAST>) {
+function getParser(node: ElementCstNode, opts: ParserOptions<XMLAst>) {
   const { Name, attribute } = node.children;
   const parser = Name[0].image.toLowerCase();
 
@@ -118,7 +109,7 @@ function getSource(content: ContentCtx) {
     .join("");
 }
 
-const embed: Printer<XMLAST>["embed"] = (path, print, textToDoc, opts) => {
+const embed: Printer<XMLAst>["embed"] = (path, print, textToDoc, opts) => {
   const node = path.getValue();
 
   // If the node isn't an element node, then skip
@@ -144,19 +135,17 @@ const embed: Printer<XMLAST>["embed"] = (path, print, textToDoc, opts) => {
   // formatted content enclosed within them
   const { openTag, closeTag } = getElementTags(path, print);
 
-  return group(
-    concat([
-      openTag,
-      literalline,
-      dedentToRoot(
-        replaceNewlines(
-          utils.stripTrailingHardline(textToDoc(getSource(content), { parser }))
-        )
-      ),
-      hardline,
-      closeTag
-    ])
-  );
+  return group([
+    openTag,
+    literalline,
+    dedentToRoot(
+      replaceNewlines(
+        utils.stripTrailingHardline(textToDoc(getSource(content), { parser }))
+      )
+    ),
+    hardline,
+    closeTag
+  ]);
 };
 
 export default embed;

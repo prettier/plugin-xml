@@ -23,7 +23,7 @@ interface ExternalIDNodeExt extends Omit<ExternalIDNode, "name"> {
   name: "externalID";
 }
 
-export type XMLAST =
+export type XMLAst =
   | AttributeCstNode
   | ChardataCstNode
   | ContentCstNodeExt
@@ -33,7 +33,7 @@ export type XMLAST =
   | ExternalIDNodeExt
   | PrologCstNode;
 
-export interface XMLOptions extends ParserOptions<XMLAST> {
+export interface XMLOptions extends ParserOptions<XMLAst> {
   xmlSelfClosingSpace: boolean;
   xmlWhitespaceSensitivity: "ignore" | "strict";
 }
