@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+### Added
+
+- Support for the `bracketSameLine` option to mirror the core option.
+
 ## [0.13.1] - 2021-03-03
 
 ### Changed
