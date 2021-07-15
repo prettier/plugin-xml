@@ -185,4 +185,4 @@ const plugin: Plugin<XMLAst> = {
   }
 };
 
-export default plugin;
+export = plugin;
