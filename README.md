@@ -46,12 +46,13 @@ The `prettier` executable is now installed and ready for use:
 
 Below are the options (from [`src/plugin.js`](src/plugin.js)) that `@prettier/plugin-xml` currently supports:
 
-| API Option                 | CLI Option                     |  Default   | Description                                                                                      |
-| -------------------------- | ------------------------------ | :--------: | ------------------------------------------------------------------------------------------------ |
-| `printWidth`               | `--print-width`                |    `80`    | Same as in Prettier ([see prettier docs](https://prettier.io/docs/en/options.html#print-width)). |
-| `tabWidth`                 | `--tab-width`                  |    `2`     | Same as in Prettier ([see prettier docs](https://prettier.io/docs/en/options.html#tab-width)).   |
-| `xmlSelfClosingSpace`      | `--xml-self-closing-space`     |   `true`   | Adds a space before self-closing tags.                                                           |
-| `xmlWhitespaceSensitivity` | `--xml-whitespace-sensitivity` | `"strict"` | How to handle whitespaces. Options are `"strict"` and `"ignore"`.                                |
+| API Option                 | CLI Option                     |  Default   | Description                                                                                           |
+| -------------------------- | ------------------------------ | :--------: | ----------------------------------------------------------------------------------------------------- |
+| `bracketSameLine`          | `--bracket-same-line`          |   `true`   | Same as in Prettier ([see prettier docs](https://prettier.io/docs/en/options.html#bracket-same-line)) |
+| `printWidth`               | `--print-width`                |    `80`    | Same as in Prettier ([see prettier docs](https://prettier.io/docs/en/options.html#print-width)).      |
+| `tabWidth`                 | `--tab-width`                  |    `2`     | Same as in Prettier ([see prettier docs](https://prettier.io/docs/en/options.html#tab-width)).        |
+| `xmlSelfClosingSpace`      | `--xml-self-closing-space`     |   `true`   | Adds a space before self-closing tags.                                                                |
+| `xmlWhitespaceSensitivity` | `--xml-whitespace-sensitivity` | `"strict"` | How to handle whitespaces. Options are `"strict"` and `"ignore"`.                                     |
 
 Any of these can be added to your existing [prettier configuration
 file](https://prettier.io/docs/en/configuration.html). For example:
