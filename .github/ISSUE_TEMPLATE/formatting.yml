@@ -4,31 +4,31 @@ body:
   - type: dropdown
     attributes:
       label: bracketSameLine
+      description: What value do you have the `bracketSameLine` option set to? (Defaults to `false`.)
       options:
         - "true"
         - "false"
-    validations:
-      required: true
   - type: input
     attributes:
       label: printWidth
+      description: What value do you have the `printWidth` option set to? (Defaults to `80`.)
       placeholder: "80"
   - type: input
     attributes:
       label: tabWidth
+      description: What value do you have the `tabWidth` option set to? (Defaults to `2`.)
       placeholder: "2"
   - type: dropdown
     attributes:
       label: xmlSelfClosingSpace
+      description: What value do you have the `xmlSelfClosingSpace` option set to? (Defaults to `true`.)
       options:
         - "true"
         - "false"
-    validations:
-      required: true
   - type: dropdown
     attributes:
       label: xmlWhitespaceSensitivity
-      description: Be 100% sure changing this to `"ignore"` doesn't fix your issue!
+      description: What value do you have the `xmlWhitespaceSensitivity` option set to? (Defaults to `"strict"`.) Be 100% sure changing this to `"ignore"` doesn't fix your issue!
       options:
         - "strict"
         - "ignore"
