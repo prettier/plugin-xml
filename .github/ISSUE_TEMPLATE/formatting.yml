@@ -20,13 +20,6 @@ body:
       placeholder: "2"
   - type: dropdown
     attributes:
-      label: xmlSelfClosingSpace
-      description: What value do you have the `xmlSelfClosingSpace` option set to? (Defaults to `true`.)
-      options:
-        - "true"
-        - "false"
-  - type: dropdown
-    attributes:
       label: xmlWhitespaceSensitivity
       description: What value do you have the `xmlWhitespaceSensitivity` option set to? (Defaults to `"strict"`.) Be 100% sure changing this to `"ignore"` doesn't fix your issue!
       options:

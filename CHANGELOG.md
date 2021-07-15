@@ -10,6 +10,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 - Support for the `bracketSameLine` option to mirror the core option.
 
+### Removed
+
+- The `xmlSelfClosingSpace` option is now removed to make it easier to maintain.
+
 ## [0.13.1] - 2021-03-03
 
 ### Changed

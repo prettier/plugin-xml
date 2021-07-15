@@ -7,13 +7,6 @@ import printer from "./printer";
 
 // These are the extra options defined by this plugin.
 const options: Plugin<XMLAst>["options"] = {
-  xmlSelfClosingSpace: {
-    type: "boolean",
-    category: "XML",
-    default: true,
-    description: "Adds a space before self-closing tags.",
-    since: "0.4.0"
-  },
   xmlWhitespaceSensitivity: {
     type: "choice",
     category: "XML",
