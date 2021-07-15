@@ -1,0 +1,54 @@
+name: ✨ Formatting
+description: Issues for ugly or incorrect code
+body:
+  - type: dropdown
+    attributes:
+      label: bracketSameLine
+      options:
+        - "true"
+        - "false"
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: printWidth
+      placeholder: "80"
+  - type: input
+    attributes:
+      label: tabWidth
+      placeholder: "2"
+  - type: dropdown
+    attributes:
+      label: xmlSelfClosingSpace
+      options:
+        - "true"
+        - "false"
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: xmlWhitespaceSensitivity
+      description: Be 100% sure changing this to `"ignore"` doesn't fix your issue!
+      options:
+        - "strict"
+        - "ignore"
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Input XML
+      render: xml
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Current output XML
+      render: xml
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Expected output XML
+      render: xml
+    validations:
+      required: true
