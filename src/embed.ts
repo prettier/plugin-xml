@@ -2,7 +2,7 @@ import { ContentCtx, ElementCstNode } from "@xml-tools/parser";
 import type { AstPath, Doc, ParserOptions, Printer } from "prettier";
 import { builders, utils } from "prettier/doc";
 
-import { XMLAst } from "./types";
+import { XMLAst, XMLOptions } from "./types";
 
 const {
   dedentToRoot,
@@ -28,6 +28,7 @@ function replaceNewlines(doc: Doc) {
 // Get the start and end element tags from the current node on the tree
 function getElementTags(
   path: AstPath<XMLAst>,
+  opts: XMLOptions,
   print: (path: AstPath<XMLAst>) => Doc
 ) {
   const node = path.getValue() as ElementCstNode;
@@ -42,8 +43,12 @@ function getElementTags(
     );
   }
 
+  if (!opts.bracketSameLine) {
+    parts.push(softline);
+  }
+
   return {
-    openTag: group([...parts, softline, START_CLOSE[0].image]),
+    openTag: group([...parts, START_CLOSE[0].image]),
     closeTag: group([SLASH_OPEN[0].image, END_NAME[0].image, END[0].image])
   };
 }
@@ -133,7 +138,7 @@ const embed: Printer<XMLAst>["embed"] = (path, print, textToDoc, opts) => {
 
   // Get the open and close tags of this element, then return the properly
   // formatted content enclosed within them
-  const { openTag, closeTag } = getElementTags(path, print);
+  const { openTag, closeTag } = getElementTags(path, opts as XMLOptions, print);
 
   return group([
     openTag,

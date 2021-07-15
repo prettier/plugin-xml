@@ -24,3 +24,12 @@ test("xmlWhitespaceSensitivity => ignore", () => {
   const formatted = format(fixture, { xmlWhitespaceSensitivity: "ignore" });
   expect(formatted).toMatchSnapshot();
 });
+
+test("bracketSameLine => true", () => {
+  const formatted = format(fixture, {
+    bracketSameLine: true,
+    xmlWhitespaceSensitivity: "ignore"
+  });
+
+  expect(formatted).toMatchSnapshot();
+});

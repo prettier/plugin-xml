@@ -1,8 +1,55 @@
 import type { Plugin } from "prettier";
+import prettier from "prettier";
 
 import type { XMLAst } from "./types";
 import parser from "./parser";
 import printer from "./printer";
+
+// These are the extra options defined by this plugin.
+const options: Plugin<XMLAst>["options"] = {
+  xmlSelfClosingSpace: {
+    type: "boolean",
+    category: "XML",
+    default: true,
+    description: "Adds a space before self-closing tags.",
+    since: "0.4.0"
+  },
+  xmlWhitespaceSensitivity: {
+    type: "choice",
+    category: "XML",
+    default: "strict",
+    description: "How to handle whitespaces in XML.",
+    choices: [
+      {
+        value: "strict",
+        description: "Whitespaces are considered sensitive in all elements."
+      },
+      {
+        value: "ignore",
+        description: "Whitespaces are considered insensitive in all elements."
+      }
+    ],
+    since: "0.6.0"
+  }
+};
+
+// We're going to be using the bracketSameLine option, but since it wasn't
+// introduced until prettier 2.4.0, we need to add it to our list of options if
+// it's not present so that it gets respected.
+if (
+  !prettier
+    .getSupportInfo()
+    .options.some((opt) => opt.name === "bracketSameLine")
+) {
+  options.bracketSameLine = {
+    type: "boolean",
+    category: "Global",
+    default: false,
+    description:
+      "Put > of opening tags on the last line instead of on a new line.",
+    since: "1.0.0"
+  };
+}
 
 const plugin: Plugin<XMLAst> = {
   languages: [
@@ -138,32 +185,7 @@ const plugin: Plugin<XMLAst> = {
   printers: {
     xml: printer
   },
-  options: {
-    xmlSelfClosingSpace: {
-      type: "boolean",
-      category: "Global",
-      default: true,
-      description: "Adds a space before self-closing tags.",
-      since: "0.4.0"
-    },
-    xmlWhitespaceSensitivity: {
-      type: "choice",
-      category: "Global",
-      default: "strict",
-      description: "How to handle whitespaces in XML.",
-      choices: [
-        {
-          value: "strict",
-          description: "Whitespaces are considered sensitive in all elements."
-        },
-        {
-          value: "ignore",
-          description: "Whitespaces are considered insensitive in all elements."
-        }
-      ],
-      since: "0.6.0"
-    }
-  },
+  options,
   defaultOptions: {
     printWidth: 80,
     tabWidth: 2

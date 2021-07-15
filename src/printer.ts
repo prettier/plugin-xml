@@ -273,17 +273,32 @@ const printer: Printer<XMLAst> = {
           );
         }
 
+        // Determine the value that will go between the <, name, and attributes
+        // of an element and the /> of an element.
+        let space: Doc = "";
+
+        if (opts.bracketSameLine) {
+          space = " ";
+        } else if (opts.xmlSelfClosingSpace) {
+          space = line;
+        } else {
+          space = softline;
+        }
+
         if (SLASH_CLOSE) {
-          const space = opts.xmlSelfClosingSpace ? line : softline;
           return group([...parts, space, SLASH_CLOSE[0].image]);
         }
 
         if (Object.keys(content[0].children).length === 0) {
-          const space = opts.xmlSelfClosingSpace ? line : softline;
           return group([...parts, space, "/>"]);
         }
 
-        const openTag = group([...parts, softline, START_CLOSE[0].image]);
+        const openTag = group([
+          ...parts,
+          opts.bracketSameLine ? "" : softline,
+          START_CLOSE[0].image
+        ]);
+
         const closeTag = group([
           SLASH_OPEN[0].image,
           END_NAME[0].image,
@@ -391,7 +406,6 @@ const printer: Printer<XMLAst> = {
           }
 
           if (fragments.length === 0) {
-            const space = opts.xmlSelfClosingSpace ? line : softline;
             return group([...parts, space, "/>"]);
           }
 
