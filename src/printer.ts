@@ -275,15 +275,7 @@ const printer: Printer<XMLAst> = {
 
         // Determine the value that will go between the <, name, and attributes
         // of an element and the /> of an element.
-        let space: Doc = "";
-
-        if (opts.bracketSameLine) {
-          space = " ";
-        } else if (opts.xmlSelfClosingSpace) {
-          space = line;
-        } else {
-          space = softline;
-        }
+        const space: Doc = opts.bracketSameLine ? " " : line;
 
         if (SLASH_CLOSE) {
           return group([...parts, space, SLASH_CLOSE[0].image]);
@@ -460,8 +452,7 @@ const printer: Printer<XMLAst> = {
           );
         }
 
-        const space = opts.xmlSelfClosingSpace ? line : softline;
-        return group([...parts, space, SPECIAL_CLOSE[0].image]);
+        return group([...parts, line, SPECIAL_CLOSE[0].image]);
       }
     }
   }
