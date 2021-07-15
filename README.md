@@ -22,7 +22,7 @@
 
 ## Getting started
 
-To run `prettier` with the XML plugin, you're going to need [`node`](https://nodejs.org/en/download/) (version `8.3` or newer).
+To run `prettier` with the XML plugin, you're going to need [`node`](https://nodejs.org/en/download/).
 
 If you're using the `npm` CLI, then add the plugin by:
 
