@@ -34,6 +34,7 @@ export type XMLAst =
   | PrologCstNode;
 
 export interface XMLOptions extends ParserOptions<XMLAst> {
+  bracketSameLine: boolean;
   xmlSelfClosingSpace: boolean;
   xmlWhitespaceSensitivity: "ignore" | "strict";
 }
