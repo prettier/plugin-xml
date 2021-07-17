@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+## [1.0.2] - 2021-07-17
+
+### Changed
+
+- Removed duplicated inner comments when `xmlWhitespaceSensitivity` is set to `"strict"`.
+
 ## [1.0.1] - 2021-07-14
 
 ### Changed
@@ -149,7 +155,8 @@ and it will maintain your formatting.
 
 - Initial release 🎉
 
-[unreleased]: https://github.com/prettier/plugin-xml/compare/v1.0.1...HEAD
+[unreleased]: https://github.com/prettier/plugin-xml/compare/v1.0.2...HEAD
+[1.0.2]: https://github.com/prettier/plugin-xml/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/prettier/plugin-xml/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/prettier/plugin-xml/compare/v0.13.1...v1.0.0
 [0.13.1]: https://github.com/prettier/plugin-xml/compare/v0.13.0...v0.13.1
