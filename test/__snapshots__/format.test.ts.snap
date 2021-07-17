@@ -44,6 +44,8 @@ use {
     - 3
   </style>
 
+  <!-- inner comment -->
+
   <?pagebreak?>
   <g class=\\"special\\" style=\\"fill: blue\\">
     <circle id=\\"c\\" cy=\\"50\\" cx=\\"50\\" r=\\"40\\" stroke-width=\\"20\\" />
@@ -120,6 +122,8 @@ use {
     - 3
   </style>
 
+  <!-- inner comment -->
+
   <?pagebreak?>
     <g class=\\"special\\" style=\\"fill: blue\\">
         <circle id=\\"c\\" cy=\\"50\\" cx=\\"50\\" r=\\"40\\" stroke-width=\\"20\\" />
@@ -192,6 +196,8 @@ use {
     - 2
     - 3
   </style>
+
+  <!-- inner comment -->
 
   <?pagebreak?>
   <g class=\\"special\\" style=\\"fill: blue\\">
