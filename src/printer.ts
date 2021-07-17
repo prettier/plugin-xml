@@ -116,10 +116,6 @@ const printer: Printer<XMLAst> = {
             );
           }
 
-          if (children.Comment) {
-            response = response.concat(path.map(printIToken, "Comment"));
-          }
-
           if (children.PROCESSING_INSTRUCTION) {
             response = response.concat(
               path.map(printIToken, "PROCESSING_INSTRUCTION")
