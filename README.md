@@ -72,7 +72,8 @@ prettier --tab-width 4 --write '**/*.xml'
 
 The default for `xmlWhitespaceSensitivity` is `"strict"`. This means that your whitespace symbols are important, and should not be adjusted.
 
-If you work with modern xml workflows, you may want the `"ignore"` setting, as this will produce a standardized amount of whitespace.
+If your XML files do not require whitespace sensitivity, you can use the the `"ignore"` setting, as this will produce a standardized amount of whitespace.
+Since whitespace is *sometimes* semantically important for XML, prettier has to default to `"strict"` in order to avoid potentially changing the meaning of your program.
 This will fix any indentation issues, and collapse excess blank lines (max of 1 blank line).
 
 ### Ignore ranges
