@@ -51,7 +51,7 @@ Below are the options (from [`src/plugin.js`](src/plugin.js)) that `@prettier/pl
 | `bracketSameLine`          | `--bracket-same-line`          |   `true`   | Same as in Prettier ([see prettier docs](https://prettier.io/docs/en/options.html#bracket-same-line)) |
 | `printWidth`               | `--print-width`                |    `80`    | Same as in Prettier ([see prettier docs](https://prettier.io/docs/en/options.html#print-width)).      |
 | `tabWidth`                 | `--tab-width`                  |    `2`     | Same as in Prettier ([see prettier docs](https://prettier.io/docs/en/options.html#tab-width)).        |
-| `xmlWhitespaceSensitivity` | `--xml-whitespace-sensitivity` | `"strict"` | How to handle whitespaces. Options are `"strict"` and `"ignore"`.                                     |
+| `xmlWhitespaceSensitivity` | `--xml-whitespace-sensitivity` | `"strict"` | Options are `"strict"` and `"ignore"`. You may want `"ignore"`. [Discussion](#whitespace)             |
 
 Any of these can be added to your existing [prettier configuration
 file](https://prettier.io/docs/en/configuration.html). For example:
@@ -67,6 +67,13 @@ Or, they can be passed to `prettier` as arguments:
 ```bash
 prettier --tab-width 4 --write '**/*.xml'
 ```
+
+### Whitespace
+
+The default for `xmlWhitespaceSensitivity` is `"strict"`. This means that your whitespace symbols are important, and should not be adjusted.
+
+If you work with modern xml workflows, you may want the `"ignore"` setting, as this will produce a standardized amount of whitespace.
+This will fix any indentation issues, and collapse excess blank lines (max of 1 blank line).
 
 ### Ignore ranges
 
