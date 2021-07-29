@@ -51,7 +51,7 @@ Below are the options (from [`src/plugin.js`](src/plugin.js)) that `@prettier/pl
 | `bracketSameLine`          | `--bracket-same-line`          |   `true`   | Same as in Prettier ([see prettier docs](https://prettier.io/docs/en/options.html#bracket-same-line)) |
 | `printWidth`               | `--print-width`                |    `80`    | Same as in Prettier ([see prettier docs](https://prettier.io/docs/en/options.html#print-width)).      |
 | `tabWidth`                 | `--tab-width`                  |    `2`     | Same as in Prettier ([see prettier docs](https://prettier.io/docs/en/options.html#tab-width)).        |
-| `xmlWhitespaceSensitivity` | `--xml-whitespace-sensitivity` | `"strict"` | Options are `"strict"` and `"ignore"`. You may want `"ignore"`. [Discussion](#whitespace)             |
+| `xmlWhitespaceSensitivity` | `--xml-whitespace-sensitivity` | `"strict"` | Options are `"strict"` and `"ignore"`. You may want `"ignore"`, [see below](#whitespace)              |
 
 Any of these can be added to your existing [prettier configuration
 file](https://prettier.io/docs/en/configuration.html). For example:
@@ -70,11 +70,9 @@ prettier --tab-width 4 --write '**/*.xml'
 
 ### Whitespace
 
-The default for `xmlWhitespaceSensitivity` is `"strict"`. This means that your whitespace symbols are important, and should not be adjusted.
+In XML, by default, all whitespace inside elements has semantic meaning. For prettier to maintain its contract of not changing the semantic meaning of your program, this means the default for `xmlWhitespaceSensitivity` is `"strict"`. When running in this mode, prettier's ability to rearrange your markup is somewhat limited, as it has to maintain the exact amount of whitespace that you input within elements.
 
-If your XML files do not require whitespace sensitivity, you can use the the `"ignore"` setting, as this will produce a standardized amount of whitespace.
-Since whitespace is *sometimes* semantically important for XML, prettier has to default to `"strict"` in order to avoid potentially changing the meaning of your program.
-This will fix any indentation issues, and collapse excess blank lines (max of 1 blank line).
+If you're sure that the XML files that you're formatting do not require whitespace sensitivity, you can use the the `"ignore"` option, as this will produce a standardized amount of whitespace. This will fix any indentation issues, and collapse excess blank lines (max of 1 blank line). For most folks most of the time, this is probably the option that you want.
 
 ### Ignore ranges
 
