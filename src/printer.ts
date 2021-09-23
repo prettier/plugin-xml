@@ -1,15 +1,6 @@
-import type {
-  ChardataCstNode,
-  ContentCstNode,
-  ReferenceCstNode
-} from "@xml-tools/parser";
-import type { IToken } from "chevrotain";
-import type { AstPath, Doc, Printer } from "prettier";
 import { builders } from "prettier/doc";
-
 import embed from "./embed";
-
-import { ContentCstNodeExt, XMLAst, XMLOptions } from "./types";
+import type { ContentCstNode, Doc, IToken, Path, Printer } from "./types";
 
 const { fill, group, hardline, indent, join, line, literalline, softline } =
   builders;
@@ -42,13 +33,20 @@ function isWhitespaceIgnorable(node: ContentCstNode) {
   return !CData && !reference && !hasIgnoreRanges(Comment);
 }
 
-function printIToken(path: AstPath<XMLAst>) {
-  const node = path.getValue() as any as IToken;
+type Fragment = {
+  offset: number;
+  printed: Doc;
+  startLine?: number;
+  endLine?: number;
+};
+
+function printIToken(path: Path<IToken>): Fragment {
+  const node = path.getValue();
 
   return {
     offset: node.startOffset,
-    startLine: node.startLine!,
-    endLine: node.endLine!,
+    startLine: node.startLine,
+    endLine: node.endLine,
     printed: node.image
   };
 }
@@ -59,9 +57,9 @@ function replaceNewlinesWithLiteralLines(content: string) {
     .map((value, idx) => (idx % 2 === 0 ? value : literalline));
 }
 
-const printer: Printer<XMLAst> = {
+const printer: Printer = {
   embed,
-  print(path, opts: XMLOptions, print) {
+  print(path, opts, print) {
     const node = path.getValue();
 
     switch (node.name) {
@@ -79,22 +77,25 @@ const printer: Printer<XMLAst> = {
           .map((value, index) => (index % 2 === 0 ? value : literalline));
       }
       case "content": {
-        let fragments = path.call((childrenPath) => {
-          let response: { offset: number; printed: Doc }[] = [];
-          const children =
-            childrenPath.getValue() as any as ContentCstNodeExt["children"];
+        const nodePath = path as Path<typeof node>;
+
+        let fragments = nodePath.call((childrenPath) => {
+          let response: Fragment[] = [];
+          const children = childrenPath.getValue();
 
           if (children.CData) {
-            response = response.concat(path.map(printIToken, "CData"));
+            response = response.concat(childrenPath.map(printIToken, "CData"));
           }
 
           if (children.Comment) {
-            response = response.concat(path.map(printIToken, "Comment"));
+            response = response.concat(
+              childrenPath.map(printIToken, "Comment")
+            );
           }
 
           if (children.chardata) {
             response = response.concat(
-              path.map(
+              childrenPath.map(
                 (charDataPath) => ({
                   offset: charDataPath.getValue().location!.startOffset,
                   printed: print(charDataPath)
@@ -106,7 +107,7 @@ const printer: Printer<XMLAst> = {
 
           if (children.element) {
             response = response.concat(
-              path.map(
+              childrenPath.map(
                 (elementPath) => ({
                   offset: elementPath.getValue().location!.startOffset,
                   printed: print(elementPath)
@@ -118,15 +119,14 @@ const printer: Printer<XMLAst> = {
 
           if (children.PROCESSING_INSTRUCTION) {
             response = response.concat(
-              path.map(printIToken, "PROCESSING_INSTRUCTION")
+              childrenPath.map(printIToken, "PROCESSING_INSTRUCTION")
             );
           }
 
           if (children.reference) {
             response = response.concat(
-              path.map((referencePath) => {
-                const referenceNode =
-                  referencePath.getValue() as any as ReferenceCstNode;
+              childrenPath.map((referencePath) => {
+                const referenceNode = referencePath.getValue();
 
                 return {
                   offset: referenceNode.location!.startOffset,
@@ -199,17 +199,17 @@ const printer: Printer<XMLAst> = {
       }
       case "document": {
         const { docTypeDecl, element, misc, prolog } = node.children;
-        const parts: { offset: number; printed: Doc }[] = [];
+        const fragments: Fragment[] = [];
 
         if (docTypeDecl) {
-          parts.push({
+          fragments.push({
             offset: docTypeDecl[0].location!.startOffset,
             printed: path.call(print, "children", "docTypeDecl", 0)
           });
         }
 
         if (prolog) {
-          parts.push({
+          fragments.push({
             offset: prolog[0].location!.startOffset,
             printed: path.call(print, "children", "prolog", 0)
           });
@@ -218,12 +218,12 @@ const printer: Printer<XMLAst> = {
         if (misc) {
           misc.forEach((node) => {
             if (node.children.PROCESSING_INSTRUCTION) {
-              parts.push({
+              fragments.push({
                 offset: node.location!.startOffset,
                 printed: node.children.PROCESSING_INSTRUCTION[0].image
               });
             } else if (node.children.Comment) {
-              parts.push({
+              fragments.push({
                 offset: node.location!.startOffset,
                 printed: node.children.Comment[0].image
               });
@@ -232,18 +232,18 @@ const printer: Printer<XMLAst> = {
         }
 
         if (element) {
-          parts.push({
+          fragments.push({
             offset: element[0].location!.startOffset,
             printed: path.call(print, "children", "element", 0)
           });
         }
 
-        parts.sort((left, right) => left.offset - right.offset);
+        fragments.sort((left, right) => left.offset - right.offset);
 
         return [
           join(
             hardline,
-            parts.map(({ printed }) => printed)
+            fragments.map(({ printed }) => printed)
           ),
           hardline
         ];
@@ -297,24 +297,22 @@ const printer: Printer<XMLAst> = {
           opts.xmlWhitespaceSensitivity === "ignore" &&
           isWhitespaceIgnorable(content[0])
         ) {
-          const fragments = path.call(
+          const nodePath = path as Path<typeof node>;
+
+          const fragments = nodePath.call(
             (childrenPath) => {
-              const children =
-                childrenPath.getValue() as any as ContentCstNodeExt["children"];
-              let response: {
-                offset: number;
-                startLine: number;
-                endLine: number;
-                printed: Doc;
-              }[] = [];
+              const children = childrenPath.getValue();
+              let response: Fragment[] = [];
 
               if (children.Comment) {
-                response = response.concat(path.map(printIToken, "Comment"));
+                response = response.concat(
+                  childrenPath.map(printIToken, "Comment")
+                );
               }
 
               if (children.chardata) {
-                path.each((charDataPath) => {
-                  const chardata = charDataPath.getValue() as ChardataCstNode;
+                childrenPath.each((charDataPath) => {
+                  const chardata = charDataPath.getValue();
                   if (!chardata.children.TEXT) {
                     return;
                   }
@@ -348,7 +346,7 @@ const printer: Printer<XMLAst> = {
 
               if (children.element) {
                 response = response.concat(
-                  path.map((elementPath) => {
+                  childrenPath.map((elementPath) => {
                     const location = elementPath.getValue().location!;
 
                     return {
@@ -363,7 +361,7 @@ const printer: Printer<XMLAst> = {
 
               if (children.PROCESSING_INSTRUCTION) {
                 response = response.concat(
-                  path.map(printIToken, "PROCESSING_INSTRUCTION")
+                  childrenPath.map(printIToken, "PROCESSING_INSTRUCTION")
                 );
               }
 
@@ -398,17 +396,17 @@ const printer: Printer<XMLAst> = {
           }
 
           const docs: Doc[] = [];
-          let lastLine: number = fragments[0].startLine;
+          let lastLine: number = fragments[0].startLine!;
 
           fragments.forEach((node) => {
-            if (node.startLine - lastLine >= 2) {
+            if (node.startLine! - lastLine >= 2) {
               docs.push(hardline, hardline);
             } else {
               docs.push(hardline);
             }
 
             docs.push(node.printed);
-            lastLine = node.endLine;
+            lastLine = node.endLine!;
           });
 
           return group([openTag, indent(docs), hardline, closeTag]);

@@ -1,12 +1,11 @@
-import type { Plugin } from "prettier";
 import prettier from "prettier";
 
-import type { XMLAst } from "./types";
+import type { Plugin } from "./types";
 import parser from "./parser";
 import printer from "./printer";
 
 // These are the extra options defined by this plugin.
-const options: Plugin<XMLAst>["options"] = {
+const options: Plugin["options"] = {
   xmlWhitespaceSensitivity: {
     type: "choice",
     category: "XML",
@@ -44,7 +43,7 @@ if (
   };
 }
 
-const plugin: Plugin<XMLAst> = {
+const plugin: Plugin = {
   languages: [
     {
       name: "XML",
