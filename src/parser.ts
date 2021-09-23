@@ -1,5 +1,5 @@
-import type { Parser } from "prettier";
 import { parse as xmlToolsParse } from "@xml-tools/parser";
+import type { Parser } from "./types";
 
 const parser: Parser = {
   parse(text) {
@@ -13,16 +13,10 @@ const parser: Parser = {
   },
   astFormat: "xml",
   locStart(node) {
-    if (node.location) {
-      return node.location.startOffset;
-    }
-    return node.startOffset;
+    return node.location!.startOffset;
   },
   locEnd(node) {
-    if (node.location) {
-      return node.location.endOffset;
-    }
-    return node.endOffset;
+    return node.location!.endOffset!;
   }
 };
 

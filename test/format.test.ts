@@ -2,16 +2,16 @@ import fs from "fs";
 import path from "path";
 import prettier from "prettier";
 
-import { XMLOptions } from "../src/types";
+import { Options } from "../src/types";
 import plugin from "../src/plugin";
 
 const fixture = fs.readFileSync(path.join(__dirname, "./fixture.xml"), "utf-8");
 
-function format(content: string, opts: Partial<XMLOptions> = {}) {
+function format(content: string, opts: Partial<Options> = {}) {
   return prettier.format(content, {
     ...opts,
     parser: "xml",
-    plugins: [plugin]
+    plugins: [plugin as any as string] // hacky but it works
   });
 }
 

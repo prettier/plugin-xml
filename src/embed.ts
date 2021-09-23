@@ -1,8 +1,13 @@
-import { ContentCtx, ElementCstNode } from "@xml-tools/parser";
-import type { AstPath, Doc, ParserOptions, Printer } from "prettier";
 import { builders, utils } from "prettier/doc";
-
-import { XMLAst, XMLOptions } from "./types";
+import {
+  AnyNode,
+  ContentCtx,
+  Doc,
+  ElementCstNode,
+  Embed,
+  Options,
+  Path
+} from "./types";
 
 const {
   dedentToRoot,
@@ -27,11 +32,11 @@ function replaceNewlines(doc: Doc) {
 
 // Get the start and end element tags from the current node on the tree
 function getElementTags(
-  path: AstPath<XMLAst>,
-  opts: XMLOptions,
-  print: (path: AstPath<XMLAst>) => Doc
+  path: Path<ElementCstNode>,
+  opts: Options,
+  print: (path: Path<AnyNode>) => Doc
 ) {
-  const node = path.getValue() as ElementCstNode;
+  const node = path.getValue();
   const { OPEN, Name, attribute, START_CLOSE, SLASH_OPEN, END_NAME, END } =
     node.children;
 
@@ -55,7 +60,7 @@ function getElementTags(
 
 // Get the name of the parser that is represented by the given element node,
 // return null if a matching parser cannot be found
-function getParser(node: ElementCstNode, opts: ParserOptions<XMLAst>) {
+function getParser(node: ElementCstNode, opts: Options) {
   const { Name, attribute } = node.children;
   const parser = Name[0].image.toLowerCase();
 
@@ -114,7 +119,7 @@ function getSource(content: ContentCtx) {
     .join("");
 }
 
-const embed: Printer<XMLAst>["embed"] = (path, print, textToDoc, opts) => {
+const embed: Embed = (path, print, textToDoc, opts) => {
   const node = path.getValue();
 
   // If the node isn't an element node, then skip
@@ -138,14 +143,17 @@ const embed: Printer<XMLAst>["embed"] = (path, print, textToDoc, opts) => {
 
   // Get the open and close tags of this element, then return the properly
   // formatted content enclosed within them
-  const { openTag, closeTag } = getElementTags(path, opts as XMLOptions, print);
+  const nodePath = path as Path<typeof node>;
+  const { openTag, closeTag } = getElementTags(nodePath, opts, print);
 
   return group([
     openTag,
     literalline,
     dedentToRoot(
       replaceNewlines(
-        utils.stripTrailingHardline(textToDoc(getSource(content), { parser }))
+        utils.stripTrailingHardline(
+          textToDoc(getSource(content), { ...opts, parser })
+        )
       )
     ),
     hardline,
