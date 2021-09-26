@@ -271,7 +271,7 @@ const printer: Printer = {
 
         // Determine the value that will go between the <, name, and attributes
         // of an element and the /> of an element.
-        const space: Doc = opts.bracketSameLine ? " " : line;
+        const space: Doc = opts.xmlSelfClosingSpace ? line : softline;
 
         if (SLASH_CLOSE) {
           return group([...parts, space, SLASH_CLOSE[0].image]);
@@ -446,7 +446,8 @@ const printer: Printer = {
           );
         }
 
-        return group([...parts, line, SPECIAL_CLOSE[0].image]);
+        const space = opts.xmlSelfClosingSpace ? line : softline;
+        return group([...parts, space, SPECIAL_CLOSE[0].image]);
       }
     }
   }

@@ -33,3 +33,22 @@ test("bracketSameLine => true", () => {
 
   expect(formatted).toMatchSnapshot();
 });
+
+test("xmlSelfClosingSpace => false", () => {
+  const formatted = format(fixture, {
+    xmlSelfClosingSpace: false,
+    xmlWhitespaceSensitivity: "ignore"
+  });
+
+  expect(formatted).toMatchSnapshot();
+});
+
+test("bracketSameLine => true, xmlSelfClosingSpace => false", () => {
+  const formatted = format(fixture, {
+    bracketSameLine: true,
+    xmlSelfClosingSpace: false,
+    xmlWhitespaceSensitivity: "ignore"
+  });
+
+  expect(formatted).toMatchSnapshot();
+});

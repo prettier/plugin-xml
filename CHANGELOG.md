@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+### Added
+
+- Bring back the `xmlSelfClosingSpace` option.
+
 ## [1.0.2] - 2021-07-17
 
 ### Changed
