@@ -27,6 +27,13 @@ body:
         - "ignore"
     validations:
       required: true
+  - type: dropdown
+    attributes:
+      label: xmlSelfClosingSpace
+      description: What value do you have the `xmlSelfClosingSpace` option set to? (Defaults to `true`.)
+      options:
+        - "true"
+        - "false"
   - type: textarea
     attributes:
       label: Input XML
