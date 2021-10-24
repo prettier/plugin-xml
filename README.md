@@ -44,7 +44,7 @@ The `prettier` executable is now installed and ready for use:
 
 ## Configuration
 
-Below are the options (from [`src/plugin.js`](src/plugin.js)) that `@prettier/plugin-xml` currently supports:
+Below are the options (from [`src/plugin.ts`](src/plugin.ts)) that `@prettier/plugin-xml` currently supports:
 
 | API Option                 | CLI Option                     |  Default   | Description                                                                                           |
 | -------------------------- | ------------------------------ | :--------: | ----------------------------------------------------------------------------------------------------- |
