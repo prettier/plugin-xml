@@ -151,6 +151,8 @@ const plugin: Plugin = {
         ".xml.dist",
         ".xproj",
         ".xsd",
+        ".xsl",
+        ".xslt",
         ".xspec",
         ".xul",
         ".zcml"
