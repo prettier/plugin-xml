@@ -114,6 +114,7 @@ const plugin: Plugin = {
         ".rdf",
         ".resx",
         ".rss",
+        ".runsettings",
         ".sch",
         ".scxml",
         ".sfproj",
