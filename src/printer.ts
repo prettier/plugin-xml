@@ -277,7 +277,10 @@ const printer: Printer = {
           return group([...parts, space, SLASH_CLOSE[0].image]);
         }
 
-        if (Object.keys(content[0].children).length === 0) {
+        if (
+          Object.keys(content[0].children).length === 0 &&
+          !opts.xmlExpandSelfClosingTags
+        ) {
           return group([...parts, space, "/>"]);
         }
 

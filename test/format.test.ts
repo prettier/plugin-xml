@@ -52,3 +52,11 @@ test("bracketSameLine => true, xmlSelfClosingSpace => false", () => {
 
   expect(formatted).toMatchSnapshot();
 });
+
+test("xmlExpandSelfClosingTags => true", () => {
+  const formatted = format(fixture, {
+    xmlExpandSelfClosingTags: true
+  });
+
+  expect(formatted).toMatchSnapshot();
+});

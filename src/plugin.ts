@@ -13,6 +13,13 @@ const options: Plugin["options"] = {
     description: "Adds a space before self-closing tags.",
     since: "1.1.0"
   },
+  xmlExpandSelfClosingTags: {
+    type: "boolean",
+    category: "XML",
+    default: false,
+    description: "Adds a space before self-closing tags.",
+    since: "1.1.0"
+  },
   xmlWhitespaceSensitivity: {
     type: "choice",
     category: "XML",

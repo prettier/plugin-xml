@@ -34,6 +34,13 @@ body:
       options:
         - "true"
         - "false"
+  - type: dropdown
+    attributes:
+      label: xmlExpandSelfClosingTags
+      description: What value do you have the `xmlExpandSelfClosingTags` option set to? (Defaults to `false`.)
+      options:
+        - "true"
+        - "false"
   - type: textarea
     attributes:
       label: Input XML

@@ -135,6 +135,7 @@ export type Embed = (
 export type Options = Prettier.ParserOptions<any> & {
   bracketSameLine: boolean;
   xmlSelfClosingSpace: boolean;
+  xmlExpandSelfClosingTags: boolean;
   xmlWhitespaceSensitivity: "ignore" | "strict";
 };
 
