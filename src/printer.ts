@@ -395,7 +395,11 @@ const printer: Printer = {
           }
 
           if (fragments.length === 0) {
-            return group([...parts, space, "/>"]);
+            if (opts.xmlExpandSelfClosingTags) {
+              return group([...parts, START_CLOSE[0].image, closeTag]);
+            } else {
+              return group([...parts, space, "/>"]);
+            }
           }
 
           const docs: Doc[] = [];

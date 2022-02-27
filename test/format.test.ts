@@ -60,3 +60,12 @@ test("xmlExpandSelfClosingTags => true", () => {
 
   expect(formatted).toMatchSnapshot();
 });
+
+test("xmlWhitespaceSensitivity => ignore, xmlExpandSelfClosingTags => true", () => {
+  const formatted = format(fixture, {
+    xmlExpandSelfClosingTags: true,
+    xmlWhitespaceSensitivity: "ignore"
+  });
+
+  expect(formatted).toMatchSnapshot();
+});
