@@ -1,6 +1,6 @@
 {
   "name": "@prettier/plugin-xml",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "description": "prettier plugin for XML",
   "main": "dist/plugin.js",
   "scripts": {
@@ -21,14 +21,14 @@
   "homepage": "https://github.com/prettier/plugin-xml#readme",
   "dependencies": {
     "@xml-tools/parser": "^1.0.11",
-    "prettier": ">=2.3"
+    "prettier": ">=2.4.0"
   },
   "devDependencies": {
     "@types/jest": "^27.0.0",
-    "@types/node": "^17.0.4",
+    "@types/node": "^17.0.22",
     "@types/prettier": "^2.3.0",
-    "@typescript-eslint/eslint-plugin": "^5.8.0",
-    "@typescript-eslint/parser": "^5.8.0",
+    "@typescript-eslint/eslint-plugin": "^5.16.0",
+    "@typescript-eslint/parser": "^5.16.0",
     "eslint": "^8.5.0",
     "eslint-config-prettier": "^8.0.0",
     "jest": "^27.0.1",
