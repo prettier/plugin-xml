@@ -326,7 +326,7 @@ const printer: Printer = {
 
                       return fill(
                         value
-                          .split(/( )/g)
+                          .split(/\b( +)\b/g)
                           .map((segment, index) =>
                             index % 2 === 0 ? segment : line
                           )
