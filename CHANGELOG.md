@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+### Added
+
+- Support for the `singleAttributePerLine` option.
+
 ## [2.0.1] - 2022-03-22
 
 ### Added

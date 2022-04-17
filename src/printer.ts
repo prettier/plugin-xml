@@ -264,8 +264,12 @@ const printer: Printer = {
         const parts: Doc[] = [OPEN[0].image, Name[0].image];
 
         if (attribute) {
+          const separator = opts.singleAttributePerLine ? hardline : line;
           parts.push(
-            indent([line, join(line, path.map(print, "children", "attribute"))])
+            indent([
+              line,
+              join(separator, path.map(print, "children", "attribute"))
+            ])
           );
         }
 
