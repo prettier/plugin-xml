@@ -52,3 +52,12 @@ test("bracketSameLine => true, xmlSelfClosingSpace => false", () => {
 
   expect(formatted).toMatchSnapshot();
 });
+
+test("singleAttributePerLine => true", () => {
+  const formatted = format(fixture, {
+    singleAttributePerLine: true,
+    xmlWhitespaceSensitivity: "ignore"
+  });
+
+  expect(formatted).toMatchSnapshot();
+});
