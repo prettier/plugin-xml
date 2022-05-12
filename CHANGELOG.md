@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+## [2.2.0] - 2022-05-12
+
+### Added
+
+- Better error messages in the case of a syntax error.
+
 ## [2.1.0] - 2022-04-16
 
 ### Added
