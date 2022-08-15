@@ -1,5 +1,6 @@
 /.eslintcache
 /coverage/
+/src/languages.ts
 /dist/
 /node_modules/
 /test.xml
