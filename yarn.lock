@@ -2928,9 +2928,9 @@ tsutils@^3.21.0:
     tslib "^1.8.1"
 
 tsx@^3.8.2:
-  version "3.8.2"
-  resolved "https://registry.yarnpkg.com/tsx/-/tsx-3.8.2.tgz#5522dbe28890b63dedb659fc86fb9c5224207c5e"
-  integrity sha512-Jf9izq3Youry5aEarspf6Gm+v/IE2A2xP7YVhtNH1VSCpM0jjACg7C3oD5rIoLBfXWGJSZj4KKC2bwE0TgLb2Q==
+  version "3.9.0"
+  resolved "https://registry.yarnpkg.com/tsx/-/tsx-3.9.0.tgz#315738e2fa19dc5f2efd05517ed8fd3a52461acb"
+  integrity sha512-ofxsE+qjqCYYq4UBt5khglvb+ESgxef1YpuNcdQI92kvcAT2tZVrnSK3g4bRXTUhLmKHcC5q8vIZA47os/stng==
   dependencies:
     "@esbuild-kit/cjs-loader" "^2.3.3"
     "@esbuild-kit/core-utils" "^2.1.0"
