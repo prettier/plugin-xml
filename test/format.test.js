@@ -1,18 +1,13 @@
-import fs from "fs";
-import path from "path";
-import prettier from "prettier";
+const fs = require("fs");
+const path = require("path");
+const prettier = require("prettier");
 
-import { Options } from "../src/types";
-import plugin from "../src/plugin";
+const plugin = require("../src/plugin");
 
 const fixture = fs.readFileSync(path.join(__dirname, "./fixture.xml"), "utf-8");
 
-function format(content: string, opts: Partial<Options> = {}) {
-  return prettier.format(content, {
-    ...opts,
-    parser: "xml",
-    plugins: [plugin as any as string] // hacky but it works
-  });
+function format(content, opts = {}) {
+  return prettier.format(content, { ...opts, parser: "xml", plugins: [plugin] });
 }
 
 test("defaults", () => {

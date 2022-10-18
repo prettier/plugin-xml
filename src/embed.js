@@ -1,13 +1,4 @@
-import { builders, utils } from "prettier/doc";
-import {
-  AnyNode,
-  ContentCtx,
-  Doc,
-  ElementCstNode,
-  Embed,
-  Options,
-  Path
-} from "./types";
+const { builders, utils } = require("prettier/doc");
 
 const {
   dedentToRoot,
@@ -22,7 +13,7 @@ const {
 
 // Replace the string content newlines within a doc tree with literallines so
 // that all of the indentation lines up appropriately
-function replaceNewlines(doc: Doc) {
+function replaceNewlines(doc) {
   return utils.mapDoc(doc, (currentDoc) =>
     typeof currentDoc === "string" && currentDoc.includes("\n")
       ? currentDoc.split(/(\n)/g).map((v, i) => (i % 2 === 0 ? v : literalline))
@@ -31,16 +22,12 @@ function replaceNewlines(doc: Doc) {
 }
 
 // Get the start and end element tags from the current node on the tree
-function getElementTags(
-  path: Path<ElementCstNode>,
-  opts: Options,
-  print: (path: Path<AnyNode>) => Doc
-) {
+function getElementTags(path, opts, print) {
   const node = path.getValue();
   const { OPEN, Name, attribute, START_CLOSE, SLASH_OPEN, END_NAME, END } =
     node.children;
 
-  const parts: Doc[] = [OPEN[0].image, Name[0].image];
+  const parts = [OPEN[0].image, Name[0].image];
 
   if (attribute) {
     parts.push(
@@ -60,7 +47,7 @@ function getElementTags(
 
 // Get the name of the parser that is represented by the given element node,
 // return null if a matching parser cannot be found
-function getParser(node: ElementCstNode, opts: Options) {
+function getParser(node, opts) {
   const { Name, attribute } = node.children;
   const parser = Name[0].image.toLowerCase();
 
@@ -103,14 +90,14 @@ function getParser(node: ElementCstNode, opts: Options) {
 
 // Get the source string that will be passed into the embedded parser from the
 // content of the inside of the element node
-function getSource(content: ContentCtx) {
+function getSource(content) {
   return content.chardata
     .map((node) => {
       const { SEA_WS, TEXT } = node.children;
       const [{ image }] = SEA_WS || TEXT;
 
       return {
-        offset: node.location!.startOffset,
+        offset: node.location.startOffset,
         printed: image
       };
     })
@@ -119,7 +106,7 @@ function getSource(content: ContentCtx) {
     .join("");
 }
 
-const embed: Embed = (path, print, textToDoc, opts) => {
+function embed(path, print, textToDoc, opts) {
   const node = path.getValue();
 
   // If the node isn't an element node, then skip
@@ -143,8 +130,7 @@ const embed: Embed = (path, print, textToDoc, opts) => {
 
   // Get the open and close tags of this element, then return the properly
   // formatted content enclosed within them
-  const nodePath = path as Path<typeof node>;
-  const { openTag, closeTag } = getElementTags(nodePath, opts, print);
+  const { openTag, closeTag } = getElementTags(path, opts, print);
 
   return group([
     openTag,
@@ -161,4 +147,4 @@ const embed: Embed = (path, print, textToDoc, opts) => {
   ]);
 };
 
-export default embed;
+module.exports = embed;

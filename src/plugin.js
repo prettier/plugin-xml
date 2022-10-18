@@ -1,9 +1,8 @@
-import type { Plugin } from "./types";
-import languages from "./languages";
-import parser from "./parser";
-import printer from "./printer";
+const languages = require("./languages");
+const parser = require("./parser");
+const printer = require("./printer");
 
-const plugin: Plugin = {
+const plugin = {
   languages,
   parsers: {
     xml: parser
@@ -43,4 +42,4 @@ const plugin: Plugin = {
   }
 };
 
-export = plugin;
+module.exports = plugin;

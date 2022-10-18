@@ -1,4 +1,4 @@
-#!./node_modules/.bin/ts-node
+#!/usr/bin/env node
 
 import fs from "fs";
 import prettier from "prettier";
@@ -11,7 +11,7 @@ const code = fs.existsSync(process.argv[2])
 
 const options = {
   parser: "xml",
-  plugins: [plugin as any as string],
+  plugins: [plugin],
   xmlWhitespaceSensitivity: "ignore"
 };
 

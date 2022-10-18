@@ -1,6 +1,5 @@
-import { builders } from "prettier/doc";
-import embed from "./embed";
-import type { ContentCstNode, Doc, IToken, Path, Printer } from "./types";
+const { builders } = require("prettier/doc");
+const embed = require("./embed");
 
 const { fill, group, hardline, indent, join, line, literalline, softline } =
   builders;
@@ -8,7 +7,7 @@ const { fill, group, hardline, indent, join, line, literalline, softline } =
 const ignoreStartComment = "<!-- prettier-ignore-start -->";
 const ignoreEndComment = "<!-- prettier-ignore-end -->";
 
-function hasIgnoreRanges(comments: IToken[]) {
+function hasIgnoreRanges(comments) {
   if (!comments || comments.length === 0) {
     return false;
   }
@@ -27,20 +26,13 @@ function hasIgnoreRanges(comments: IToken[]) {
   return false;
 }
 
-function isWhitespaceIgnorable(node: ContentCstNode) {
+function isWhitespaceIgnorable(node) {
   const { CData, Comment, reference } = node.children;
 
   return !CData && !reference && !hasIgnoreRanges(Comment);
 }
 
-type Fragment = {
-  offset: number;
-  printed: Doc;
-  startLine?: number;
-  endLine?: number;
-};
-
-function printIToken(path: Path<IToken>): Fragment {
+function printIToken(path) {
   const node = path.getValue();
 
   return {
@@ -51,13 +43,13 @@ function printIToken(path: Path<IToken>): Fragment {
   };
 }
 
-function replaceNewlinesWithLiteralLines(content: string) {
+function replaceNewlinesWithLiteralLines(content) {
   return content
     .split(/(\n)/g)
     .map((value, idx) => (idx % 2 === 0 ? value : literalline));
 }
 
-const printer: Printer = {
+const printer = {
   embed,
   print(path, opts, print) {
     const node = path.getValue();
@@ -77,10 +69,8 @@ const printer: Printer = {
           .map((value, index) => (index % 2 === 0 ? value : literalline));
       }
       case "content": {
-        const nodePath = path as Path<typeof node>;
-
-        let fragments = nodePath.call((childrenPath) => {
-          let response: Fragment[] = [];
+        let fragments = path.call((childrenPath) => {
+          let response = [];
           const children = childrenPath.getValue();
 
           if (children.CData) {
@@ -97,7 +87,7 @@ const printer: Printer = {
             response = response.concat(
               childrenPath.map(
                 (charDataPath) => ({
-                  offset: charDataPath.getValue().location!.startOffset,
+                  offset: charDataPath.getValue().location.startOffset,
                   printed: print(charDataPath)
                 }),
                 "chardata"
@@ -109,7 +99,7 @@ const printer: Printer = {
             response = response.concat(
               childrenPath.map(
                 (elementPath) => ({
-                  offset: elementPath.getValue().location!.startOffset,
+                  offset: elementPath.getValue().location.startOffset,
                   printed: print(elementPath)
                 }),
                 "element"
@@ -129,7 +119,7 @@ const printer: Printer = {
                 const referenceNode = referencePath.getValue();
 
                 return {
-                  offset: referenceNode.location!.startOffset,
+                  offset: referenceNode.location.startOffset,
                   printed: (referenceNode.children.CharRef ||
                     referenceNode.children.EntityRef)[0].image
                 };
@@ -145,8 +135,8 @@ const printer: Printer = {
         if (hasIgnoreRanges(Comment)) {
           Comment.sort((left, right) => left.startOffset - right.startOffset);
 
-          const ignoreRanges: { start: number; end: number }[] = [];
-          let ignoreStart: IToken | null = null;
+          const ignoreRanges = [];
+          let ignoreStart = null;
 
           // Build up a list of ignored ranges from the original text based on the
           // special prettier-ignore-* comments
@@ -154,10 +144,7 @@ const printer: Printer = {
             if (comment.image === ignoreStartComment) {
               ignoreStart = comment;
             } else if (ignoreStart && comment.image === ignoreEndComment) {
-              ignoreRanges.push({
-                start: ignoreStart.startOffset,
-                end: comment.endOffset!
-              });
+              ignoreRanges.push({ start: ignoreStart.startOffset, end: comment.endOffset });
 
               ignoreStart = null;
             }
@@ -189,7 +176,7 @@ const printer: Printer = {
       }
       case "docTypeDecl": {
         const { DocType, Name, externalID, CLOSE } = node.children;
-        const parts: Doc[] = [DocType[0].image, " ", Name[0].image];
+        const parts = [DocType[0].image, " ", Name[0].image];
 
         if (externalID) {
           parts.push(" ", path.call(print, "children", "externalID", 0));
@@ -199,18 +186,18 @@ const printer: Printer = {
       }
       case "document": {
         const { docTypeDecl, element, misc, prolog } = node.children;
-        const fragments: Fragment[] = [];
+        const fragments = [];
 
         if (docTypeDecl) {
           fragments.push({
-            offset: docTypeDecl[0].location!.startOffset,
+            offset: docTypeDecl[0].location.startOffset,
             printed: path.call(print, "children", "docTypeDecl", 0)
           });
         }
 
         if (prolog) {
           fragments.push({
-            offset: prolog[0].location!.startOffset,
+            offset: prolog[0].location.startOffset,
             printed: path.call(print, "children", "prolog", 0)
           });
         }
@@ -219,12 +206,12 @@ const printer: Printer = {
           misc.forEach((node) => {
             if (node.children.PROCESSING_INSTRUCTION) {
               fragments.push({
-                offset: node.location!.startOffset,
+                offset: node.location.startOffset,
                 printed: node.children.PROCESSING_INSTRUCTION[0].image
               });
             } else if (node.children.Comment) {
               fragments.push({
-                offset: node.location!.startOffset,
+                offset: node.location.startOffset,
                 printed: node.children.Comment[0].image
               });
             }
@@ -233,7 +220,7 @@ const printer: Printer = {
 
         if (element) {
           fragments.push({
-            offset: element[0].location!.startOffset,
+            offset: element[0].location.startOffset,
             printed: path.call(print, "children", "element", 0)
           });
         }
@@ -261,7 +248,7 @@ const printer: Printer = {
           SLASH_CLOSE
         } = node.children;
 
-        const parts: Doc[] = [OPEN[0].image, Name[0].image];
+        const parts = [OPEN[0].image, Name[0].image];
 
         if (attribute) {
           const separator = opts.singleAttributePerLine ? hardline : line;
@@ -275,7 +262,7 @@ const printer: Printer = {
 
         // Determine the value that will go between the <, name, and attributes
         // of an element and the /> of an element.
-        const space: Doc = opts.xmlSelfClosingSpace ? line : softline;
+        const space = opts.xmlSelfClosingSpace ? line : softline;
 
         if (SLASH_CLOSE) {
           return group([...parts, space, SLASH_CLOSE[0].image]);
@@ -301,12 +288,10 @@ const printer: Printer = {
           opts.xmlWhitespaceSensitivity === "ignore" &&
           isWhitespaceIgnorable(content[0])
         ) {
-          const nodePath = path as Path<typeof node>;
-
-          const fragments = nodePath.call(
+          const fragments = path.call(
             (childrenPath) => {
               const children = childrenPath.getValue();
-              let response: Fragment[] = [];
+              let response = [];
 
               if (children.Comment) {
                 response = response.concat(
@@ -338,11 +323,11 @@ const printer: Printer = {
                     })
                   );
 
-                  const location = chardata.location!;
+                  const location = chardata.location;
                   response.push({
                     offset: location.startOffset,
                     startLine: location.startLine,
-                    endLine: location.endLine!,
+                    endLine: location.endLine,
                     printed
                   });
                 }, "chardata");
@@ -351,12 +336,12 @@ const printer: Printer = {
               if (children.element) {
                 response = response.concat(
                   childrenPath.map((elementPath) => {
-                    const location = elementPath.getValue().location!;
+                    const location = elementPath.getValue().location;
 
                     return {
                       offset: location.startOffset,
                       startLine: location.startLine,
-                      endLine: location.endLine!,
+                      endLine: location.endLine,
                       printed: print(elementPath)
                     };
                   }, "element")
@@ -399,18 +384,18 @@ const printer: Printer = {
             return group([...parts, space, "/>"]);
           }
 
-          const docs: Doc[] = [];
-          let lastLine: number = fragments[0].startLine!;
+          const docs = [];
+          let lastLine = fragments[0].startLine;
 
           fragments.forEach((node) => {
-            if (node.startLine! - lastLine >= 2) {
+            if (node.startLine - lastLine >= 2) {
               docs.push(hardline, hardline);
             } else {
               docs.push(hardline);
             }
 
             docs.push(node.printed);
-            lastLine = node.endLine!;
+            lastLine = node.endLine;
           });
 
           return group([openTag, indent(docs), hardline, closeTag]);
@@ -439,7 +424,7 @@ const printer: Printer = {
       }
       case "prolog": {
         const { XMLDeclOpen, attribute, SPECIAL_CLOSE } = node.children;
-        const parts: Doc[] = [XMLDeclOpen[0].image];
+        const parts = [XMLDeclOpen[0].image];
 
         if (attribute) {
           parts.push(
@@ -457,4 +442,4 @@ const printer: Printer = {
   }
 };
 
-export default printer;
+module.exports = printer;
