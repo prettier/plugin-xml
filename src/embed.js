@@ -1,4 +1,4 @@
-import doc from "prettier/doc.js";
+import * as prettier from "prettier";
 
 const {
   dedentToRoot,
@@ -9,12 +9,12 @@ const {
   line,
   literalline,
   softline
-} = doc.builders;
+} = prettier.doc.builders;
 
 // Replace the string content newlines within a doc tree with literallines so
 // that all of the indentation lines up appropriately
 function replaceNewlines(rootDoc) {
-  return doc.utils.mapDoc(rootDoc, (currentDoc) =>
+  return prettier.doc.utils.mapDoc(rootDoc, (currentDoc) =>
     typeof currentDoc === "string" && currentDoc.includes("\n")
       ? currentDoc.split(/(\n)/g).map((v, i) => (i % 2 === 0 ? v : literalline))
       : currentDoc
@@ -106,45 +106,47 @@ function getSource(content) {
     .join("");
 }
 
-function embed(path, print, textToDoc, opts) {
+function embed(path, opts) {
   const node = path.getValue();
 
   // If the node isn't an element node, then skip
   if (node.name !== "element") {
-    return null;
+    return;
   }
 
   // If the name of the node does not correspond to the name of a parser that
   // prettier knows about, then skip
   const parser = getParser(node, opts);
   if (!parser) {
-    return null;
+    return;
   }
 
   // If the node does not actually contain content, or it contains any content
   // that is not just plain text, then skip
   const content = node.children.content[0].children;
   if (Object.keys(content).length !== 1 || !content.chardata) {
-    return null;
+    return;
   }
 
-  // Get the open and close tags of this element, then return the properly
-  // formatted content enclosed within them
-  const { openTag, closeTag } = getElementTags(path, opts, print);
+  return async function(textToDoc, print) {
+    // Get the open and close tags of this element, then return the properly
+    // formatted content enclosed within them
+    const { openTag, closeTag } = getElementTags(path, opts, print);
 
-  return group([
-    openTag,
-    literalline,
-    dedentToRoot(
-      replaceNewlines(
-        doc.utils.stripTrailingHardline(
-          textToDoc(getSource(content), { ...opts, parser })
+    return group([
+      openTag,
+      literalline,
+      dedentToRoot(
+        replaceNewlines(
+          prettier.doc.utils.stripTrailingHardline(
+            await textToDoc(getSource(content), { ...opts, parser })
+          )
         )
-      )
-    ),
-    hardline,
-    closeTag
-  ]);
+      ),
+      hardline,
+      closeTag
+    ]);
+  }
 };
 
 export default embed;

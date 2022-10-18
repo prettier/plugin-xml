@@ -1,8 +1,8 @@
-import doc from "prettier/doc.js";
+import * as prettier from "prettier";
 import embed from "./embed.js";
 
 const { fill, group, hardline, indent, join, line, literalline, softline } =
-  doc.builders;
+  prettier.doc.builders;
 
 const ignoreStartComment = "<!-- prettier-ignore-start -->";
 const ignoreEndComment = "<!-- prettier-ignore-end -->";

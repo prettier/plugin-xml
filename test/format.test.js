@@ -3,7 +3,7 @@ import { join } from "path";
 import * as prettier from "prettier";
 import * as url from "url";
 
-import plugin from "../src/plugin";
+import plugin from "../src/plugin.js";
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const fixture = readFileSync(join(__dirname, "./fixture.xml"), "utf-8");
@@ -12,18 +12,18 @@ function format(content, opts = {}) {
   return prettier.format(content, { ...opts, parser: "xml", plugins: [plugin] });
 }
 
-test("defaults", () => {
-  const formatted = format(fixture);
+test("defaults", async () => {
+  const formatted = await format(fixture);
   expect(formatted).toMatchSnapshot();
 });
 
-test("xmlWhitespaceSensitivity => ignore", () => {
-  const formatted = format(fixture, { xmlWhitespaceSensitivity: "ignore" });
+test("xmlWhitespaceSensitivity => ignore", async () => {
+  const formatted = await format(fixture, { xmlWhitespaceSensitivity: "ignore" });
   expect(formatted).toMatchSnapshot();
 });
 
-test("bracketSameLine => true", () => {
-  const formatted = format(fixture, {
+test("bracketSameLine => true", async () => {
+  const formatted = await format(fixture, {
     bracketSameLine: true,
     xmlWhitespaceSensitivity: "ignore"
   });
@@ -31,8 +31,8 @@ test("bracketSameLine => true", () => {
   expect(formatted).toMatchSnapshot();
 });
 
-test("xmlSelfClosingSpace => false", () => {
-  const formatted = format(fixture, {
+test("xmlSelfClosingSpace => false", async () => {
+  const formatted = await format(fixture, {
     xmlSelfClosingSpace: false,
     xmlWhitespaceSensitivity: "ignore"
   });
@@ -40,8 +40,8 @@ test("xmlSelfClosingSpace => false", () => {
   expect(formatted).toMatchSnapshot();
 });
 
-test("bracketSameLine => true, xmlSelfClosingSpace => false", () => {
-  const formatted = format(fixture, {
+test("bracketSameLine => true, xmlSelfClosingSpace => false", async () => {
+  const formatted = await format(fixture, {
     bracketSameLine: true,
     xmlSelfClosingSpace: false,
     xmlWhitespaceSensitivity: "ignore"
@@ -50,8 +50,8 @@ test("bracketSameLine => true, xmlSelfClosingSpace => false", () => {
   expect(formatted).toMatchSnapshot();
 });
 
-test("singleAttributePerLine => true", () => {
-  const formatted = format(fixture, {
+test("singleAttributePerLine => true", async () => {
+  const formatted = await format(fixture, {
     singleAttributePerLine: true,
     xmlWhitespaceSensitivity: "ignore"
   });

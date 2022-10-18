@@ -22,7 +22,7 @@
   "homepage": "https://github.com/prettier/plugin-xml#readme",
   "dependencies": {
     "@xml-tools/parser": "^1.0.11",
-    "prettier": ">=2.4.0"
+    "prettier": ">=3.0.0-alpha.2"
   },
   "devDependencies": {
     "eslint": "^8.5.0",
