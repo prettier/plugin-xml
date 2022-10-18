@@ -12,14 +12,13 @@ jobs:
     - uses: actions/checkout@master
     - uses: actions/setup-node@v2
       with:
-        node-version: 14.x
+        node-version: 18.x
         cache: yarn
     - name: Lint and test
       run: |
         yarn install --frozen-lockfile
-        yarn prepublishOnly
         yarn lint
-        yarn prettier --plugin . --check '**/*'
+        yarn prettier --check '**/*'
         yarn test
 
   automerge:

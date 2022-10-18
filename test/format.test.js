@@ -1,15 +1,18 @@
 import { readFileSync } from "fs";
-import { join } from "path";
 import * as prettier from "prettier";
-import * as url from "url";
-
 import plugin from "../src/plugin.js";
 
-const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
-const fixture = readFileSync(join(__dirname, "./fixture.xml"), "utf-8");
+const fixture = readFileSync(
+  new URL("./fixture.xml", import.meta.url),
+  "utf-8"
+);
 
 function format(content, opts = {}) {
-  return prettier.format(content, { ...opts, parser: "xml", plugins: [plugin] });
+  return prettier.format(content, {
+    ...opts,
+    parser: "xml",
+    plugins: [plugin]
+  });
 }
 
 test("defaults", async () => {
@@ -18,7 +21,9 @@ test("defaults", async () => {
 });
 
 test("xmlWhitespaceSensitivity => ignore", async () => {
-  const formatted = await format(fixture, { xmlWhitespaceSensitivity: "ignore" });
+  const formatted = await format(fixture, {
+    xmlWhitespaceSensitivity: "ignore"
+  });
   expect(formatted).toMatchSnapshot();
 });
 

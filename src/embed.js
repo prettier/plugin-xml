@@ -128,7 +128,7 @@ function embed(path, opts) {
     return;
   }
 
-  return async function(textToDoc, print) {
+  return async function (textToDoc, print) {
     // Get the open and close tags of this element, then return the properly
     // formatted content enclosed within them
     const { openTag, closeTag } = getElementTags(path, opts, print);
@@ -146,7 +146,7 @@ function embed(path, opts) {
       hardline,
       closeTag
     ]);
-  }
-};
+  };
+}
 
 export default embed;

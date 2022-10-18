@@ -144,7 +144,10 @@ const printer = {
             if (comment.image === ignoreStartComment) {
               ignoreStart = comment;
             } else if (ignoreStart && comment.image === ignoreEndComment) {
-              ignoreRanges.push({ start: ignoreStart.startOffset, end: comment.endOffset });
+              ignoreRanges.push({
+                start: ignoreStart.startOffset,
+                end: comment.endOffset
+              });
 
               ignoreStart = null;
             }

@@ -36,12 +36,16 @@
       "prettier"
     ],
     "env": {
-      "es6": true,
       "jest": true,
       "node": true
+    },
+    "parserOptions": {
+      "ecmaVersion": 2020,
+      "sourceType": "module"
     }
   },
   "eslintIgnore": [
+    "bin/languages.js",
     "dist"
   ],
   "jest": {
@@ -50,7 +54,7 @@
   },
   "prettier": {
     "plugins": [
-      "."
+      "./src/plugin.js"
     ],
     "trailingComma": "none"
   }

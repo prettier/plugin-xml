@@ -36,5 +36,8 @@ function getSupportLanguages() {
 const languages = JSON.stringify(getSupportLanguages());
 const { plugins, ...prettierConfig } = packageJSON.prettier;
 
-const formatted = await format(`export default ${languages};`, { parser: "babel", ...prettierConfig });
+const formatted = await format(`export default ${languages};`, {
+  parser: "babel",
+  ...prettierConfig
+});
 writeFileSync("src/languages.js", formatted);
