@@ -1,13 +1,4 @@
-import { builders, utils } from "prettier/doc";
-import {
-  AnyNode,
-  ContentCtx,
-  Doc,
-  ElementCstNode,
-  Embed,
-  Options,
-  Path
-} from "./types";
+import * as prettier from "prettier";
 
 const {
   dedentToRoot,
@@ -18,12 +9,12 @@ const {
   line,
   literalline,
   softline
-} = builders;
+} = prettier.doc.builders;
 
 // Replace the string content newlines within a doc tree with literallines so
 // that all of the indentation lines up appropriately
-function replaceNewlines(doc: Doc) {
-  return utils.mapDoc(doc, (currentDoc) =>
+function replaceNewlines(rootDoc) {
+  return prettier.doc.utils.mapDoc(rootDoc, (currentDoc) =>
     typeof currentDoc === "string" && currentDoc.includes("\n")
       ? currentDoc.split(/(\n)/g).map((v, i) => (i % 2 === 0 ? v : literalline))
       : currentDoc
@@ -31,16 +22,12 @@ function replaceNewlines(doc: Doc) {
 }
 
 // Get the start and end element tags from the current node on the tree
-function getElementTags(
-  path: Path<ElementCstNode>,
-  opts: Options,
-  print: (path: Path<AnyNode>) => Doc
-) {
+function getElementTags(path, opts, print) {
   const node = path.getValue();
   const { OPEN, Name, attribute, START_CLOSE, SLASH_OPEN, END_NAME, END } =
     node.children;
 
-  const parts: Doc[] = [OPEN[0].image, Name[0].image];
+  const parts = [OPEN[0].image, Name[0].image];
 
   if (attribute) {
     parts.push(
@@ -60,7 +47,7 @@ function getElementTags(
 
 // Get the name of the parser that is represented by the given element node,
 // return null if a matching parser cannot be found
-function getParser(node: ElementCstNode, opts: Options) {
+function getParser(node, opts) {
   const { Name, attribute } = node.children;
   const parser = Name[0].image.toLowerCase();
 
@@ -103,14 +90,14 @@ function getParser(node: ElementCstNode, opts: Options) {
 
 // Get the source string that will be passed into the embedded parser from the
 // content of the inside of the element node
-function getSource(content: ContentCtx) {
+function getSource(content) {
   return content.chardata
     .map((node) => {
       const { SEA_WS, TEXT } = node.children;
       const [{ image }] = SEA_WS || TEXT;
 
       return {
-        offset: node.location!.startOffset,
+        offset: node.location.startOffset,
         printed: image
       };
     })
@@ -119,46 +106,47 @@ function getSource(content: ContentCtx) {
     .join("");
 }
 
-const embed: Embed = (path, print, textToDoc, opts) => {
+function embed(path, opts) {
   const node = path.getValue();
 
   // If the node isn't an element node, then skip
   if (node.name !== "element") {
-    return null;
+    return;
   }
 
   // If the name of the node does not correspond to the name of a parser that
   // prettier knows about, then skip
   const parser = getParser(node, opts);
   if (!parser) {
-    return null;
+    return;
   }
 
   // If the node does not actually contain content, or it contains any content
   // that is not just plain text, then skip
   const content = node.children.content[0].children;
   if (Object.keys(content).length !== 1 || !content.chardata) {
-    return null;
+    return;
   }
 
-  // Get the open and close tags of this element, then return the properly
-  // formatted content enclosed within them
-  const nodePath = path as Path<typeof node>;
-  const { openTag, closeTag } = getElementTags(nodePath, opts, print);
+  return async function (textToDoc, print) {
+    // Get the open and close tags of this element, then return the properly
+    // formatted content enclosed within them
+    const { openTag, closeTag } = getElementTags(path, opts, print);
 
-  return group([
-    openTag,
-    literalline,
-    dedentToRoot(
-      replaceNewlines(
-        utils.stripTrailingHardline(
-          textToDoc(getSource(content), { ...opts, parser })
+    return group([
+      openTag,
+      literalline,
+      dedentToRoot(
+        replaceNewlines(
+          prettier.doc.utils.stripTrailingHardline(
+            await textToDoc(getSource(content), { ...opts, parser })
+          )
         )
-      )
-    ),
-    hardline,
-    closeTag
-  ]);
-};
+      ),
+      hardline,
+      closeTag
+    ]);
+  };
+}
 
 export default embed;

@@ -1,13 +1,14 @@
-import fs from "node:fs";
-import path from "node:path";
+#!/usr/bin/env node
 
-import LinguistLanguages from "linguist-languages";
-import prettier, { SupportLanguage } from "prettier";
+import { writeFileSync } from "node:fs";
+import linguistLanguages from "linguist-languages";
+import { format } from "prettier";
+import packageJSON from "../package.json" assert { type: "json" };
 
 function getSupportLanguages() {
-  const supportLanguages: SupportLanguage[] = [];
+  const supportLanguages = [];
 
-  for (const language of Object.values(LinguistLanguages)) {
+  for (const language of Object.values(linguistLanguages)) {
     if (language.aceMode === "xml") {
       const { type, color, aceMode, languageId, ...config } = language;
 
@@ -33,15 +34,10 @@ function getSupportLanguages() {
 }
 
 const languages = JSON.stringify(getSupportLanguages());
-const source = `import { SupportLanguage } from "prettier";
-const languages: SupportLanguage[] = ${languages};
-export default languages;`;
+const { plugins, ...prettierConfig } = packageJSON.prettier;
 
-const packagePath = path.join(path.dirname(__dirname), "package.json");
-const packageConfig = JSON.parse(fs.readFileSync(packagePath, "utf8"));
-const { plugins, ...prettierConfig } = packageConfig.prettier;
-
-fs.writeFileSync(
-  "src/languages.ts",
-  prettier.format(source, { parser: "typescript", ...prettierConfig })
-);
+const formatted = await format(`export default ${languages};`, {
+  parser: "babel",
+  ...prettierConfig
+});
+writeFileSync("src/languages.js", formatted);
