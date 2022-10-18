@@ -1,8 +1,8 @@
-const { builders } = require("prettier/doc");
-const embed = require("./embed");
+import doc from "prettier/doc.js";
+import embed from "./embed.js";
 
 const { fill, group, hardline, indent, join, line, literalline, softline } =
-  builders;
+  doc.builders;
 
 const ignoreStartComment = "<!-- prettier-ignore-start -->";
 const ignoreEndComment = "<!-- prettier-ignore-end -->";
@@ -442,4 +442,4 @@ const printer = {
   }
 };
 
-module.exports = printer;
+export default printer;

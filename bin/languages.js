@@ -1,10 +1,9 @@
 #!/usr/bin/env node
 
-const fs = require("node:fs");
-const path = require("node:path");
-
-const linguistLanguages = require("linguist-languages");
-const prettier = require("prettier");
+import { writeFileSync } from "node:fs";
+import linguistLanguages from "linguist-languages";
+import { format } from "prettier";
+import packageJSON from "../package.json" assert { type: "json" };
 
 function getSupportLanguages() {
   const supportLanguages = [];
@@ -35,12 +34,9 @@ function getSupportLanguages() {
 }
 
 const languages = JSON.stringify(getSupportLanguages());
+const { plugins, ...prettierConfig } = packageJSON.prettier;
 
-const packagePath = path.join(path.dirname(__dirname), "package.json");
-const packageConfig = JSON.parse(fs.readFileSync(packagePath, "utf8"));
-const { plugins, ...prettierConfig } = packageConfig.prettier;
-
-fs.writeFileSync(
+writeFileSync(
   "src/languages.js",
-  prettier.format(`module.exports = ${languages};`, { parser: "typescript", ...prettierConfig })
+  format(`export default ${languages};`, { parser: "babel", ...prettierConfig })
 );

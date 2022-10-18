@@ -1,10 +1,12 @@
-const fs = require("fs");
-const path = require("path");
-const prettier = require("prettier");
+import { readFileSync } from "fs";
+import { join } from "path";
+import * as prettier from "prettier";
+import * as url from "url";
 
-const plugin = require("../src/plugin");
+import plugin from "../src/plugin";
 
-const fixture = fs.readFileSync(path.join(__dirname, "./fixture.xml"), "utf-8");
+const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
+const fixture = readFileSync(join(__dirname, "./fixture.xml"), "utf-8");
 
 function format(content, opts = {}) {
   return prettier.format(content, { ...opts, parser: "xml", plugins: [plugin] });

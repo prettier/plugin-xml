@@ -3,7 +3,7 @@
 import fs from "fs";
 import prettier from "prettier";
 
-import plugin from "../src/plugin";
+import plugin from "../src/plugin.js";
 
 const code = fs.existsSync(process.argv[2])
   ? fs.readFileSync(process.argv[2], "utf-8")
@@ -12,7 +12,8 @@ const code = fs.existsSync(process.argv[2])
 const options = {
   parser: "xml",
   plugins: [plugin],
-  xmlWhitespaceSensitivity: "ignore"
+  xmlWhitespaceSensitivity: "ignore",
+  embeddedLanguageFormatting: "auto"
 };
 
 console.log(prettier.format(code, options));

@@ -6,6 +6,5 @@
 /yarn.lock
 /LICENSE
 
-/src/types.ts
 /test/fixture.xml
 /test/__snapshots__/*

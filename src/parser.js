@@ -1,4 +1,4 @@
-const { parse: xmlToolsParse } = require("@xml-tools/parser");
+import { parse as xmlToolsParse } from "@xml-tools/parser";
 
 const parser = {
   parse(text) {
@@ -43,4 +43,4 @@ const parser = {
   }
 };
 
-module.exports = parser;
+export default parser;

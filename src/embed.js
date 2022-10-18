@@ -1,4 +1,4 @@
-const { builders, utils } = require("prettier/doc");
+import doc from "prettier/doc.js";
 
 const {
   dedentToRoot,
@@ -9,12 +9,12 @@ const {
   line,
   literalline,
   softline
-} = builders;
+} = doc.builders;
 
 // Replace the string content newlines within a doc tree with literallines so
 // that all of the indentation lines up appropriately
-function replaceNewlines(doc) {
-  return utils.mapDoc(doc, (currentDoc) =>
+function replaceNewlines(rootDoc) {
+  return doc.utils.mapDoc(rootDoc, (currentDoc) =>
     typeof currentDoc === "string" && currentDoc.includes("\n")
       ? currentDoc.split(/(\n)/g).map((v, i) => (i % 2 === 0 ? v : literalline))
       : currentDoc
@@ -137,7 +137,7 @@ function embed(path, print, textToDoc, opts) {
     literalline,
     dedentToRoot(
       replaceNewlines(
-        utils.stripTrailingHardline(
+        doc.utils.stripTrailingHardline(
           textToDoc(getSource(content), { ...opts, parser })
         )
       )
@@ -147,4 +147,4 @@ function embed(path, print, textToDoc, opts) {
   ]);
 };
 
-module.exports = embed;
+export default embed;

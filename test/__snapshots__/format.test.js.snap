@@ -39,10 +39,10 @@ use {
 
   <yaml
     myveryveryveryverylongattributename=\\"myveryveryveryverylongattributevalue\\">
-    - 1
-    - 2
-    - 3
-  </style>
+- 1
+  - 2
+- 3
+  </yaml>
 
   <!-- inner comment -->
 
@@ -115,10 +115,10 @@ use {
 
   <yaml
     myveryveryveryverylongattributename=\\"myveryveryveryverylongattributevalue\\">
-    - 1
-    - 2
-    - 3
-  </style>
+- 1
+  - 2
+- 3
+  </yaml>
 
   <!-- inner comment -->
 
@@ -193,10 +193,10 @@ use {
   <yaml
     myveryveryveryverylongattributename=\\"myveryveryveryverylongattributevalue\\"
   >
-      - 1
-    - 2
-    - 3
-  </style>
+- 1
+  - 2
+- 3
+  </yaml>
 
   <!-- inner comment -->
 
@@ -268,10 +268,10 @@ use {
   <yaml
     myveryveryveryverylongattributename=\\"myveryveryveryverylongattributevalue\\"
   >
-    - 1
-    - 2
-    - 3
-  </style>
+- 1
+  - 2
+- 3
+  </yaml>
 
   <!-- inner comment -->
 
@@ -358,10 +358,10 @@ use {
   <yaml
     myveryveryveryverylongattributename=\\"myveryveryveryverylongattributevalue\\"
   >
-    - 1
-    - 2
-    - 3
-  </style>
+- 1
+  - 2
+- 3
+  </yaml>
 
   <!-- inner comment -->
 
@@ -436,10 +436,10 @@ use {
   <yaml
     myveryveryveryverylongattributename=\\"myveryveryveryverylongattributevalue\\"
   >
-    - 1
-    - 2
-    - 3
-  </style>
+- 1
+  - 2
+- 3
+  </yaml>
 
   <!-- inner comment -->
 
