@@ -27,7 +27,7 @@
   "devDependencies": {
     "eslint": "^8.5.0",
     "eslint-config-prettier": "^8.0.0",
-    "jest": "^28.1.0",
+    "jest": "^29.2.1",
     "linguist-languages": "^7.21.0"
   },
   "eslintConfig": {
