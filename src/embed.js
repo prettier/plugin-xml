@@ -132,17 +132,12 @@ function embed(path, opts) {
     // Get the open and close tags of this element, then return the properly
     // formatted content enclosed within them
     const { openTag, closeTag } = getElementTags(path, opts, print);
+    const doc = await textToDoc(getSource(content), { ...opts, parser });
 
     return group([
       openTag,
       literalline,
-      dedentToRoot(
-        replaceNewlines(
-          prettier.doc.utils.stripTrailingHardline(
-            await textToDoc(getSource(content), { ...opts, parser })
-          )
-        )
-      ),
+      dedentToRoot(replaceNewlines(doc)),
       hardline,
       closeTag
     ]);

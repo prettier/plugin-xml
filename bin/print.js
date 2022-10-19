@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import fs from "fs";
-import prettier from "prettier";
+import { format } from "prettier";
 
 import plugin from "../src/plugin.js";
 
@@ -16,4 +16,4 @@ const options = {
   embeddedLanguageFormatting: "auto"
 };
 
-console.log(prettier.format(code, options));
+format(code, options).then((formatted) => console.log(formatted));
