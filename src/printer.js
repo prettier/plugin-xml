@@ -4,8 +4,6 @@ import embed from "./embed.js";
 const { fill, group, hardline, indent, join, line, literalline, softline } =
   doc.builders;
 
-const { replaceEndOfLine } = doc.utils;
-
 const ignoreStartComment = "<!-- prettier-ignore-start -->";
 const ignoreEndComment = "<!-- prettier-ignore-end -->";
 
@@ -165,7 +163,7 @@ const printer = {
 
             fragments.push({
               offset: start,
-              printed: replaceEndOfLine(content)
+              printed: doc.utils.replaceEndOfLine(content)
             });
           });
         }

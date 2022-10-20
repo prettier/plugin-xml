@@ -11,8 +11,6 @@ const {
   softline
 } = doc.builders;
 
-const { replaceEndOfLine } = doc.utils;
-
 // Get the start and end element tags from the current node on the tree
 function getElementTags(path, opts, print) {
   const node = path.getValue();
@@ -124,12 +122,12 @@ function embed(path, opts) {
     // Get the open and close tags of this element, then return the properly
     // formatted content enclosed within them
     const { openTag, closeTag } = getElementTags(path, opts, print);
-    const doc = await textToDoc(getSource(content), { parser });
+    const docNode = await textToDoc(getSource(content), { parser });
 
     return group([
       openTag,
       literalline,
-      dedentToRoot(replaceEndOfLine(doc)),
+      dedentToRoot(doc.utils.replaceEndOfLine(docNode)),
       hardline,
       closeTag
     ]);
