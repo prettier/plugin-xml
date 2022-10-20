@@ -1,8 +1,10 @@
-import * as prettier from "prettier";
+import * as doc from "prettier/doc";
 import embed from "./embed.js";
 
 const { fill, group, hardline, indent, join, line, literalline, softline } =
-  prettier.doc.builders;
+  doc.builders;
+
+const { replaceEndOfLine } = doc.utils;
 
 const ignoreStartComment = "<!-- prettier-ignore-start -->";
 const ignoreEndComment = "<!-- prettier-ignore-end -->";
@@ -41,12 +43,6 @@ function printIToken(path) {
     endLine: node.endLine,
     printed: node.image
   };
-}
-
-function replaceNewlinesWithLiteralLines(content) {
-  return content
-    .split(/(\n)/g)
-    .map((value, idx) => (idx % 2 === 0 ? value : literalline));
 }
 
 const printer = {
@@ -169,7 +165,7 @@ const printer = {
 
             fragments.push({
               offset: start,
-              printed: replaceNewlinesWithLiteralLines(content)
+              printed: replaceEndOfLine(content)
             });
           });
         }

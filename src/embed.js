@@ -1,4 +1,4 @@
-import * as prettier from "prettier";
+import * as doc from "prettier/doc";
 
 const {
   dedentToRoot,
@@ -9,17 +9,9 @@ const {
   line,
   literalline,
   softline
-} = prettier.doc.builders;
+} = doc.builders;
 
-// Replace the string content newlines within a doc tree with literallines so
-// that all of the indentation lines up appropriately
-function replaceNewlines(rootDoc) {
-  return prettier.doc.utils.mapDoc(rootDoc, (currentDoc) =>
-    typeof currentDoc === "string" && currentDoc.includes("\n")
-      ? currentDoc.split(/(\n)/g).map((v, i) => (i % 2 === 0 ? v : literalline))
-      : currentDoc
-  );
-}
+const { replaceEndOfLine } = doc.utils;
 
 // Get the start and end element tags from the current node on the tree
 function getElementTags(path, opts, print) {
@@ -132,12 +124,12 @@ function embed(path, opts) {
     // Get the open and close tags of this element, then return the properly
     // formatted content enclosed within them
     const { openTag, closeTag } = getElementTags(path, opts, print);
-    const doc = await textToDoc(getSource(content), { ...opts, parser });
+    const doc = await textToDoc(getSource(content), { parser });
 
     return group([
       openTag,
       literalline,
-      dedentToRoot(replaceNewlines(doc)),
+      dedentToRoot(replaceEndOfLine(doc)),
       hardline,
       closeTag
     ]);
