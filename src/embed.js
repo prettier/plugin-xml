@@ -39,7 +39,7 @@ function getElementTags(path, opts, print) {
 // return null if a matching parser cannot be found
 function getParser(node, opts) {
   const { Name, attribute } = node.children;
-  const parser = Name[0].image.toLowerCase();
+  let parser = Name[0].image.toLowerCase();
 
   // We don't want to deal with some weird recursive parser situation, so we
   // need to explicitly call out the XML parser here and just return null
@@ -47,18 +47,36 @@ function getParser(node, opts) {
     return null;
   }
 
-  // If this is a style tag with a text/css type, then we can skip straight to
-  // saying that this needs a CSS parser
-  if (
-    parser === "style" &&
-    attribute &&
-    attribute.some(
-      (attr) =>
-        attr.children.Name[0].image === "type" &&
-        attr.children.STRING[0].image === '"text/css"'
-    )
-  ) {
-    return "css";
+  // If this is a style tag with a text/xxx type then we will use xxx as the
+  // name of the parser
+  if (parser === "style" && attribute) {
+    const typeAttr = attribute.find(
+      (attr) => attr.children.Name[0].image === "type"
+    );
+    const typeValue = typeAttr && typeAttr.children.STRING[0].image;
+
+    if (typeValue.startsWith('"text/') && typeValue.endsWith('"')) {
+      parser = typeValue.slice(6, -1);
+    }
+  }
+
+  // If this is a script tag with text/xxx then we will use xxx as the name of
+  // the parser
+  if (parser === "script" && attribute) {
+    const typeAttr = attribute.find(
+      (attr) => attr.children.Name[0].image === "type"
+    );
+    const typeValue = typeAttr && typeAttr.children.STRING[0].image;
+
+    if (typeValue.startsWith('"text/') && typeValue.endsWith('"')) {
+      parser = typeValue.slice(6, -1);
+    }
+  }
+
+  // If the name of the parser is "javascript", then we're going to switch over
+  // to the babel parser.
+  if (parser === "javascript") {
+    parser = "babel";
   }
 
   // If there is a plugin that has a parser that matches the name of this
