@@ -47,6 +47,13 @@ function getParser(node, opts) {
     return null;
   }
 
+  // If somehow there is a "flow" node in XML file (Salesforce files for ex.)
+  // we should stick to xml parser.
+  // Flow is written as JS anyway, annotated by @flow in the code.
+  if (parser === "flow") {
+    return null;
+  }  
+
   // If this is a style tag with a text/xxx type then we will use xxx as the
   // name of the parser
   if (parser === "style" && attribute) {

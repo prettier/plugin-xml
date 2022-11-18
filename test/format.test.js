@@ -7,6 +7,11 @@ const fixture = readFileSync(
   "utf-8"
 );
 
+const flowFixture = readFileSync(
+  new URL("./flow_fixture.xml", import.meta.url),
+  "utf-8"
+);
+
 function format(content, opts = {}) {
   return prettier.format(content, {
     ...opts,
@@ -61,5 +66,12 @@ test("singleAttributePerLine => true", async () => {
     xmlWhitespaceSensitivity: "ignore"
   });
 
+  expect(formatted).toMatchSnapshot();
+});
+
+test("xml with flow tag", async () => {
+  const formatted = await format(flowFixture, {
+    xmlSelfClosingSpace: false
+  });
   expect(formatted).toMatchSnapshot();
 });

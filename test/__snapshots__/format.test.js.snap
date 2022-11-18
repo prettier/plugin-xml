@@ -317,6 +317,20 @@ use {
 "
 `;
 
+exports[`xml with flow tag 1`] = `
+"<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>This is a blank permission</description>
+    <flowAccesses>
+        <enabled>true</enabled>
+        <flow>SF_Flow</flow>
+    </flowAccesses>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Salesforce Flow Access</label>
+</PermissionSet>
+"
+`;
+
 exports[`xmlSelfClosingSpace => false 1`] = `
 "<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE module PUBLIC "-//Puppy Crawl//DTD Check Configuration 1.3//EN"
