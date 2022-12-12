@@ -35,6 +35,21 @@ function getElementTags(path, opts, print) {
   };
 }
 
+// Returns the value of the type tag if there is one, otherwise returns null.
+function getTagType(attributes) {
+  for (const attribute of attributes) {
+    if (attribute.children.Name[0].image === "type") {
+      const value = attribute.children.STRING[0].image;
+
+      if (value.startsWith('"text/') && value.endsWith('"')) {
+        return value.slice(6, -1);
+      }
+    }
+  }
+
+  return null;
+}
+
 // Get the name of the parser that is represented by the given element node,
 // return null if a matching parser cannot be found
 function getParser(node, opts) {
@@ -47,30 +62,10 @@ function getParser(node, opts) {
     return null;
   }
 
-  // If this is a style tag with a text/xxx type then we will use xxx as the
-  // name of the parser
-  if (parser === "style" && attribute) {
-    const typeAttr = attribute.find(
-      (attr) => attr.children.Name[0].image === "type"
-    );
-    const typeValue = typeAttr && typeAttr.children.STRING[0].image;
-
-    if (typeValue.startsWith('"text/') && typeValue.endsWith('"')) {
-      parser = typeValue.slice(6, -1);
-    }
-  }
-
-  // If this is a script tag with text/xxx then we will use xxx as the name of
-  // the parser
-  if (parser === "script" && attribute) {
-    const typeAttr = attribute.find(
-      (attr) => attr.children.Name[0].image === "type"
-    );
-    const typeValue = typeAttr && typeAttr.children.STRING[0].image;
-
-    if (typeValue.startsWith('"text/') && typeValue.endsWith('"')) {
-      parser = typeValue.slice(6, -1);
-    }
+  // If this is a style tag or a script tag with a text/xxx type then we will
+  // use xxx as the name of the parser
+  if ((parser === "style" || parser === "script") && attribute) {
+    parser = getTagType(attribute);
   }
 
   // If the name of the parser is "javascript", then we're going to switch over

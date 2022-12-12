@@ -28,6 +28,7 @@
     use             { stroke: purple;
                       fill: orange; }
   </style>
+  <script value="lint" />
 
   <yaml myveryveryveryverylongattributename="myveryveryveryverylongattributevalue">
     - 1
