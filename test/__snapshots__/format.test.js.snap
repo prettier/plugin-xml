@@ -36,6 +36,7 @@ use {
   fill: orange;
 }
   </style>
+  <script value="lint" />
 
   <yaml
     myveryveryveryverylongattributename="myveryveryveryverylongattributevalue">
@@ -112,6 +113,7 @@ use {
   fill: orange;
 }
   </style>
+  <script value="lint"/>
 
   <yaml
     myveryveryveryverylongattributename="myveryveryveryverylongattributevalue">
@@ -189,6 +191,7 @@ use {
   fill: orange;
 }
   </style>
+  <script value="lint" />
 
   <yaml
     myveryveryveryverylongattributename="myveryveryveryverylongattributevalue"
@@ -264,6 +267,7 @@ use {
   fill: orange;
 }
   </style>
+  <script value="lint" />
 
   <yaml
     myveryveryveryverylongattributename="myveryveryveryverylongattributevalue"
@@ -354,6 +358,7 @@ use {
   fill: orange;
 }
   </style>
+  <script value="lint"/>
 
   <yaml
     myveryveryveryverylongattributename="myveryveryveryverylongattributevalue"
@@ -432,6 +437,7 @@ use {
   fill: orange;
 }
   </style>
+  <script value="lint" />
 
   <yaml
     myveryveryveryverylongattributename="myveryveryveryverylongattributevalue"
