@@ -24,7 +24,8 @@ body:
       description: What value do you have the `xmlWhitespaceSensitivity` option set to? (Defaults to `"strict"`.) Be 100% sure changing this to `"ignore"` doesn't fix your issue!
       options:
         - "strict"
-        - "ignore"
+        - "preserve"
+        - "ignore"        
     validations:
       required: true
   - type: dropdown

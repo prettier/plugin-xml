@@ -29,6 +29,10 @@ const plugin = {
           description: "Whitespaces are considered sensitive in all elements."
         },
         {
+          value: "preserve",
+          description: "Whitespaces within text nodes in XML elements and attributes are considered sensitive."
+        },
+        {
           value: "ignore",
           description: "Whitespaces are considered insensitive in all elements."
         }
