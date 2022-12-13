@@ -282,7 +282,7 @@ const printer = {
         ]);
 
         if (
-          opts.xmlWhitespaceSensitivity === "ignore" &&
+          opts.xmlWhitespaceSensitivity !== "strict" &&
           isWhitespaceIgnorable(content[0])
         ) {
           const fragments = path.call(
@@ -297,37 +297,72 @@ const printer = {
               }
 
               if (children.chardata) {
-                childrenPath.each((charDataPath) => {
-                  const chardata = charDataPath.getValue();
-                  if (!chardata.children.TEXT) {
-                    return;
-                  }
+                // Does this chardata node have any non-whitespace text?
+                const containsText = children.chardata.some(({children}) => !!children.TEXT);                
 
-                  const content = chardata.children.TEXT[0].image.trim();
-                  const printed = group(
-                    content.split(/(\n)/g).map((value) => {
-                      if (value === "\n") {
-                        return literalline;
-                      }
+                if (containsText && opts.xmlWhitespaceSensitivity === "preserve") {
+                  let prevLocation;
+                  childrenPath.each((charDataPath) => {
+                    const chardata = charDataPath.getValue();
+                    const location = chardata.location;
+                    const content = print(charDataPath);
 
-                      return fill(
-                        value
-                          .split(/\b( +)\b/g)
-                          .map((segment, index) =>
-                            index % 2 === 0 ? segment : line
-                          )
-                      );
-                    })
-                  );
-
-                  const location = chardata.location;
-                  response.push({
-                    offset: location.startOffset,
-                    startLine: location.startLine,
-                    endLine: location.endLine,
-                    printed
-                  });
-                }, "chardata");
+                    if (prevLocation &&
+                        location.startColumn &&
+                        prevLocation.endColumn &&
+                        location.startLine === prevLocation.endLine &&
+                        location.startColumn === prevLocation.endColumn + 1) {
+                      // continuation of previous fragment                      
+                      const prevFragment = response[response.length - 1];
+                      prevFragment.endLine = location.endLine;
+                      prevFragment.printed = group([
+                        prevFragment.printed,
+                        content
+                      ]);
+                    } else {
+                      response.push({
+                        offset: location.startOffset,
+                        startLine: location.startLine,
+                        endLine: location.endLine,
+                        printed: content,
+                        hasSignificantWhitespace: true,
+                      })
+                    }
+                    prevLocation = location;
+                  }, 'chardata');
+                } else {
+                  childrenPath.each((charDataPath) => {
+                    const chardata = charDataPath.getValue();
+                    if (!chardata.children.TEXT) {
+                      return;
+                    }
+  
+                    const content = chardata.children.TEXT[0].image.trim();
+                    const printed = group(
+                      content.split(/(\n)/g).map((value) => {
+                        if (value === "\n") {
+                          return literalline;
+                        }
+  
+                        return fill(
+                          value
+                            .split(/\b( +)\b/g)
+                            .map((segment, index) =>
+                              index % 2 === 0 ? segment : line
+                            )
+                        );
+                      })
+                    );
+  
+                    const location = chardata.location;
+                    response.push({
+                      offset: location.startOffset,
+                      startLine: location.startLine,
+                      endLine: location.endLine,
+                      printed
+                    });
+                  }, "chardata");
+                }
               }
 
               if (children.element) {
@@ -360,6 +395,20 @@ const printer = {
           );
 
           fragments.sort((left, right) => left.offset - right.offset);
+
+          if (opts.xmlWhitespaceSensitivity === "preserve") {
+            const hasSignificantWhitespace = fragments.some(
+              ({ hasSignificantWhitespace }) => !!hasSignificantWhitespace
+            );
+            if (hasSignificantWhitespace) {
+              // Return fragments unaltered
+              return group([
+                openTag,
+                fragments.map(({ printed }) => printed),
+                closeTag
+              ])
+            }            
+          }
 
           // If the only content of this tag is chardata, then use a softline so
           // that we won't necessarily break (to allow <foo>bar</foo>).

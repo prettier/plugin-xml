@@ -63,3 +63,12 @@ test("singleAttributePerLine => true", async () => {
 
   expect(formatted).toMatchSnapshot();
 });
+
+test("xmlWhitespaceSensitivity => preserve", async () => {
+  const formatted = await format(fixture, {
+    xmlWhitespaceSensitivity: "preserve"
+  });
+  console.log({formatted});
+
+  expect(formatted).toMatchSnapshot();
+});
