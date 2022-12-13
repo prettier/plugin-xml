@@ -68,7 +68,6 @@ test("xmlWhitespaceSensitivity => preserve", async () => {
   const formatted = await format(fixture, {
     xmlWhitespaceSensitivity: "preserve"
   });
-  console.log({formatted});
 
   expect(formatted).toMatchSnapshot();
 });
