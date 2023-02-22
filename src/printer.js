@@ -365,7 +365,12 @@ function printElement(path, opts, print) {
 
   // Determine the value that will go between the <, name, and attributes
   // of an element and the /> of an element.
-  const space = opts.xmlSelfClosingSpace ? line : softline;
+  let space;
+  if (opts.bracketSameLine) {
+    space = opts.xmlSelfClosingSpace ? " " : "";
+  } else {
+    space = opts.xmlSelfClosingSpace ? line : softline;
+  }
 
   if (SLASH_CLOSE) {
     return group([...parts, space, SLASH_CLOSE[0].image]);
