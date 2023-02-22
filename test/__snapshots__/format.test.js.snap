@@ -79,6 +79,10 @@ use {
     even more
     <content />
   </div>
+
+  <div
+    verylongattribute="verylongvalue"
+    anotherverylongattribute="anotherverylongvalue" />
 </svg>
 <!-- bar -->
 "
@@ -163,6 +167,10 @@ use {
     even more
     <content/>
   </div>
+
+  <div
+    verylongattribute="verylongvalue"
+    anotherverylongattribute="anotherverylongvalue"/>
 </svg>
 <!-- bar -->
 "
@@ -240,6 +248,11 @@ use {
     even more
     <content />
   </div>
+
+  <div
+    verylongattribute="verylongvalue"
+    anotherverylongattribute="anotherverylongvalue"
+  />
 </svg>
 <!-- bar -->
 "
@@ -338,6 +351,11 @@ use {
     even more
     <content />
   </div>
+
+  <div
+    verylongattribute="verylongvalue"
+    anotherverylongattribute="anotherverylongvalue"
+  />
 </svg>
 <!-- bar -->
 "
@@ -424,6 +442,11 @@ use {
     even more
     <content/>
   </div>
+
+  <div
+    verylongattribute="verylongvalue"
+    anotherverylongattribute="anotherverylongvalue"
+  />
 </svg>
 <!-- bar -->
 "
@@ -510,6 +533,11 @@ use {
     even more
     <content />
   </div>
+
+  <div
+    verylongattribute="verylongvalue"
+    anotherverylongattribute="anotherverylongvalue"
+  />
 </svg>
 <!-- bar -->
 "
@@ -589,6 +617,11 @@ use {
     even more
     <content />
   </div>
+
+  <div
+    verylongattribute="verylongvalue"
+    anotherverylongattribute="anotherverylongvalue"
+  />
 </svg>
 <!-- bar -->
 "

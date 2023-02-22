@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+### Changed
+
+- Fixed the behavior of `bracketSameLine` when the attributes on the parent element broke into multiple lines.
+
 ## [2.2.0] - 2022-05-12
 
 ### Added
