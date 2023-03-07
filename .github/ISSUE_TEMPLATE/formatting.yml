@@ -15,6 +15,13 @@ body:
       placeholder: "80"
   - type: input
     attributes:
+      label: singleAttributePerLine
+      description: What value do you have the `singleAttributePerLine` option set to? (Defaults to `false`.)
+      options:
+        - "true"
+        - "false"
+  - type: input
+    attributes:
       label: tabWidth
       description: What value do you have the `tabWidth` option set to? (Defaults to `2`.)
       placeholder: "2"
