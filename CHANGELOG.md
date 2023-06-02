@@ -6,9 +6,17 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+## [3.0.0-alpha.0] - 2023-06-02
+
+### Added
+
+- The `xmlWhitespaceSensitivity: "preserve"` option has been added. See the README.
+
 ### Changed
 
 - Fixed the behavior of `bracketSameLine` when the attributes on the parent element broke into multiple lines.
+- **BREAKING** Require prettier v3.
+- **BREAKING** Migrate to ESM modules.
 
 ## [2.2.0] - 2022-05-12
 
@@ -195,7 +203,8 @@ and it will maintain your formatting.
 
 - Initial release 🎉
 
-[unreleased]: https://github.com/prettier/plugin-xml/compare/v2.2.0...HEAD
+[unreleased]: https://github.com/prettier/plugin-xml/compare/v3.0.0-alpha.0...HEAD
+[3.0.0-alpha.0]: https://github.com/prettier/plugin-xml/compare/v2.2.0...v3.0.0-alpha.0
 [2.2.0]: https://github.com/prettier/plugin-xml/compare/v2.1.0...v2.2.0
 [2.1.0]: https://github.com/prettier/plugin-xml/compare/v2.0.1...v2.1.0
 [2.0.1]: https://github.com/prettier/plugin-xml/compare/v2.0.0...v2.0.1
