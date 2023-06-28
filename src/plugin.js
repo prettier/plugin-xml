@@ -39,7 +39,13 @@ const plugin = {
         }
       ],
       since: "0.6.0"
-    }
+    },
+    sortAttributesByKey: {
+      type: "boolean",
+      category: "XML",
+      default: false,
+      description: "Orders XML attributes by key alphabetically while prioritizing xmlns attributes.",
+    },
   },
   defaultOptions: {
     printWidth: 80,

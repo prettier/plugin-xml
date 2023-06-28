@@ -1,5 +1,6 @@
 import * as doc from "prettier/doc";
 import embed from "./embed.js";
+import sortAttributesByKey from "./util/sortAttributesByKey.js";
 
 const { fill, group, hardline, indent, join, line, literalline, softline } =
   doc.builders;
@@ -356,10 +357,17 @@ function printElement(path, opts, print) {
 
   const parts = [OPEN[0].image, Name[0].image];
 
+
   if (attribute) {
     const separator = opts.singleAttributePerLine ? hardline : line;
+  
+    const attributes = path.map(print, "children", "attribute");
+    if (opts.sortAttributesByKey) {
+      sortAttributesByKey(attributes);
+    }
+
     parts.push(
-      indent([line, join(separator, path.map(print, "children", "attribute"))])
+      indent([line, join(separator, attributes)])
     );
   }
 

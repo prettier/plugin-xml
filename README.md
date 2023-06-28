@@ -51,6 +51,7 @@ Below are the options (from [`src/plugin.js`](src/plugin.js)) that `@prettier/pl
 | `bracketSameLine`          | `--bracket-same-line`          |   `true`   | Same as in Prettier ([see prettier docs](https://prettier.io/docs/en/options.html#bracket-same-line))                    |
 | `printWidth`               | `--print-width`                |    `80`    | Same as in Prettier ([see prettier docs](https://prettier.io/docs/en/options.html#print-width)).                         |
 | `singleAttributePerLine`   | `--single-attribute-per-line`  |  `false`   | Same as in Prettier ([see prettier docs](https://prettier.io/docs/en/options.html#single-attribute-per-line))            |
+| `sortAttributesByKey`      | `--sort-attributes-by-key`     |  `false`   | Orders XML attributes by key alphabetically while prioritizing xmlns attributes.                                         |
 | `tabWidth`                 | `--tab-width`                  |    `2`     | Same as in Prettier ([see prettier docs](https://prettier.io/docs/en/options.html#tab-width)).                           |
 | `xmlSelfClosingSpace`      | `--xml-self-closing-space`     |   `true`   | Adds a space before self-closing tags.                                                                                   |
 | `xmlWhitespaceSensitivity` | `--xml-whitespace-sensitivity` | `"strict"` | Options are `"strict"`, `"preserve"`, and `"ignore"`. You may want `"ignore"` or `"preserve"`, [see below](#whitespace). |
