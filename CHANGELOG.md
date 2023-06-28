@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+- The `quoteProps: "consistent" | "preserve"` option has been added. See the README.
+- the `singleQuote: true | false` option has been added. See the README.
+
 ## [3.0.0-alpha.0] - 2023-06-02
 
 ### Added

@@ -39,6 +39,29 @@ const plugin = {
         }
       ],
       since: "0.6.0"
+    },
+    quoteProps: {
+      type: "choice",
+      category: "XML",
+      default: "preserve",
+      description: "How to handle whitespaces in XML.",
+      choices: [
+        {
+          value: "preserve",
+          description:
+            "Quotes in attribute values will be preserved as written."
+        },
+        {
+          value: "consistent",
+          description: "Quotes in attribute values will be converted to consistent double quotes or single quotes if singleQuote is set to \"true\"."
+        },
+      ],
+    },
+    singleQuote: {
+      type: "boolean",
+      category: "XML",
+      default: false,
+      description: "Converts quotes around attribute tags from double quotes to single quotes if quoteProps is set to \"consistent\"",
     }
   },
   defaultOptions: {

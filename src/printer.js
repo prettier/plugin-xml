@@ -45,8 +45,18 @@ function printIToken(path) {
 
 function printAttribute(path, opts, print) {
   const { Name, EQUALS, STRING } = path.getValue().children;
-
-  return [Name[0].image, EQUALS[0].image, STRING[0].image];
+  
+  let attributeValue;
+  if (opts.quoteProps === "preserve") {
+    attributeValue = STRING[0].image;
+  } else {
+    if (opts.singleQuote) {
+      attributeValue = STRING[0].image.replaceAll("\"", "\'");
+    } else {
+      attributeValue = STRING[0].image.replaceAll("\'", "\"");
+    }
+  }
+  return [Name[0].image, EQUALS[0].image, attributeValue];
 }
 
 function printCharData(path, opts, print) {

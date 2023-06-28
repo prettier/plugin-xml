@@ -63,5 +63,7 @@
   </div>
 
   <div verylongattribute="verylongvalue" anotherverylongattribute="anotherverylongvalue" />
+
+  <div attr1='singleQuotes' att2="doubleQuotes" />
 </svg>
 <!-- bar -->
