@@ -40,7 +40,7 @@ const plugin = {
       ],
       since: "0.6.0"
     },
-    quoteProps: {
+    xmlQuoteAttributes: {
       type: "choice",
       category: "XML",
       default: "preserve",
@@ -52,16 +52,14 @@ const plugin = {
             "Quotes in attribute values will be preserved as written."
         },
         {
-          value: "consistent",
-          description: "Quotes in attribute values will be converted to consistent double quotes or single quotes if singleQuote is set to \"true\"."
+          value: "single",
+          description: "Quotes in attribute values will be converted to consistent single quotes and other quotes in the string will be escaped."
+        },
+        {
+          value: "double",
+          description: "Quotes in attribute values will be converted to consistent double quotes and other quotes in the string will be escaped."
         },
       ],
-    },
-    singleQuote: {
-      type: "boolean",
-      category: "XML",
-      default: false,
-      description: "Converts quotes around attribute tags from double quotes to single quotes if quoteProps is set to \"consistent\"",
     }
   },
   defaultOptions: {

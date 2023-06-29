@@ -47,15 +47,16 @@ function printAttribute(path, opts, print) {
   const { Name, EQUALS, STRING } = path.getValue().children;
   
   let attributeValue;
-  if (opts.quoteProps === "preserve") {
+  if (opts.xmlQuoteAttributes === "double") {
+    const content = STRING[0].image.slice(1, -1).replaceAll("\"", "&quot;");
+    attributeValue = `"${content}"`;
+  } else if (opts.xmlQuoteAttributes === "single") {
+    const content = STRING[0].image.slice(1, -1).replaceAll("\'", "&apos;");
+    attributeValue = `'${content}'`;
+  } else {  // preserve
     attributeValue = STRING[0].image;
-  } else {
-    if (opts.singleQuote) {
-      attributeValue = STRING[0].image.replaceAll("\"", "\'");
-    } else {
-      attributeValue = STRING[0].image.replaceAll("\'", "\"");
-    }
   }
+
   return [Name[0].image, EQUALS[0].image, attributeValue];
 }
 
