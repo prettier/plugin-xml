@@ -51,7 +51,7 @@ function printAttribute(path, opts, print) {
     const content = STRING[0].image.slice(1, -1).replaceAll("\"", "&quot;");
     attributeValue = `"${content}"`;
   } else if (opts.xmlQuoteAttributes === "single") {
-    const content = STRING[0].image.slice(1, -1).replaceAll("\'", "&apos;");
+    const content = STRING[0].image.slice(1, -1).replaceAll("'", "&apos;");
     attributeValue = `'${content}'`;
   } else {  // preserve
     attributeValue = STRING[0].image;
