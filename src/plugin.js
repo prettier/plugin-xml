@@ -53,13 +53,15 @@ const plugin = {
         },
         {
           value: "single",
-          description: "Quotes in attribute values will be converted to consistent single quotes and other quotes in the string will be escaped."
+          description:
+            "Quotes in attribute values will be converted to consistent single quotes and other quotes in the string will be escaped."
         },
         {
           value: "double",
-          description: "Quotes in attribute values will be converted to consistent double quotes and other quotes in the string will be escaped."
-        },
-      ],
+          description:
+            "Quotes in attribute values will be converted to consistent double quotes and other quotes in the string will be escaped."
+        }
+      ]
     }
   },
   defaultOptions: {

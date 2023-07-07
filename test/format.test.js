@@ -82,7 +82,7 @@ test("xmlQuoteAttributes => preserve", async () => {
 
 test("xmlQuoteAttributes => single", async () => {
   const formatted = await format(fixture, {
-    xmlQuoteAttributes: "single",
+    xmlQuoteAttributes: "single"
   });
 
   expect(formatted).toMatchSnapshot();
@@ -90,9 +90,8 @@ test("xmlQuoteAttributes => single", async () => {
 
 test("xmlQuoteAttributes => double", async () => {
   const formatted = await format(fixture, {
-    xmlQuoteAttributes: "double",
+    xmlQuoteAttributes: "double"
   });
 
   expect(formatted).toMatchSnapshot();
 });
-
