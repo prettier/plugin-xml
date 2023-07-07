@@ -76,6 +76,7 @@ test("xmlSortAttributesByKey => true", async () => {
   const formatted = await format(fixture, {
     xmlSortAttributesByKey: true
   });
+});
 
 test("xmlQuoteAttributes => preserve", async () => {
   const formatted = await format(fixture, {
@@ -97,5 +98,6 @@ test("xmlQuoteAttributes => double", async () => {
   const formatted = await format(fixture, {
     xmlQuoteAttributes: "double"
   });
+
   expect(formatted).toMatchSnapshot();
 });
