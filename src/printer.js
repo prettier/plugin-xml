@@ -357,17 +357,29 @@ function printElement(path, opts, print) {
 
   const parts = [OPEN[0].image, Name[0].image];
 
-
   if (attribute) {
-    const separator = opts.singleAttributePerLine ? hardline : line;
-  
-    const attributes = path.map(print, "children", "attribute");
-    if (opts.sortAttributesByKey) {
+    const attributes = path.map(
+      (attributePath) => ({
+        node: attributePath.getValue(),
+        printed: print(attributePath)
+      }),
+      "children",
+      "attribute"
+    );
+
+    if (opts.xmlSortAttributesByKey) {
       sortAttributesByKey(attributes);
     }
 
+    const separator = opts.singleAttributePerLine ? hardline : line;
     parts.push(
-      indent([line, join(separator, attributes)])
+      indent([
+        line,
+        join(
+          separator,
+          attributes.map(({ printed }) => printed)
+        )
+      ])
     );
   }
 

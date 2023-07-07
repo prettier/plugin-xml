@@ -47,13 +47,13 @@ The `prettier` executable is now installed and ready for use:
 Below are the options (from [`src/plugin.js`](src/plugin.js)) that `@prettier/plugin-xml` currently supports:
 
 | API Option                 | CLI Option                     |  Default   | Description                                                                                                              |
-| -------------------------- | ------------------------------ | :--------: | ------------------------------------------------------------------------------------------------------------------------ |
+| -------------------------- | ------------------------------ | :--------: | ------------------------------------------------------------------------------------------------------------------------ | --- |
 | `bracketSameLine`          | `--bracket-same-line`          |   `true`   | Same as in Prettier ([see prettier docs](https://prettier.io/docs/en/options.html#bracket-same-line))                    |
 | `printWidth`               | `--print-width`                |    `80`    | Same as in Prettier ([see prettier docs](https://prettier.io/docs/en/options.html#print-width)).                         |
-| `singleAttributePerLine`   | `--single-attribute-per-line`  |  `false`   | Same as in Prettier ([see prettier docs](https://prettier.io/docs/en/options.html#single-attribute-per-line))            |
-| `sortAttributesByKey`      | `--sort-attributes-by-key`     |  `false`   | Orders XML attributes by key alphabetically while prioritizing xmlns attributes.                                         |
+| `singleAttributePerLine`   | `--single-attribute-per-line`  |  `false`   | Same as in Prettier ([see prettier docs](https://prettier.io/docs/en/options.html#single-attribute-per-line))            |     |
 | `tabWidth`                 | `--tab-width`                  |    `2`     | Same as in Prettier ([see prettier docs](https://prettier.io/docs/en/options.html#tab-width)).                           |
 | `xmlSelfClosingSpace`      | `--xml-self-closing-space`     |   `true`   | Adds a space before self-closing tags.                                                                                   |
+| `xmlSortAttributesByKey`   | `--xml-sort-attributes-by-key` |  `false`   | Orders XML attributes by key alphabetically while prioritizing xmlns attributes.                                         |
 | `xmlWhitespaceSensitivity` | `--xml-whitespace-sensitivity` | `"strict"` | Options are `"strict"`, `"preserve"`, and `"ignore"`. You may want `"ignore"` or `"preserve"`, [see below](#whitespace). |
 
 Any of these can be added to your existing [prettier configuration
