@@ -6,7 +6,7 @@
   "main": "src/plugin.js",
   "scripts": {
     "lint": "eslint --cache .",
-    "prepare": "node bin/languages.js",
+    "prepare": "node bin/languages.js && husky install",
     "print": "prettier --plugin=.",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
   },
@@ -60,5 +60,8 @@
       "./src/plugin.js"
     ],
     "trailingComma": "none"
+  },
+  "lint-staged": {
+    "*.js": ["eslint --cache --fix", "prettier --write"]
   }
 }
