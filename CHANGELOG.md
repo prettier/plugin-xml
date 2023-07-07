@@ -6,6 +6,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+- the `xmlSortAttributesByKey: true | false` option has been added. See the README.
 - The `xmlQuoteAttributes: "preserve" | "single" | "double"` option has been added. See the README.
 
 ## [3.0.0] - 2023-07-06

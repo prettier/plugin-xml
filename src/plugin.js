@@ -40,6 +40,13 @@ const plugin = {
       ],
       since: "0.6.0"
     },
+    xmlSortAttributesByKey: {
+      type: "boolean",
+      category: "XML",
+      default: false,
+      description:
+        "Orders XML attributes by key alphabetically while prioritizing xmlns attributes."
+    },
     xmlQuoteAttributes: {
       type: "choice",
       category: "XML",

@@ -66,6 +66,31 @@
 
   <div attr1='singleQuotes' att2="doubleQuotes" />
 
+   <!-- Basic sorting of xml attributes -->
+  <div z="third" y="second" x="first" />
+
+  <container xmlns:ios="iosURI" xmlns:android="androidURI">
+    <foo
+      xmlns:tools="toolsURI"
+      android:d="d"
+      android:c="c"
+      some="non-ns-ed-attributes"
+      here="!"
+      tools:other="thing"
+      android:b="b"
+      xmlns="highest priority"
+      android:a="a"> 
+      <bar
+        xmlns:otherTools="otherToolsURI"
+        ios:d="d"
+        ios:c="c"
+        tools:other="thing"
+        another="one"
+        android:b="b"
+        otherTools:baz="bing"
+        ios:a="a" />
+    </foo>
+  </container>
   <EscapeNeeded name="Pete &quot;Maverick&quot; Mitchell"/>
 
   <NoEscapeNeeded>He said, "Don't quote me."</NoEscapeNeeded>
