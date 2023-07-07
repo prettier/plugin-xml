@@ -71,3 +71,27 @@ test("xmlWhitespaceSensitivity => preserve", async () => {
 
   expect(formatted).toMatchSnapshot();
 });
+
+test("xmlQuoteAttributes => preserve", async () => {
+  const formatted = await format(fixture, {
+    xmlQuoteAttributes: "preserve"
+  });
+
+  expect(formatted).toMatchSnapshot();
+});
+
+test("xmlQuoteAttributes => single", async () => {
+  const formatted = await format(fixture, {
+    xmlQuoteAttributes: "single"
+  });
+
+  expect(formatted).toMatchSnapshot();
+});
+
+test("xmlQuoteAttributes => double", async () => {
+  const formatted = await format(fixture, {
+    xmlQuoteAttributes: "double"
+  });
+
+  expect(formatted).toMatchSnapshot();
+});
