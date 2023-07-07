@@ -91,5 +91,12 @@
         ios:a="a" />
     </foo>
   </container>
+  <EscapeNeeded name="Pete &quot;Maverick&quot; Mitchell"/>
+
+  <NoEscapeNeeded>He said, "Don't quote me."</NoEscapeNeeded>
+
+  <NoEscapeNeeded name='Pete "Maverick" Mitchell'/>
+
+  <NoEscapeNeeded name="Pete 'Maverick' Mitchell"/>
 </svg>
 <!-- bar -->

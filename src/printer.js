@@ -47,7 +47,19 @@ function printIToken(path) {
 function printAttribute(path, opts, print) {
   const { Name, EQUALS, STRING } = path.getValue().children;
 
-  return [Name[0].image, EQUALS[0].image, STRING[0].image];
+  let attributeValue;
+  if (opts.xmlQuoteAttributes === "double") {
+    const content = STRING[0].image.slice(1, -1).replaceAll('"', "&quot;");
+    attributeValue = `"${content}"`;
+  } else if (opts.xmlQuoteAttributes === "single") {
+    const content = STRING[0].image.slice(1, -1).replaceAll("'", "&apos;");
+    attributeValue = `'${content}'`;
+  } else {
+    // preserve
+    attributeValue = STRING[0].image;
+  }
+
+  return [Name[0].image, EQUALS[0].image, attributeValue];
 }
 
 function printCharData(path, opts, print) {
