@@ -1,6 +1,5 @@
 import * as doc from "prettier/doc";
 import embed from "./embed.js";
-import sortAttributesByKey from "./util/sortAttributesByKey.js";
 
 const { fill, group, hardline, indent, join, line, literalline, softline } =
   doc.builders;
@@ -380,7 +379,35 @@ function printElement(path, opts, print) {
     );
 
     if (opts.xmlSortAttributesByKey) {
-      sortAttributesByKey(attributes);
+      attributes.sort((left, right) => {
+        const leftAttr = left.node.children.Name[0].image;
+        const rightAttr = right.node.children.Name[0].image;
+
+        // Check if the attributes are xmlns.
+        if (leftAttr === "xmlns") return -1;
+        if (rightAttr === "xmlns") return 1;
+
+        // Check if they are both in namespaces.
+        if (leftAttr.includes(":") && rightAttr.includes(":")) {
+          const [leftNS, leftKey] = leftAttr.split(":");
+          const [rightNS, rightKey] = rightAttr.split(":");
+
+          // If namespaces are equal, compare keys
+          if (leftNS === rightNS) return leftKey.localeCompare(rightKey);
+
+          // Handle the 1 but not both being an xmlns
+          if (leftNS === "xmlns") return -1;
+          if (rightNS === "xlmns") return 1;
+
+          return leftNS.localeCompare(rightNS);
+        }
+
+        // Check if the attributes have namespaces.
+        if (leftAttr.includes(":")) return -1;
+        if (rightAttr.includes(":")) return 1;
+
+        return leftAttr.localeCompare(rightAttr);
+      });
     }
 
     const separator = opts.singleAttributePerLine ? hardline : line;
