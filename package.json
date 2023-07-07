@@ -27,8 +27,10 @@
   "devDependencies": {
     "eslint": "^8.5.0",
     "eslint-config-prettier": "^8.0.0",
+    "husky": "^8.0.0",
     "jest": "^29.2.1",
-    "linguist-languages": "^7.21.0"
+    "linguist-languages": "^7.21.0",
+    "lint-staged": "^13.2.3"
   },
   "eslintConfig": {
     "extends": [
@@ -62,6 +64,9 @@
     "trailingComma": "none"
   },
   "lint-staged": {
-    "*.js": ["eslint --cache --fix", "prettier --write"]
+    "*.js": [
+      "eslint --cache --fix",
+      "prettier --write"
+    ]
   }
 }
