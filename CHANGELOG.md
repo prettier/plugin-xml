@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+## [3.1.1] - 2023-07-14
+
+### Changed
+
+- Required `prettier` as a peer dependency instead of a runtime dependency.
+
 ## [3.1.0] - 2023-07-07
 
 ### Added
@@ -216,7 +222,8 @@ and it will maintain your formatting.
 
 - Initial release 🎉
 
-[unreleased]: https://github.com/prettier/plugin-xml/compare/v3.1.0...HEAD
+[unreleased]: https://github.com/prettier/plugin-xml/compare/v3.1.1...HEAD
+[3.1.1]: https://github.com/prettier/plugin-xml/compare/v3.1.0...v3.1.1
 [3.1.0]: https://github.com/prettier/plugin-xml/compare/v3.0.0...v3.1.0
 [3.0.0]: https://github.com/prettier/plugin-xml/compare/v3.0.0-alpha.0...v3.0.0
 [3.0.0-alpha.0]: https://github.com/prettier/plugin-xml/compare/v2.2.0...v3.0.0-alpha.0
