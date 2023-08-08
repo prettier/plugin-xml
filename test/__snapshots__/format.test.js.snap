@@ -80,6 +80,10 @@ use {
     <content />
   </div>
 
+  <div xml:space="preserve">
+      <content />
+  </div>
+
   <div
     verylongattribute="verylongvalue"
     anotherverylongattribute="anotherverylongvalue" />
@@ -203,6 +207,10 @@ use {
     <content/>
   </div>
 
+  <div xml:space="preserve">
+      <content/>
+  </div>
+
   <div
     verylongattribute="verylongvalue"
     anotherverylongattribute="anotherverylongvalue"/>
@@ -317,6 +325,10 @@ use {
   <div>
     even more
     <content />
+  </div>
+
+  <div xml:space="preserve">
+      <content />
   </div>
 
   <div
@@ -459,6 +471,10 @@ use {
     <content />
   </div>
 
+  <div xml:space="preserve">
+      <content />
+  </div>
+
   <div
     verylongattribute="verylongvalue"
     anotherverylongattribute="anotherverylongvalue"
@@ -588,6 +604,10 @@ use {
     <content />
   </div>
 
+  <div xml:space="preserve">
+      <content />
+  </div>
+
   <div
     verylongattribute="verylongvalue"
     anotherverylongattribute="anotherverylongvalue"
@@ -707,6 +727,10 @@ use {
     <content />
   </div>
 
+  <div xml:space="preserve">
+      <content />
+  </div>
+
   <div
     verylongattribute="verylongvalue"
     anotherverylongattribute="anotherverylongvalue"
@@ -824,6 +848,10 @@ use {
   <div>
     even more
     <content />
+  </div>
+
+  <div xml:space='preserve'>
+      <content />
   </div>
 
   <div
@@ -954,6 +982,10 @@ use {
     <content/>
   </div>
 
+  <div xml:space="preserve">
+      <content/>
+  </div>
+
   <div
     verylongattribute="verylongvalue"
     anotherverylongattribute="anotherverylongvalue"
@@ -1082,6 +1114,10 @@ use {
     <content />
   </div>
 
+  <div xml:space="preserve">
+      <content />
+  </div>
+
   <div
     verylongattribute="verylongvalue"
     anotherverylongattribute="anotherverylongvalue"
@@ -1201,6 +1237,10 @@ use {
   <div>
     even more
     <content />
+  </div>
+
+  <div xml:space="preserve">
+      <content />
   </div>
 
   <div

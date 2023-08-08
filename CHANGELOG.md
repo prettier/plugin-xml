@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+### Added
+
+- Respect `xml:space="preserve"` as an override to the `xmlWhitespaceSensitivity` option.
+
 ## [3.1.1] - 2023-07-14
 
 ### Changed

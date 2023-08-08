@@ -26,10 +26,41 @@ function hasIgnoreRanges(comments) {
   return false;
 }
 
-function isWhitespaceIgnorable(node) {
-  const { CData, Comment, reference } = node.children;
+function isWhitespaceIgnorable(opts, attributes, content) {
+  // If the whitespace sensitivity setting is "strict", then we can't ignore the
+  // whitespace.
+  if (opts.xmlWhitespaceSensitivity === "strict") {
+    return false;
+  }
 
-  return !CData && !reference && !hasIgnoreRanges(Comment);
+  // If there is an xml:space attribute set to "preserve", then we can't ignore
+  // the whitespace.
+  if (
+    attributes &&
+    attributes.some(
+      (attribute) =>
+        attribute &&
+        attribute.children.Name[0].image === "xml:space" &&
+        attribute.children.STRING[0].image.slice(1, -1) === "preserve"
+    )
+  ) {
+    return false;
+  }
+
+  // If there are character data or reference nodes in the content, then we
+  // can't ignore the whitespace.
+  if (content.children.CData || content.children.reference) {
+    return false;
+  }
+
+  // If there are comments in the content and the comments are ignore ranges,
+  // then we can't ignore the whitespace.
+  if (hasIgnoreRanges(content.children.Comment)) {
+    return false;
+  }
+
+  // Otherwise we can.
+  return true;
 }
 
 function printIToken(path) {
@@ -451,10 +482,7 @@ function printElement(path, opts, print) {
     END[0].image
   ]);
 
-  if (
-    opts.xmlWhitespaceSensitivity !== "strict" &&
-    isWhitespaceIgnorable(content[0])
-  ) {
+  if (isWhitespaceIgnorable(opts, attribute, content[0])) {
     const fragments = path.call(
       (childrenPath) => printElementFragments(childrenPath, opts, print),
       "children",
