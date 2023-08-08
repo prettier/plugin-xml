@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+## [3.2.0] - 2023-08-08
+
 ### Added
 
 - Respect `xml:space="preserve"` as an override to the `xmlWhitespaceSensitivity` option.
@@ -226,7 +228,8 @@ and it will maintain your formatting.
 
 - Initial release 🎉
 
-[unreleased]: https://github.com/prettier/plugin-xml/compare/v3.1.1...HEAD
+[unreleased]: https://github.com/prettier/plugin-xml/compare/v3.2.0...HEAD
+[3.2.0]: https://github.com/prettier/plugin-xml/compare/v3.1.1...v3.2.0
 [3.1.1]: https://github.com/prettier/plugin-xml/compare/v3.1.0...v3.1.1
 [3.1.0]: https://github.com/prettier/plugin-xml/compare/v3.0.0...v3.1.0
 [3.0.0]: https://github.com/prettier/plugin-xml/compare/v3.0.0-alpha.0...v3.0.0
