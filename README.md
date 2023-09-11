@@ -39,7 +39,7 @@ yarn add --dev prettier @prettier/plugin-xml
 The `prettier` executable is now installed and ready for use:
 
 ```bash
-./node_modules/.bin/prettier --write '**/*.xml'
+./node_modules/.bin/prettier --plugin=@prettier/plugin-xml --write '**/*.xml'
 ```
 
 ## Configuration
@@ -69,7 +69,7 @@ file](https://prettier.io/docs/en/configuration.html). For example:
 Or, they can be passed to `prettier` as arguments:
 
 ```bash
-prettier --tab-width 4 --write '**/*.xml'
+prettier --plugin=@prettier/plugin-xml --tab-width 4 --write '**/*.xml'
 ```
 
 ### Whitespace
