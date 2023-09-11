@@ -89,3 +89,10 @@ customScript!!!
 
   expect(formatted).toEqual(expected);
 });
+
+test("does not embed when self-closing", async () => {
+  const expected = `<script type="text/javascript" />\n`;
+  const formatted = await format(expected);
+
+  expect(formatted).toEqual(expected);
+});

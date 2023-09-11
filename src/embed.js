@@ -124,6 +124,11 @@ function embed(path, opts) {
     return;
   }
 
+  // If the node is self-closing, then skip
+  if (!node.children.content) {
+    return;
+  }
+
   // If the node does not actually contain content, or it contains any content
   // that is not just plain text, then skip
   const content = node.children.content[0].children;
