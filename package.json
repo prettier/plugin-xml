@@ -32,7 +32,7 @@
     "husky": "^8.0.0",
     "jest": "^29.2.1",
     "linguist-languages": "^7.21.0",
-    "lint-staged": "^14.0.0",
+    "lint-staged": "^15.0.1",
     "prettier": "^3.0.0"
   },
   "eslintConfig": {
