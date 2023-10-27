@@ -24,6 +24,7 @@ test("xmlWhitespaceSensitivity => ignore", async () => {
   const formatted = await format(fixture, {
     xmlWhitespaceSensitivity: "ignore"
   });
+
   expect(formatted).toMatchSnapshot();
 });
 
@@ -76,6 +77,8 @@ test("xmlSortAttributesByKey => true", async () => {
   const formatted = await format(fixture, {
     xmlSortAttributesByKey: true
   });
+
+  expect(formatted).toMatchSnapshot();
 });
 
 test("xmlQuoteAttributes => preserve", async () => {

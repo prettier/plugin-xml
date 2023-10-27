@@ -428,7 +428,7 @@ function printElement(path, opts, print) {
 
           // Handle the 1 but not both being an xmlns
           if (leftNS === "xmlns") return -1;
-          if (rightNS === "xlmns") return 1;
+          if (rightNS === "xmlns") return 1;
 
           return leftNS.localeCompare(rightNS);
         }

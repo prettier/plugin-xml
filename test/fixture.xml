@@ -94,6 +94,8 @@
         otherTools:baz="bing"
         ios:a="a" />
     </foo>
+    <foo xmlns:foo="foo" foo:foo="foo" />
+    <foo foo:foo="foo" xmlns:foo="foo" />
   </container>
   <EscapeNeeded name="Pete &quot;Maverick&quot; Mitchell"/>
 
