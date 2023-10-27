@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+## [3.2.2] - 2023-10-27
+
+### Changed
+
+- Fixed a bug with the `xmlSortAttributesByKey` option when `xmlns` attributes are present.
+
 ## [3.2.1] - 2023-09-11
 
 ### Added
@@ -239,7 +245,8 @@ and it will maintain your formatting.
 
 - Initial release 🎉
 
-[unreleased]: https://github.com/prettier/plugin-xml/compare/v3.2.1...HEAD
+[unreleased]: https://github.com/prettier/plugin-xml/compare/v3.2.2...HEAD
+[3.2.2]: https://github.com/prettier/plugin-xml/compare/v3.2.1...v3.2.2
 [3.2.1]: https://github.com/prettier/plugin-xml/compare/v3.2.0...v3.2.1
 [3.2.0]: https://github.com/prettier/plugin-xml/compare/v3.1.1...v3.2.0
 [3.1.1]: https://github.com/prettier/plugin-xml/compare/v3.1.0...v3.1.1
