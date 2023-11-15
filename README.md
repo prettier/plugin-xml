@@ -48,7 +48,7 @@ Below are the options (from [`src/plugin.js`](src/plugin.js)) that `@prettier/pl
 
 | API Option                 | CLI Option                     |   Default    | Description                                                                                                              |
 | -------------------------- | ------------------------------ | :----------: | ------------------------------------------------------------------------------------------------------------------------ |
-| `bracketSameLine`          | `--bracket-same-line`          |    `true`    | Same as in Prettier ([see prettier docs](https://prettier.io/docs/en/options.html#bracket-same-line))                    |
+| `bracketSameLine`          | `--bracket-same-line`          |    `true`    | Same as in Prettier ([see prettier docs](https://prettier.io/docs/en/options.html#bracket-line))                    |
 | `printWidth`               | `--print-width`                |     `80`     | Same as in Prettier ([see prettier docs](https://prettier.io/docs/en/options.html#print-width)).                         |
 | `singleAttributePerLine`   | `--single-attribute-per-line`  |   `false`    | Same as in Prettier ([see prettier docs](https://prettier.io/docs/en/options.html#single-attribute-per-line))            |
 | `tabWidth`                 | `--tab-width`                  |     `2`      | Same as in Prettier ([see prettier docs](https://prettier.io/docs/en/options.html#tab-width)).                           |
