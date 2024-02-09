@@ -6,5 +6,6 @@
 /yarn.lock
 /LICENSE
 
+/.husky/
 /test/fixture.xml
 /test/__snapshots__/*
