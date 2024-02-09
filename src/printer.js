@@ -8,7 +8,7 @@ const ignoreStartComment = "<!-- prettier-ignore-start -->";
 const ignoreEndComment = "<!-- prettier-ignore-end -->";
 
 function hasIgnoreRanges(comments) {
-  if (!comments || comments.length === 0) {
+  if (comments.length === 0) {
     return false;
   }
 
@@ -41,12 +41,11 @@ function isWhitespaceIgnorable(opts, name, attributes, content) {
   // If there is an xml:space attribute set to "preserve", then we can't ignore
   // the whitespace.
   if (
-    attributes &&
     attributes.some(
       (attribute) =>
         attribute &&
-        attribute.children.Name[0].image === "xml:space" &&
-        attribute.children.STRING[0].image.slice(1, -1) === "preserve"
+        attribute.Name === "xml:space" &&
+        attribute.STRING.slice(1, -1) === "preserve"
     )
   ) {
     return false;
@@ -54,13 +53,13 @@ function isWhitespaceIgnorable(opts, name, attributes, content) {
 
   // If there are character data or reference nodes in the content, then we
   // can't ignore the whitespace.
-  if (content.children.CData || content.children.reference) {
+  if (content.CData.length > 0 || content.reference.length > 0) {
     return false;
   }
 
   // If there are comments in the content and the comments are ignore ranges,
   // then we can't ignore the whitespace.
-  if (hasIgnoreRanges(content.children.Comment)) {
+  if (hasIgnoreRanges(content.Comment)) {
     return false;
   }
 
@@ -80,26 +79,26 @@ function printIToken(path) {
 }
 
 function printAttribute(path, opts, print) {
-  const { Name, EQUALS, STRING } = path.getValue().children;
+  const { Name, EQUALS, STRING } = path.getValue();
 
   let attributeValue;
   if (opts.xmlQuoteAttributes === "double") {
-    const content = STRING[0].image.slice(1, -1).replaceAll('"', "&quot;");
+    const content = STRING.slice(1, -1).replaceAll('"', "&quot;");
     attributeValue = `"${content}"`;
   } else if (opts.xmlQuoteAttributes === "single") {
-    const content = STRING[0].image.slice(1, -1).replaceAll("'", "&apos;");
+    const content = STRING.slice(1, -1).replaceAll("'", "&apos;");
     attributeValue = `'${content}'`;
   } else {
     // preserve
-    attributeValue = STRING[0].image;
+    attributeValue = STRING;
   }
 
-  return [Name[0].image, EQUALS[0].image, attributeValue];
+  return [Name, EQUALS, attributeValue];
 }
 
 function printCharData(path, opts, print) {
-  const { SEA_WS, TEXT } = path.getValue().children;
-  const [{ image }] = SEA_WS || TEXT;
+  const { SEA_WS, TEXT } = path.getValue();
+  const image = SEA_WS || TEXT;
 
   return image
     .split(/(\n)/g)
@@ -107,68 +106,38 @@ function printCharData(path, opts, print) {
 }
 
 function printContentFragments(path, print) {
-  let response = [];
-  const children = path.getValue();
+  return [
+    ...path.map(printIToken, "CData"),
+    ...path.map(printIToken, "Comment"),
+    ...path.map(
+      (charDataPath) => ({
+        offset: charDataPath.getValue().location.startOffset,
+        printed: print(charDataPath)
+      }),
+      "chardata"
+    ),
+    ...path.map(
+      (elementPath) => ({
+        offset: elementPath.getValue().location.startOffset,
+        printed: print(elementPath)
+      }),
+      "element"
+    ),
+    ...path.map(printIToken, "PROCESSING_INSTRUCTION"),
+    ...path.map((referencePath) => {
+      const referenceNode = referencePath.getValue();
 
-  if (children.CData) {
-    response = response.concat(path.map(printIToken, "CData"));
-  }
-
-  if (children.Comment) {
-    response = response.concat(path.map(printIToken, "Comment"));
-  }
-
-  if (children.chardata) {
-    response = response.concat(
-      path.map(
-        (charDataPath) => ({
-          offset: charDataPath.getValue().location.startOffset,
-          printed: print(charDataPath)
-        }),
-        "chardata"
-      )
-    );
-  }
-
-  if (children.element) {
-    response = response.concat(
-      path.map(
-        (elementPath) => ({
-          offset: elementPath.getValue().location.startOffset,
-          printed: print(elementPath)
-        }),
-        "element"
-      )
-    );
-  }
-
-  if (children.PROCESSING_INSTRUCTION) {
-    response = response.concat(path.map(printIToken, "PROCESSING_INSTRUCTION"));
-  }
-
-  if (children.reference) {
-    response = response.concat(
-      path.map((referencePath) => {
-        const referenceNode = referencePath.getValue();
-
-        return {
-          offset: referenceNode.location.startOffset,
-          printed: (referenceNode.children.CharRef ||
-            referenceNode.children.EntityRef)[0].image
-        };
-      }, "reference")
-    );
-  }
-
-  return response;
+      return {
+        offset: referenceNode.location.startOffset,
+        printed: print(referencePath)
+      };
+    }, "reference")
+  ];
 }
 
 function printContent(path, opts, print) {
-  let fragments = path.call(
-    (childrenPath) => printContentFragments(childrenPath, print),
-    "children"
-  );
-  const { Comment } = path.getValue().children;
+  let fragments = printContentFragments(path, print);
+  const { Comment } = path.getValue();
 
   if (hasIgnoreRanges(Comment)) {
     Comment.sort((left, right) => left.startOffset - right.startOffset);
@@ -216,58 +185,52 @@ function printContent(path, opts, print) {
 }
 
 function printDocTypeDecl(path, opts, print) {
-  const { DocType, Name, externalID, CLOSE } = path.getValue().children;
-  const parts = [DocType[0].image, " ", Name[0].image];
+  const { DocType, Name, externalID, CLOSE } = path.getValue();
+  const parts = [DocType, " ", Name];
 
   if (externalID) {
-    parts.push(" ", path.call(print, "children", "externalID", 0));
+    parts.push(" ", path.call(print, "externalID"));
   }
 
-  return group([...parts, CLOSE[0].image]);
+  return group([...parts, CLOSE]);
 }
 
 function printDocument(path, opts, print) {
-  const { docTypeDecl, element, misc, prolog } = path.getValue().children;
+  const { docTypeDecl, element, misc, prolog } = path.getValue();
   const fragments = [];
 
   if (docTypeDecl) {
     fragments.push({
-      offset: docTypeDecl[0].location.startOffset,
-      printed: path.call(print, "children", "docTypeDecl", 0)
+      offset: docTypeDecl.location.startOffset,
+      printed: path.call(print, "docTypeDecl")
     });
   }
 
   if (prolog) {
     fragments.push({
-      offset: prolog[0].location.startOffset,
-      printed: path.call(print, "children", "prolog", 0)
+      offset: prolog.location.startOffset,
+      printed: path.call(print, "prolog")
     });
   }
 
-  if (misc) {
-    misc.forEach((node) => {
-      if (node.children.PROCESSING_INSTRUCTION) {
-        fragments.push({
-          offset: node.location.startOffset,
-          printed: node.children.PROCESSING_INSTRUCTION[0].image
-        });
-      } else if (node.children.Comment) {
-        fragments.push({
-          offset: node.location.startOffset,
-          printed: node.children.Comment[0].image
-        });
-      }
+  path.each((miscPath) => {
+    const misc = miscPath.getValue();
+
+    fragments.push({
+      offset: misc.location.startOffset,
+      printed: print(miscPath)
     });
-  }
+  }, "misc");
 
   if (element) {
     fragments.push({
-      offset: element[0].location.startOffset,
-      printed: path.call(print, "children", "element", 0)
+      offset: element.location.startOffset,
+      printed: path.call(print, "element")
     });
   }
 
   fragments.sort((left, right) => left.offset - right.offset);
+
   return [
     join(
       hardline,
@@ -317,11 +280,11 @@ function printCharDataIgnore(path) {
 
   path.each((charDataPath) => {
     const chardata = charDataPath.getValue();
-    if (!chardata.children.TEXT) {
+    if (!chardata.TEXT) {
       return;
     }
 
-    const content = chardata.children.TEXT[0].image.trim();
+    const content = chardata.TEXT.trim();
     const printed = group(
       content.split(/(\n)/g).map((value) => {
         if (value === "\n") {
@@ -352,13 +315,11 @@ function printElementFragments(path, opts, print) {
   const children = path.getValue();
   let response = [];
 
-  if (children.Comment) {
-    response = response.concat(path.map(printIToken, "Comment"));
-  }
+  response = response.concat(path.map(printIToken, "Comment"));
 
-  if (children.chardata) {
+  if (children.chardata.length > 0) {
     if (
-      children.chardata.some(({ children }) => !!children.TEXT) &&
+      children.chardata.some((chardata) => !!chardata.TEXT) &&
       opts.xmlWhitespaceSensitivity === "preserve"
     ) {
       response = response.concat(printCharDataPreserve(path, print));
@@ -367,25 +328,20 @@ function printElementFragments(path, opts, print) {
     }
   }
 
-  if (children.element) {
-    response = response.concat(
-      path.map((elementPath) => {
-        const location = elementPath.getValue().location;
+  response = response.concat(
+    path.map((elementPath) => {
+      const location = elementPath.getValue().location;
 
-        return {
-          offset: location.startOffset,
-          startLine: location.startLine,
-          endLine: location.endLine,
-          printed: print(elementPath)
-        };
-      }, "element")
-    );
-  }
+      return {
+        offset: location.startOffset,
+        startLine: location.startLine,
+        endLine: location.endLine,
+        printed: print(elementPath)
+      };
+    }, "element")
+  );
 
-  if (children.PROCESSING_INSTRUCTION) {
-    response = response.concat(path.map(printIToken, "PROCESSING_INSTRUCTION"));
-  }
-
+  response = response.concat(path.map(printIToken, "PROCESSING_INSTRUCTION"));
   return response;
 }
 
@@ -400,24 +356,23 @@ function printElement(path, opts, print) {
     END_NAME,
     END,
     SLASH_CLOSE
-  } = path.getValue().children;
+  } = path.getValue();
 
-  const parts = [OPEN[0].image, Name[0].image];
+  const parts = [OPEN, Name];
 
-  if (attribute) {
+  if (attribute.length > 0) {
     const attributes = path.map(
       (attributePath) => ({
         node: attributePath.getValue(),
         printed: print(attributePath)
       }),
-      "children",
       "attribute"
     );
 
     if (opts.xmlSortAttributesByKey) {
       attributes.sort((left, right) => {
-        const leftAttr = left.node.children.Name[0].image;
-        const rightAttr = right.node.children.Name[0].image;
+        const leftAttr = left.node.Name;
+        const rightAttr = right.node.Name;
 
         // Check if the attributes are xmlns.
         if (leftAttr === "xmlns") return -1;
@@ -468,33 +423,34 @@ function printElement(path, opts, print) {
   }
 
   if (SLASH_CLOSE) {
-    return group([...parts, space, SLASH_CLOSE[0].image]);
+    return group([...parts, space, SLASH_CLOSE]);
   }
 
-  if (Object.keys(content[0].children).length === 0) {
+  if (
+    content.chardata.length === 0 &&
+    content.CData.length === 0 &&
+    content.Comment.length === 0 &&
+    content.element.length === 0 &&
+    content.PROCESSING_INSTRUCTION.length === 0 &&
+    content.reference.length === 0
+  ) {
     return group([...parts, space, "/>"]);
   }
 
   const openTag = group([
     ...parts,
     opts.bracketSameLine ? "" : softline,
-    START_CLOSE[0].image
+    START_CLOSE
   ]);
 
-  const closeTag = group([
-    SLASH_OPEN[0].image,
-    END_NAME[0].image,
-    END[0].image
-  ]);
+  const closeTag = group([SLASH_OPEN, END_NAME, END]);
 
-  if (isWhitespaceIgnorable(opts, Name[0].image, attribute, content[0])) {
+  if (isWhitespaceIgnorable(opts, Name, attribute, content)) {
     const fragments = path.call(
       (childrenPath) => printElementFragments(childrenPath, opts, print),
-      "children",
-      "content",
-      0,
-      "children"
+      "content"
     );
+
     fragments.sort((left, right) => left.offset - right.offset);
 
     if (
@@ -512,9 +468,7 @@ function printElement(path, opts, print) {
     // that we won't necessarily break (to allow <foo>bar</foo>).
     if (
       fragments.length === 1 &&
-      (content[0].children.chardata || []).filter(
-        (chardata) => chardata.children.TEXT
-      ).length === 1
+      content.chardata.filter((chardata) => chardata.TEXT).length === 1
     ) {
       return group([
         openTag,
@@ -545,45 +499,55 @@ function printElement(path, opts, print) {
     return group([openTag, indent(docs), hardline, closeTag]);
   }
 
-  return group([
-    openTag,
-    indent(path.call(print, "children", "content", 0)),
-    closeTag
-  ]);
+  return group([openTag, indent(path.call(print, "content")), closeTag]);
 }
 
 function printExternalID(path, opts, print) {
-  const { Public, PubIDLiteral, System, SystemLiteral } =
-    path.getValue().children;
+  const { Public, PubIDLiteral, System, SystemLiteral } = path.getValue();
 
   if (System) {
-    return group([System[0].image, indent([line, SystemLiteral[0].image])]);
+    return group([System, indent([line, SystemLiteral])]);
   }
 
   return group([
-    group([Public[0].image, indent([line, PubIDLiteral[0].image])]),
-    indent([line, SystemLiteral[0].image])
+    group([Public, indent([line, PubIDLiteral])]),
+    indent([line, SystemLiteral])
   ]);
 }
 
+function printMisc(path, opts, print) {
+  const { Comment, PROCESSING_INSTRUCTION, SEA_WS } = path.getValue();
+
+  return Comment || PROCESSING_INSTRUCTION || SEA_WS;
+}
+
 function printProlog(path, opts, print) {
-  const { XMLDeclOpen, attribute, SPECIAL_CLOSE } = path.getValue().children;
-  const parts = [XMLDeclOpen[0].image];
+  const { XMLDeclOpen, attribute, SPECIAL_CLOSE } = path.getValue();
+  const parts = [XMLDeclOpen];
 
   if (attribute) {
-    parts.push(
-      indent([softline, join(line, path.map(print, "children", "attribute"))])
-    );
+    parts.push(indent([softline, join(line, path.map(print, "attribute"))]));
   }
 
   return group([
     ...parts,
     opts.xmlSelfClosingSpace ? line : softline,
-    SPECIAL_CLOSE[0].image
+    SPECIAL_CLOSE
   ]);
 }
 
+function printReference(path, opts, print) {
+  const { CharRef, EntityRef } = path.getValue();
+
+  return CharRef || EntityRef;
+}
+
 const printer = {
+  getVisitorKeys(node, nonTraversableKeys) {
+    return Object.keys(node).filter(
+      (key) => key !== "location" && key !== "tokenType"
+    );
+  },
   embed,
   print(path, opts, print) {
     const node = path.getValue();
@@ -603,8 +567,14 @@ const printer = {
         return printElement(path, opts, print);
       case "externalID":
         return printExternalID(path, opts, print);
+      case "misc":
+        return printMisc(path, opts, print);
       case "prolog":
         return printProlog(path, opts, print);
+      case "reference":
+        return printReference(path, opts, print);
+      default:
+        throw new Error(`Unknown node type: ${node.name}`);
     }
   }
 };

@@ -15,14 +15,12 @@ const {
 function getElementTags(path, opts, print) {
   const node = path.getValue();
   const { OPEN, Name, attribute, START_CLOSE, SLASH_OPEN, END_NAME, END } =
-    node.children;
+    node;
 
-  const parts = [OPEN[0].image, Name[0].image];
+  const parts = [OPEN, Name];
 
-  if (attribute) {
-    parts.push(
-      indent([line, join(line, path.map(print, "children", "attribute"))])
-    );
+  if (attribute.length > 0) {
+    parts.push(indent([line, join(line, path.map(print, "attribute"))]));
   }
 
   if (!opts.bracketSameLine) {
@@ -30,16 +28,16 @@ function getElementTags(path, opts, print) {
   }
 
   return {
-    openTag: group([...parts, START_CLOSE[0].image]),
-    closeTag: group([SLASH_OPEN[0].image, END_NAME[0].image, END[0].image])
+    openTag: group([...parts, START_CLOSE]),
+    closeTag: group([SLASH_OPEN, END_NAME, END])
   };
 }
 
 // Returns the value of the type tag if there is one, otherwise returns null.
 function getTagType(attributes) {
   for (const attribute of attributes) {
-    if (attribute.children.Name[0].image === "type") {
-      const value = attribute.children.STRING[0].image;
+    if (attribute.Name === "type") {
+      const value = attribute.STRING;
 
       if (value.startsWith('"text/') && value.endsWith('"')) {
         return value.slice(6, -1);
@@ -53,8 +51,8 @@ function getTagType(attributes) {
 // Get the name of the parser that is represented by the given element node,
 // return null if a matching parser cannot be found
 function getParser(node, opts) {
-  const { Name, attribute } = node.children;
-  let parser = Name[0].image.toLowerCase();
+  const { Name, attribute } = node;
+  let parser = Name.toLowerCase();
 
   // We don't want to deal with some weird recursive parser situation, so we
   // need to explicitly call out the XML parser here and just return null
@@ -64,7 +62,7 @@ function getParser(node, opts) {
 
   // If this is a style tag or a script tag with a text/xxx type then we will
   // use xxx as the name of the parser
-  if ((parser === "style" || parser === "script") && attribute) {
+  if ((parser === "style" || parser === "script") && attribute.length > 0) {
     parser = getTagType(attribute);
   }
 
@@ -96,8 +94,8 @@ function getParser(node, opts) {
 function getSource(content) {
   return content.chardata
     .map((node) => {
-      const { SEA_WS, TEXT } = node.children;
-      const [{ image }] = SEA_WS || TEXT;
+      const { SEA_WS, TEXT } = node;
+      const image = SEA_WS || TEXT;
 
       return {
         offset: node.location.startOffset,
@@ -125,14 +123,21 @@ function embed(path, opts) {
   }
 
   // If the node is self-closing, then skip
-  if (!node.children.content) {
+  if (!node.content) {
     return;
   }
 
   // If the node does not actually contain content, or it contains any content
-  // that is not just plain text, then skip
-  const content = node.children.content[0].children;
-  if (Object.keys(content).length !== 1 || !content.chardata) {
+  // that is not just plain text, then skip.
+  const content = node.content;
+  if (
+    content.chardata.length === 0 ||
+    content.CData.length > 0 ||
+    content.Comment.length > 0 ||
+    content.element.length > 0 ||
+    content.PROCESSING_INSTRUCTION.length > 0 ||
+    content.reference.length > 0
+  ) {
     return;
   }
 
