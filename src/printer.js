@@ -26,10 +26,15 @@ function hasIgnoreRanges(comments) {
   return false;
 }
 
-function isWhitespaceIgnorable(opts, attributes, content) {
+function isWhitespaceIgnorable(opts, name, attributes, content) {
   // If the whitespace sensitivity setting is "strict", then we can't ignore the
   // whitespace.
   if (opts.xmlWhitespaceSensitivity === "strict") {
+    return false;
+  }
+
+  // If we have an xsl:text element, then we cannot ignore the whitespace.
+  if (name === "xsl:text") {
     return false;
   }
 
@@ -482,7 +487,7 @@ function printElement(path, opts, print) {
     END[0].image
   ]);
 
-  if (isWhitespaceIgnorable(opts, attribute, content[0])) {
+  if (isWhitespaceIgnorable(opts, Name[0].image, attribute, content[0])) {
     const fragments = path.call(
       (childrenPath) => printElementFragments(childrenPath, opts, print),
       "children",

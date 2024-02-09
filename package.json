@@ -7,7 +7,7 @@
   "scripts": {
     "lint": "eslint --cache .",
     "prepare": "node bin/languages.js && husky install",
-    "print": "prettier --plugin=.",
+    "print": "prettier --plugin=./src/plugin.js",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
   },
   "repository": {
@@ -61,10 +61,12 @@
     "transform": {}
   },
   "prettier": {
+    "embeddedLanguageFormatting": "auto",
     "plugins": [
       "./src/plugin.js"
     ],
-    "trailingComma": "none"
+    "trailingComma": "none",
+    "xmlWhitespaceSensitivity": "ignore"
   },
   "lint-staged": {
     "*.js": [
