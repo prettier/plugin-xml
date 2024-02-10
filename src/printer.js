@@ -51,9 +51,9 @@ function isWhitespaceIgnorable(opts, name, attributes, content) {
     return false;
   }
 
-  // If there are character data or reference nodes in the content, then we
-  // can't ignore the whitespace.
-  if (content.CData.length > 0 || content.reference.length > 0) {
+  // If there are character data nodes in the content, then we can't ignore the
+  // whitespace.
+  if (content.CData.length > 0) {
     return false;
   }
 
@@ -342,6 +342,18 @@ function printElementFragments(path, opts, print) {
   );
 
   response = response.concat(path.map(printIToken, "PROCESSING_INSTRUCTION"));
+
+  response = response.concat(
+    path.map((referencePath) => {
+      const referenceNode = referencePath.getValue();
+
+      return {
+        offset: referenceNode.location.startOffset,
+        printed: print(referencePath)
+      };
+    }, "reference")
+  );
+
   return response;
 }
 
