@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+## [3.3.1] - 2024-02-10
+
+### Changed
+
+- Allow elements to be marked as whitespace ignored even when they have reference nodes.
+
 ## [3.3.0] - 2024-02-09
 
 ### Added
@@ -255,7 +261,8 @@ and it will maintain your formatting.
 
 - Initial release 🎉
 
-[unreleased]: https://github.com/prettier/plugin-xml/compare/v3.3.0...HEAD
+[unreleased]: https://github.com/prettier/plugin-xml/compare/v3.3.1...HEAD
+[3.3.1]: https://github.com/prettier/plugin-xml/compare/v3.3.0...v3.3.1
 [3.3.0]: https://github.com/prettier/plugin-xml/compare/v3.2.2...v3.3.0
 [3.2.2]: https://github.com/prettier/plugin-xml/compare/v3.2.1...v3.2.2
 [3.2.1]: https://github.com/prettier/plugin-xml/compare/v3.2.0...v3.2.1
