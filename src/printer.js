@@ -476,15 +476,17 @@ function printElement(path, opts, print) {
       ]);
     }
 
-    // If the only content of this tag is chardata, then use a softline so
-    // that we won't necessarily break (to allow <foo>bar</foo>).
+    // If the content of this tag are only chardata or reference nodes, then use a softline so
+    // that we won't necessarily break (to allow <foo>bar</foo> and <foo>&lt;bar</foo>).
     if (
-      fragments.length === 1 &&
-      content.chardata.filter((chardata) => chardata.TEXT).length === 1
+      fragments.length > 0 &&
+      fragments.length ===
+        content.chardata.filter((chardata) => chardata.TEXT).length +
+          content.reference.length
     ) {
       return group([
         openTag,
-        indent([softline, fragments[0].printed]),
+        indent([softline, fragments.map(({ printed }) => printed)]),
         softline,
         closeTag
       ]);

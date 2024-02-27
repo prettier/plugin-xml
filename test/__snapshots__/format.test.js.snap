@@ -126,6 +126,9 @@ use {
   <NoEscapeNeeded name="Pete 'Maverick' Mitchell" />
 
   <xsl:text>slide </xsl:text>
+
+  <xsl:text>&lt;foo&#12345; </xsl:text>
+  <div>&lt;foo&#12345;</div>
 </svg>
 <!-- bar -->
 "
@@ -257,6 +260,9 @@ use {
   <NoEscapeNeeded name="Pete 'Maverick' Mitchell"/>
 
   <xsl:text>slide </xsl:text>
+
+  <xsl:text>&lt;foo&#12345; </xsl:text>
+  <div>&lt;foo&#12345;</div>
 </svg>
 <!-- bar -->
 "
@@ -384,6 +390,9 @@ use {
   <NoEscapeNeeded name="Pete 'Maverick' Mitchell" />
 
   <xsl:text>slide </xsl:text>
+
+  <xsl:text>&lt;foo&#12345; </xsl:text>
+  <div>&lt;foo&#12345; </div>
 </svg>
 <!-- bar -->
 "
@@ -548,6 +557,9 @@ use {
   <NoEscapeNeeded name="Pete 'Maverick' Mitchell" />
 
   <xsl:text>slide </xsl:text>
+
+  <xsl:text>&lt;foo&#12345; </xsl:text>
+  <div>&lt;foo&#12345;</div>
 </svg>
 <!-- bar -->
 "
@@ -675,6 +687,9 @@ use {
   <NoEscapeNeeded name="Pete 'Maverick' Mitchell" />
 
   <xsl:text>slide </xsl:text>
+
+  <xsl:text>&lt;foo&#12345; </xsl:text>
+  <div>&lt;foo&#12345; </div>
 </svg>
 <!-- bar -->
 "
@@ -802,6 +817,9 @@ use {
   <NoEscapeNeeded name="Pete 'Maverick' Mitchell" />
 
   <xsl:text>slide </xsl:text>
+
+  <xsl:text>&lt;foo&#12345; </xsl:text>
+  <div>&lt;foo&#12345; </div>
 </svg>
 <!-- bar -->
 "
@@ -929,6 +947,9 @@ use {
   <NoEscapeNeeded name='Pete &apos;Maverick&apos; Mitchell' />
 
   <xsl:text>slide </xsl:text>
+
+  <xsl:text>&lt;foo&#12345; </xsl:text>
+  <div>&lt;foo&#12345; </div>
 </svg>
 <!-- bar -->
 "
@@ -1065,6 +1086,9 @@ use {
   <NoEscapeNeeded name="Pete 'Maverick' Mitchell"/>
 
   <xsl:text>slide </xsl:text>
+
+  <xsl:text>&lt;foo&#12345; </xsl:text>
+  <div>&lt;foo&#12345;</div>
 </svg>
 <!-- bar -->
 "
@@ -1192,6 +1216,9 @@ use {
   <NoEscapeNeeded name="Pete 'Maverick' Mitchell" />
 
   <xsl:text>slide </xsl:text>
+
+  <xsl:text>&lt;foo&#12345; </xsl:text>
+  <div>&lt;foo&#12345; </div>
 </svg>
 <!-- bar -->
 "
@@ -1328,6 +1355,9 @@ use {
   <NoEscapeNeeded name="Pete 'Maverick' Mitchell" />
 
   <xsl:text>slide </xsl:text>
+
+  <xsl:text>&lt;foo&#12345; </xsl:text>
+  <div>&lt;foo&#12345;</div>
 </svg>
 <!-- bar -->
 "
@@ -1457,6 +1487,9 @@ use {
   <NoEscapeNeeded name="Pete 'Maverick' Mitchell" />
 
   <xsl:text>slide </xsl:text>
+
+  <xsl:text>&lt;foo&#12345; </xsl:text>
+  <div>&lt;foo&#12345; </div>
 </svg>
 <!-- bar -->
 "
