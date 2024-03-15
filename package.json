@@ -4,6 +4,13 @@
   "description": "prettier plugin for XML",
   "type": "module",
   "main": "src/plugin.js",
+  "exports": {
+    ".": {
+      "types": "./types/plugin.d.ts",
+      "default": "./src/plugin.js"
+    },
+    "./*": "./*"
+  },
   "scripts": {
     "lint": "eslint --cache .",
     "prepare": "node bin/languages.js && husky install",
