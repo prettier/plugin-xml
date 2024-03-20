@@ -348,7 +348,10 @@ function printElementFragments(path, opts, print) {
       const referenceNode = referencePath.getValue();
 
       return {
+        type: "reference",
         offset: referenceNode.location.startOffset,
+        startLine: referenceNode.location.startLine,
+        endLine: referenceNode.location.endLine,
         printed: print(referencePath)
       };
     }, "reference")
@@ -476,6 +479,10 @@ function printElement(path, opts, print) {
       ]);
     }
 
+    if (fragments.length === 0) {
+      return group([...parts, space, "/>"]);
+    }
+
     // If the only content of this tag is chardata, then use a softline so
     // that we won't necessarily break (to allow <foo>bar</foo>).
     if (
@@ -490,18 +497,28 @@ function printElement(path, opts, print) {
       ]);
     }
 
-    if (fragments.length === 0) {
-      return group([...parts, space, "/>"]);
+    let delimiter = hardline;
+
+    // If the only content is both chardata and references, then use a softline
+    // so that we won't necessarily break.
+    if (
+      fragments.length ===
+      content.chardata.filter((chardata) => chardata.TEXT).length +
+        content.reference.length
+    ) {
+      delimiter = " ";
     }
 
-    const docs = [];
+    const docs = [hardline];
     let lastLine = fragments[0].startLine;
 
-    fragments.forEach((node) => {
-      if (node.startLine - lastLine >= 2) {
-        docs.push(hardline, hardline);
-      } else {
-        docs.push(hardline);
+    fragments.forEach((node, index) => {
+      if (index !== 0) {
+        if (node.startLine - lastLine >= 2) {
+          docs.push(hardline, hardline);
+        } else {
+          docs.push(delimiter);
+        }
       }
 
       docs.push(node.printed);
