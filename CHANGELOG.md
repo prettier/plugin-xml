@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+## [3.4.0] - 2024-03-29
+
+### Added
+
+- Export plugin type.
+
+### Changed
+
+- Fix printing around reference nodes.
+- Trim only XML whitespace, not JS whitespace.
+
 ## [3.3.1] - 2024-02-10
 
 ### Changed
