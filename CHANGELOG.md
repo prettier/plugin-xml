@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+## [3.4.1] - 2024-03-30
+
+### Changed
+
+- Fix the npm publish.
+
 ## [3.4.0] - 2024-03-29
 
 ### Added
