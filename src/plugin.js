@@ -47,6 +47,14 @@ const plugin = {
       description:
         "Orders XML attributes by key alphabetically while prioritizing xmlns attributes."
     },
+    xmlSortAttributesFirst: {
+      type: "string",
+      category: "XML",
+      array: true,
+      default: [{ value: [] }],
+      description:
+        "When 'xmlSortAttributesByKey' is enabled, make sure that the given keys are always sorted first. Ignores namespace sorting."
+    },
     xmlQuoteAttributes: {
       type: "choice",
       category: "XML",
