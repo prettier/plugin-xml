@@ -204,9 +204,18 @@ const parser = {
   },
   astFormat: "xml",
   locStart(node) {
+    if (typeof node?.location?.startOffset !== "number") {
+      console.warn("locStart fallback triggered:", node);
+      return 0;
+    }
     return node.location.startOffset;
   },
+
   locEnd(node) {
+    if (typeof node?.location?.endOffset !== "number") {
+      console.warn("locEnd fallback triggered:", node);
+      return 0;
+    }
     return node.location.endOffset;
   }
 };
