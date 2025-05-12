@@ -81,6 +81,24 @@ test("xmlSortAttributesByKey => true", async () => {
   expect(formatted).toMatchSnapshot();
 });
 
+test("xmlSortAttributesFirst => [width]", async () => {
+  const formatted = await format(fixture, {
+    xmlSortAttributesByKey: true,
+    xmlSortAttributesFirst: ["width"]
+  });
+
+  expect(formatted).toMatchSnapshot();
+});
+
+test("xmlSortAttributesFirst => [viewBox, width]", async () => {
+  const formatted = await format(fixture, {
+    xmlSortAttributesByKey: true,
+    xmlSortAttributesFirst: ["viewBox", "width"]
+  });
+
+  expect(formatted).toMatchSnapshot();
+});
+
 test("xmlQuoteAttributes => preserve", async () => {
   const formatted = await format(fixture, {
     xmlQuoteAttributes: "preserve"
