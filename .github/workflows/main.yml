@@ -14,7 +14,7 @@ jobs:
     - uses: actions/checkout@master
     - uses: actions/setup-node@v4
       with:
-        node-version: 18.x
+        node-version: 20.x
         cache: yarn
     - name: Lint and test
       run: |

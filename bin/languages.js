@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { writeFileSync } from "node:fs";
-import linguistLanguages from "linguist-languages";
+import * as linguistLanguages from "linguist-languages";
 import { format } from "prettier";
 import packageJSON from "../package.json" with { type: "json" };
 
@@ -16,8 +16,14 @@ function getSupportLanguages() {
       // manually-maintained list. These two had been added manually. So in the
       // interest of not breaking anything, we'll add them back in here.
       if (language.name === "XML") {
-        language.extensions?.push(".inx", ".runsettings");
-        language.extensions?.sort();
+        let extensions = language.extensions;
+        if (extensions) {
+          extensions.push(".inx", ".runsettings");
+          config.extensions = extensions
+            // https://github.com/github-linguist/linguist/pull/1842
+            .filter((e) => ![".ts", ".tsx"].includes(e))
+            .sort();
+        }
       }
 
       supportLanguages.push({
