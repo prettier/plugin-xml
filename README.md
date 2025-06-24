@@ -1,20 +1,17 @@
 <h1 align="center">Prettier for XML</h1>
 
 <p align="center">
-  <a href="https://gitter.im/jlongster/prettier">
-    <img alt="Gitter" src="https://img.shields.io/gitter/room/jlongster/prettier.svg?style=flat-square">
-  </a>
   <a href="https://github.com/prettier/plugin-xml/actions">
     <img alt="GitHub Actions" src="https://img.shields.io/github/actions/workflow/status/prettier/plugin-xml/main.yml?branch=main&style=flat-square">
   </a>
   <a href="https://www.npmjs.com/package/@prettier/plugin-xml">
     <img alt="NPM Version" src="https://img.shields.io/npm/v/@prettier/plugin-xml.svg?style=flat-square">
   </a>
-  <a href="#badge">
+  <a href="https://github.com/prettier/prettier#badge">
     <img alt="code style: prettier" src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square">
   </a>
-  <a href="https://twitter.com/PrettierCode">
-    <img alt="Follow+Prettier+on+Twitter" src="https://img.shields.io/twitter/follow/prettiercode.svg?label=follow+prettier&style=flat-square">
+  <a href="https://x.com/intent/follow?screen_name=PrettierCode">
+    <img alt="Follow Prettier on X" src="https://img.shields.io/badge/%40PrettierCode-9f9f9f?style=flat-square&logo=x&labelColor=555">
   </a>
 </p>
 
