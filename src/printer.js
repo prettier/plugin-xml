@@ -412,6 +412,20 @@ function printElement(path, opts, print) {
         if (leftAttr.includes(":")) return -1;
         if (rightAttr.includes(":")) return 1;
 
+        // Check if the attributes need to be sorted first
+        if (
+          Array.isArray(opts.xmlSortAttributesFirst) &&
+          opts.xmlSortAttributesFirst.length > 0
+        ) {
+          const leftFirstIndex = opts.xmlSortAttributesFirst.indexOf(leftAttr);
+          const rightFirstIndex =
+            opts.xmlSortAttributesFirst.indexOf(rightAttr);
+          if (leftFirstIndex !== -1 && rightFirstIndex !== -1)
+            return leftFirstIndex - rightFirstIndex;
+          else if (leftFirstIndex !== -1) return -1;
+          else if (rightFirstIndex !== -1) return 1;
+        }
+
         return leftAttr.localeCompare(rightAttr);
       });
     }
