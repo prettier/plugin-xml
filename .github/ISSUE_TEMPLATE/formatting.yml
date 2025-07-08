@@ -13,18 +13,21 @@ body:
       label: printWidth
       description: What value do you have the `printWidth` option set to? (Defaults to `80`.)
       placeholder: "80"
-  - type: input
+      default: "80"
+  - type: dropdown
     attributes:
       label: singleAttributePerLine
       description: What value do you have the `singleAttributePerLine` option set to? (Defaults to `false`.)
       options:
         - "true"
         - "false"
+      default: "false"
   - type: input
     attributes:
       label: tabWidth
       description: What value do you have the `tabWidth` option set to? (Defaults to `2`.)
       placeholder: "2"
+      default: "2"
   - type: dropdown
     attributes:
       label: xmlWhitespaceSensitivity
@@ -42,6 +45,7 @@ body:
       options:
         - "true"
         - "false"
+      default: "true"
   - type: textarea
     attributes:
       label: Input XML
