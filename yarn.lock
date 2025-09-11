@@ -2578,10 +2578,10 @@ lines-and-columns@^1.1.6:
   resolved "https://registry.npmjs.org/lines-and-columns/-/lines-and-columns-1.2.4.tgz"
   integrity sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg==
 
-linguist-languages@^8.0.0:
-  version "8.1.0"
-  resolved "https://registry.yarnpkg.com/linguist-languages/-/linguist-languages-8.1.0.tgz#844d85b9667980c9408e476a6319a30007ab2120"
-  integrity sha512-mg7zk9Lz89MJYvie41yUTmgeMwhN53gKQigNU1i+1JAGNqGRvF59RLhhkKCRYfZLt3rVgWcVSRrj0fxug5R98A==
+linguist-languages@^9.0.0:
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/linguist-languages/-/linguist-languages-9.0.0.tgz#dada7f4f18948dd40d16374b62a214e638d733d3"
+  integrity sha512-8sexSk1Qotkqy9l4J8X/EDRLvrB8QrYjx41YI3Qr7PrvMqdfYb0zKUI6AOhfnjD/uaDHE87s9Nbu9zWikcGRVw==
 
 lint-staged@^16.0.0:
   version "16.1.6"
