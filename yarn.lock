@@ -2573,9 +2573,9 @@ linguist-languages@^9.0.0:
   integrity sha512-8sexSk1Qotkqy9l4J8X/EDRLvrB8QrYjx41YI3Qr7PrvMqdfYb0zKUI6AOhfnjD/uaDHE87s9Nbu9zWikcGRVw==
 
 lint-staged@^16.0.0:
-  version "16.2.4"
-  resolved "https://registry.yarnpkg.com/lint-staged/-/lint-staged-16.2.4.tgz#1f166370e32d9b7eb10583e86d86e1117f7ab489"
-  integrity sha512-Pkyr/wd90oAyXk98i/2KwfkIhoYQUMtss769FIT9hFM5ogYZwrk+GRE46yKXSg2ZGhcJ1p38Gf5gmI5Ohjg2yg==
+  version "16.2.5"
+  resolved "https://registry.yarnpkg.com/lint-staged/-/lint-staged-16.2.5.tgz#85f9dbe48f379217b7b0554be17c9da222f373a6"
+  integrity sha512-o36wH3OX0jRWqDw5dOa8a8x6GXTKaLM+LvhRaucZxez0IxA+KNDUCiyjBfNgsMNmchwSX6urLSL7wShcUqAang==
   dependencies:
     commander "^14.0.1"
     listr2 "^9.0.4"
