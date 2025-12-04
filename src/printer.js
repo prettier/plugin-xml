@@ -284,7 +284,7 @@ function printCharDataIgnore(path) {
       return;
     }
 
-    const content = chardata.TEXT.replaceAll(/^[\t\n\r\s]+|[\t\n\r\s]+$/g, "");
+    const content = chardata.TEXT.replaceAll(/^[\t\n\r ]+|[\t\n\r ]+$/g, "");
     const printed = group(
       content.split(/(\n)/g).map((value) => {
         if (value === "\n") {
