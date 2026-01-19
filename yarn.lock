@@ -2568,9 +2568,9 @@ lines-and-columns@^1.1.6:
   integrity sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg==
 
 linguist-languages@^9.0.0:
-  version "9.2.0"
-  resolved "https://registry.yarnpkg.com/linguist-languages/-/linguist-languages-9.2.0.tgz#b294caab649771371f0f4c7a1d035eb645e11a7f"
-  integrity sha512-s13kOULTt5LvuijOcR5U/WSuR+K+VOH/Od77oaQFnoAEIDIFAW4FKYv7zAdcGfyw8RR3vFuTlCjFf96th4J+NQ==
+  version "9.3.1"
+  resolved "https://registry.yarnpkg.com/linguist-languages/-/linguist-languages-9.3.1.tgz#f19a8ada0b509f68c70e021f30450d94d601c6a3"
+  integrity sha512-Mum2sqg3MyhgKfpulFhKZMAK/1VnV6m9vCV8YQCSqWs+pbKouKn9EqRshZjVWUaJjl6NTTDcYJk/1+C02siXEQ==
 
 lint-staged@^16.0.0:
   version "16.2.7"
