@@ -69,6 +69,27 @@ const plugin = {
             "Quotes in attribute values will be converted to consistent double quotes and other quotes in the string will be escaped."
         }
       ]
+    },
+    xmlSelfClosingTags: {
+      type: "choice",
+      category: "XML",
+      default: "always",
+      description: "Controls how empty XML tags are formatted.",
+      choices: [
+        {
+          value: "always",
+          description: "Convert empty tags to self-closing format."
+        },
+        {
+          value: "preserve",
+          description: "Preserve tags as written in source."
+        },
+        {
+          value: "never",
+          description: "Convert self-closing tags to empty open/close format."
+        }
+      ],
+      since: "3.5.0"
     }
   },
   defaultOptions: {

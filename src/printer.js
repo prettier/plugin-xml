@@ -427,28 +427,56 @@ function printElement(path, opts, print) {
     space = opts.xmlSelfClosingSpace ? line : softline;
   }
 
+  // Helper to create open/close tag pair
+  const createOpenCloseTags = () => {
+    const openTag = group([
+      ...parts,
+      opts.bracketSameLine ? "" : softline,
+      START_CLOSE || ">"
+    ]);
+    // For self-closing tags converted to open/close, use Name from opening tag
+    const closeName = END_NAME || Name;
+    const closeTag = group([SLASH_OPEN || "</", closeName, END || ">"]);
+    return { openTag, closeTag };
+  };
+
+  // Handle already self-closing tags from source
   if (SLASH_CLOSE) {
+    if (opts.xmlSelfClosingTags === "never") {
+      // Convert to open/close format
+      const { openTag, closeTag } = createOpenCloseTags();
+      return group([openTag, closeTag]);
+    }
+    // For "always" or "preserve", keep as self-closing
     return group([...parts, space, SLASH_CLOSE]);
   }
 
-  if (
+  // Check if element is empty (no content at all)
+  const isEmpty =
     content.chardata.length === 0 &&
     content.CData.length === 0 &&
     content.Comment.length === 0 &&
     content.element.length === 0 &&
     content.PROCESSING_INSTRUCTION.length === 0 &&
-    content.reference.length === 0
-  ) {
-    return group([...parts, space, "/>"]);
+    content.reference.length === 0;
+
+  // Handle empty elements (not self-closing in source)
+  if (isEmpty) {
+    if (opts.xmlSelfClosingTags === "never") {
+      // Use open/close format
+      const { openTag, closeTag } = createOpenCloseTags();
+      return group([openTag, closeTag]);
+    } else if (opts.xmlSelfClosingTags === "preserve") {
+      // Preserve as open/close (since it wasn't self-closing in source)
+      const { openTag, closeTag } = createOpenCloseTags();
+      return group([openTag, closeTag]);
+    } else {
+      // "always" - convert to self-closing (current behavior)
+      return group([...parts, space, "/>"]);
+    }
   }
 
-  const openTag = group([
-    ...parts,
-    opts.bracketSameLine ? "" : softline,
-    START_CLOSE
-  ]);
-
-  const closeTag = group([SLASH_OPEN, END_NAME, END]);
+  const { openTag, closeTag } = createOpenCloseTags();
 
   if (isWhitespaceIgnorable(opts, Name, attribute, content)) {
     const fragments = path.call(
@@ -470,7 +498,16 @@ function printElement(path, opts, print) {
     }
 
     if (fragments.length === 0) {
-      return group([...parts, space, "/>"]);
+      // Element became empty after whitespace processing
+      if (opts.xmlSelfClosingTags === "never") {
+        return group([openTag, closeTag]);
+      } else if (opts.xmlSelfClosingTags === "preserve") {
+        // Was open/close in source (no SLASH_CLOSE), keep as open/close
+        return group([openTag, closeTag]);
+      } else {
+        // "always" - convert to self-closing
+        return group([...parts, space, "/>"]);
+      }
     }
 
     // If the only content of this tag is chardata, then use a softline so
