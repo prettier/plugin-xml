@@ -104,3 +104,54 @@ test("xmlQuoteAttributes => double", async () => {
 
   expect(formatted).toMatchSnapshot();
 });
+
+test("xmlSelfClosingTags => always", async () => {
+  const formatted = await format(fixture, {
+    xmlSelfClosingTags: "always",
+    xmlWhitespaceSensitivity: "ignore"
+  });
+
+  expect(formatted).toMatchSnapshot();
+});
+
+test("xmlSelfClosingTags => always", async () => {
+  const formatted = await format(fixture, {
+    xmlSelfClosingTags: "always"
+  });
+
+  expect(formatted).toMatchSnapshot();
+});
+
+test("xmlSelfClosingTags => preserve", async () => {
+  const formatted = await format(fixture, {
+    xmlSelfClosingTags: "preserve",
+    xmlWhitespaceSensitivity: "ignore"
+  });
+
+  expect(formatted).toMatchSnapshot();
+});
+
+test("xmlSelfClosingTags => preserve", async () => {
+  const formatted = await format(fixture, {
+    xmlSelfClosingTags: "preserve"
+  });
+
+  expect(formatted).toMatchSnapshot();
+});
+
+test("xmlSelfClosingTags => never", async () => {
+  const formatted = await format(fixture, {
+    xmlSelfClosingTags: "never",
+    xmlWhitespaceSensitivity: "ignore"
+  });
+
+  expect(formatted).toMatchSnapshot();
+});
+
+test("xmlSelfClosingTags => never", async () => {
+  const formatted = await format(fixture, {
+    xmlSelfClosingTags: "never"
+  });
+
+  expect(formatted).toMatchSnapshot();
+});
