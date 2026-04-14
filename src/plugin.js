@@ -2,7 +2,7 @@ import languages from "./languages.js";
 import parser from "./parser.js";
 import printer from "./printer.js";
 
-const plugin = {
+const pluginXML = {
   languages,
   parsers: {
     xml: parser
@@ -77,4 +77,4 @@ const plugin = {
   }
 };
 
-export default plugin;
+export default pluginXML;
