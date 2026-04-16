@@ -126,6 +126,20 @@ use {
   <NoEscapeNeeded name="Pete 'Maverick' Mitchell" />
 
   <xsl:text>slide </xsl:text>
+
+  <!-- https://github.com/prettier/plugin-xml/issues/789 -->
+  <paragraph>
+    <text />
+    <text />
+  </paragraph>
+  <paragraph>
+    <text xml:space="preserve">	 </text>
+    <text xml:space="preserve">
+</text>
+  </paragraph>
+  <paragraph>
+    <text>                 　﻿</text>
+  </paragraph>
 </svg>
 <!-- bar -->
 "
@@ -257,6 +271,20 @@ use {
   <NoEscapeNeeded name="Pete 'Maverick' Mitchell"/>
 
   <xsl:text>slide </xsl:text>
+
+  <!-- https://github.com/prettier/plugin-xml/issues/789 -->
+  <paragraph>
+    <text/>
+    <text/>
+  </paragraph>
+  <paragraph>
+    <text xml:space="preserve">	 </text>
+    <text xml:space="preserve">
+</text>
+  </paragraph>
+  <paragraph>
+    <text>                 　﻿</text>
+  </paragraph>
 </svg>
 <!-- bar -->
 "
@@ -384,6 +412,13 @@ use {
   <NoEscapeNeeded name="Pete 'Maverick' Mitchell" />
 
   <xsl:text>slide </xsl:text>
+
+  <!-- https://github.com/prettier/plugin-xml/issues/789 -->
+  <paragraph><text>	 </text><text>
+</text></paragraph>
+  <paragraph><text xml:space="preserve">	 </text><text xml:space="preserve">
+</text></paragraph>
+  <paragraph><text>                 　﻿</text></paragraph>
 </svg>
 <!-- bar -->
 "
@@ -548,6 +583,20 @@ use {
   <NoEscapeNeeded name="Pete 'Maverick' Mitchell" />
 
   <xsl:text>slide </xsl:text>
+
+  <!-- https://github.com/prettier/plugin-xml/issues/789 -->
+  <paragraph>
+    <text />
+    <text />
+  </paragraph>
+  <paragraph>
+    <text xml:space="preserve">	 </text>
+    <text xml:space="preserve">
+</text>
+  </paragraph>
+  <paragraph>
+    <text>                 　﻿</text>
+  </paragraph>
 </svg>
 <!-- bar -->
 "
@@ -675,6 +724,13 @@ use {
   <NoEscapeNeeded name="Pete 'Maverick' Mitchell" />
 
   <xsl:text>slide </xsl:text>
+
+  <!-- https://github.com/prettier/plugin-xml/issues/789 -->
+  <paragraph><text>	 </text><text>
+</text></paragraph>
+  <paragraph><text xml:space="preserve">	 </text><text xml:space="preserve">
+</text></paragraph>
+  <paragraph><text>                 　﻿</text></paragraph>
 </svg>
 <!-- bar -->
 "
@@ -802,6 +858,13 @@ use {
   <NoEscapeNeeded name="Pete 'Maverick' Mitchell" />
 
   <xsl:text>slide </xsl:text>
+
+  <!-- https://github.com/prettier/plugin-xml/issues/789 -->
+  <paragraph><text>	 </text><text>
+</text></paragraph>
+  <paragraph><text xml:space="preserve">	 </text><text xml:space="preserve">
+</text></paragraph>
+  <paragraph><text>                 　﻿</text></paragraph>
 </svg>
 <!-- bar -->
 "
@@ -929,6 +992,13 @@ use {
   <NoEscapeNeeded name='Pete &apos;Maverick&apos; Mitchell' />
 
   <xsl:text>slide </xsl:text>
+
+  <!-- https://github.com/prettier/plugin-xml/issues/789 -->
+  <paragraph><text>	 </text><text>
+</text></paragraph>
+  <paragraph><text xml:space='preserve'>	 </text><text xml:space='preserve'>
+</text></paragraph>
+  <paragraph><text>                 　﻿</text></paragraph>
 </svg>
 <!-- bar -->
 "
@@ -1065,6 +1135,20 @@ use {
   <NoEscapeNeeded name="Pete 'Maverick' Mitchell"/>
 
   <xsl:text>slide </xsl:text>
+
+  <!-- https://github.com/prettier/plugin-xml/issues/789 -->
+  <paragraph>
+    <text/>
+    <text/>
+  </paragraph>
+  <paragraph>
+    <text xml:space="preserve">	 </text>
+    <text xml:space="preserve">
+</text>
+  </paragraph>
+  <paragraph>
+    <text>                 　﻿</text>
+  </paragraph>
 </svg>
 <!-- bar -->
 "
@@ -1192,6 +1276,13 @@ use {
   <NoEscapeNeeded name="Pete 'Maverick' Mitchell" />
 
   <xsl:text>slide </xsl:text>
+
+  <!-- https://github.com/prettier/plugin-xml/issues/789 -->
+  <paragraph><text>	 </text><text>
+</text></paragraph>
+  <paragraph><text xml:space="preserve">	 </text><text xml:space="preserve">
+</text></paragraph>
+  <paragraph><text>                 　﻿</text></paragraph>
 </svg>
 <!-- bar -->
 "
@@ -1328,6 +1419,20 @@ use {
   <NoEscapeNeeded name="Pete 'Maverick' Mitchell" />
 
   <xsl:text>slide </xsl:text>
+
+  <!-- https://github.com/prettier/plugin-xml/issues/789 -->
+  <paragraph>
+    <text />
+    <text />
+  </paragraph>
+  <paragraph>
+    <text xml:space="preserve">	 </text>
+    <text xml:space="preserve">
+</text>
+  </paragraph>
+  <paragraph>
+    <text>                 　﻿</text>
+  </paragraph>
 </svg>
 <!-- bar -->
 "
@@ -1457,6 +1562,20 @@ use {
   <NoEscapeNeeded name="Pete 'Maverick' Mitchell" />
 
   <xsl:text>slide </xsl:text>
+
+  <!-- https://github.com/prettier/plugin-xml/issues/789 -->
+  <paragraph>
+    <text />
+    <text />
+  </paragraph>
+  <paragraph>
+    <text xml:space="preserve">	 </text>
+    <text xml:space="preserve">
+</text>
+  </paragraph>
+  <paragraph>
+    <text>                 　﻿</text>
+  </paragraph>
 </svg>
 <!-- bar -->
 "
