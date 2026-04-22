@@ -18,6 +18,13 @@ const plugin = {
       description: "Adds a space before self-closing tags.",
       since: "1.1.0"
     },
+    xmlSelfClosingTags: {
+      type: "boolean",
+      category: "XML",
+      default: true,
+      description: "Whether to use self-closing tags (/>) for empty elements.",
+      since: "2.0.0"
+    },
     xmlWhitespaceSensitivity: {
       type: "choice",
       category: "XML",

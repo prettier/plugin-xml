@@ -431,14 +431,19 @@ function printElement(path, opts, print) {
     return group([...parts, space, SLASH_CLOSE]);
   }
 
-  if (
+  const isEmpty =
     content.chardata.length === 0 &&
     content.CData.length === 0 &&
     content.Comment.length === 0 &&
     content.element.length === 0 &&
     content.PROCESSING_INSTRUCTION.length === 0 &&
-    content.reference.length === 0
-  ) {
+    content.reference.length === 0;
+
+  if (isEmpty) {
+    if (opts.xmlSelfClosingTags === false) {
+      // Render as <tag></tag> instead of <tag/>
+      return group([...parts, START_CLOSE, SLASH_OPEN, END_NAME, END]);
+    }
     return group([...parts, space, "/>"]);
   }
 
