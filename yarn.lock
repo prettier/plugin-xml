@@ -2285,9 +2285,9 @@ linguist-languages@^9.0.0:
   integrity sha512-mYnFVrsWg5Bex0Kl5EDcXhrjXZ5DqMlBDXo7EUWLMTLDpxbuHvgBb2aOvGWC5ZmMJ2HXEKJiuFie9NEs8NUMXg==
 
 lint-staged@^17.0.2:
-  version "17.1.1"
-  resolved "https://registry.yarnpkg.com/lint-staged/-/lint-staged-17.1.1.tgz#1cf041f138e10a4fe0356e2f30a013f17d5f1fb2"
-  integrity sha512-FnHWpSe5cPRtrDG+soOuNdBxb4XQb2gN5EqpEWKdweyqyOfpl4QSjbrz3ilcIf0WXmkiNQGZZRQ23R5YtB3TEw==
+  version "17.2.0"
+  resolved "https://registry.yarnpkg.com/lint-staged/-/lint-staged-17.2.0.tgz#b7676a66ea77ae4d24018c12ce9e235ed59b46b8"
+  integrity sha512-FchGnFe4i4B1C/a35SPU9bNGPEHSC1+1iV0plLjzBmKVe9klZrlRfSgK6Cw4VeHyqOXbJUXP0vON61uRftNQ0A==
   dependencies:
     picomatch "^4.0.5"
     string-argv "^0.3.2"
