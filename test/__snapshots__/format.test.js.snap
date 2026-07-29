@@ -24,6 +24,7 @@ exports[`bracketSameLine => true 1`] = `
 
   <style />
   <style />
+  <style />
   <style type="text/css">
 circle {
   stroke-opacity: 0.7;
@@ -153,6 +154,7 @@ exports[`bracketSameLine => true, xmlSelfClosingSpace => false 1`] = `
   </desc>
   <?pagebreak?>
 
+  <style/>
   <style/>
   <style/>
   <style type="text/css">
@@ -286,6 +288,7 @@ exports[`defaults 1`] = `
   <?pagebreak?>
 
   <style />
+  <style />
   <style> </style>
   <style type="text/css">
 circle {
@@ -412,6 +415,7 @@ exports[`singleAttributePerLine => true 1`] = `
   </desc>
   <?pagebreak?>
 
+  <style />
   <style />
   <style />
   <style type="text/css">
@@ -577,6 +581,7 @@ exports[`xmlQuoteAttributes => double 1`] = `
   <?pagebreak?>
 
   <style />
+  <style />
   <style> </style>
   <style type="text/css">
 circle {
@@ -704,6 +709,7 @@ exports[`xmlQuoteAttributes => preserve 1`] = `
   <?pagebreak?>
 
   <style />
+  <style />
   <style> </style>
   <style type="text/css">
 circle {
@@ -830,6 +836,7 @@ exports[`xmlQuoteAttributes => single 1`] = `
   </desc>
   <?pagebreak?>
 
+  <style />
   <style />
   <style> </style>
   <style type='text/css'>
@@ -959,6 +966,7 @@ exports[`xmlSelfClosingSpace => false 1`] = `
 
   <style/>
   <style/>
+  <style/>
   <style type="text/css">
 circle {
   stroke-opacity: 0.7;
@@ -1070,6 +1078,801 @@ use {
 "
 `;
 
+exports[`xmlSelfClosingTags => always 1`] = `
+"<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE module PUBLIC "-//Puppy Crawl//DTD Check Configuration 1.3//EN"
+  "https://www.puppycrawl.com/dtds/configuration_1_3.dtd">
+<?xml-model href="project.rnc" type="application/relax-ng-compact-syntax"?>
+<!-- foo -->
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="200"
+  height="100"
+  viewBox="0 0 200 100"
+>
+  <title>Style inheritance and the use element</title>
+  <desc _attr="attr">
+    &anp; &#12345;
+    <![CDATA[
+      foo
+    ]]>
+    bar
+  </desc>
+  <?pagebreak?>
+
+  <style />
+  <style />
+  <style />
+  <style type="text/css">
+circle {
+  stroke-opacity: 0.7;
+}
+.special circle {
+  stroke: green;
+}
+use {
+  stroke: purple;
+  fill: orange;
+}
+  </style>
+  <script value="lint" />
+
+  <yaml
+    myveryveryveryverylongattributename="myveryveryveryverylongattributevalue"
+  >
+- 1
+  - 2
+- 3
+  </yaml>
+
+  <!-- inner comment -->
+
+  <?pagebreak?>
+  <g class="special" style="fill: blue">
+    <circle id="c" cy="50" cx="50" r="40" stroke-width="20" />
+  </g>
+  <use xlink:href="#c" x="100" />
+  <ignored>
+    <!-- prettier-ignore-start -->
+      <   ignored   />
+    <!-- prettier-ignore-end -->
+  </ignored>
+  <p>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at est eget
+    enim consectetur accumsan. Aliquam pretium sodales ipsum quis dignissim. Sed
+    id sem vel diam luctus fringilla. Aliquam quis egestas magna. Curabitur
+    molestie lorem et odio porta, et molestie libero laoreet. Morbi rhoncus
+    sagittis cursus. Nullam vehicula pretium consequat. Praesent porta ante at
+    posuere sollicitudin. Nullam commodo tempor arcu, at condimentum neque
+    elementum ut.
+  </p>
+  <span>content</span>
+
+  <div>
+    text with space
+    <div>
+      <hr />
+    </div>
+  </div>
+
+  <div>
+    even more
+    <content />
+  </div>
+
+  <div xml:space="preserve">
+      <content />
+  </div>
+
+  <div
+    verylongattribute="verylongvalue"
+    anotherverylongattribute="anotherverylongvalue"
+  />
+
+  <div attr1='singleQuotes' att2="doubleQuotes" />
+
+  <!-- Basic sorting of xml attributes -->
+  <div z="third" y="second" x="first" />
+
+  <container xmlns:ios="iosURI" xmlns:android="androidURI">
+    <foo
+      xmlns:tools="toolsURI"
+      android:d="d"
+      android:c="c"
+      some="non-ns-ed-attributes"
+      here="!"
+      tools:other="thing"
+      android:b="b"
+      xmlns="highest priority"
+      android:a="a"
+    >
+      <bar
+        xmlns:otherTools="otherToolsURI"
+        ios:d="d"
+        ios:c="c"
+        tools:other="thing"
+        another="one"
+        android:b="b"
+        otherTools:baz="bing"
+        ios:a="a"
+      />
+    </foo>
+    <foo xmlns:foo="foo" foo:foo="foo" />
+    <foo foo:foo="foo" xmlns:foo="foo" />
+  </container>
+  <EscapeNeeded name="Pete &quot;Maverick&quot; Mitchell" />
+
+  <NoEscapeNeeded>He said, "Don't quote me."</NoEscapeNeeded>
+
+  <NoEscapeNeeded name='Pete "Maverick" Mitchell' />
+
+  <NoEscapeNeeded name="Pete 'Maverick' Mitchell" />
+
+  <xsl:text>slide </xsl:text>
+</svg>
+<!-- bar -->
+"
+`;
+
+exports[`xmlSelfClosingTags => always 2`] = `
+"<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE module PUBLIC "-//Puppy Crawl//DTD Check Configuration 1.3//EN"
+  "https://www.puppycrawl.com/dtds/configuration_1_3.dtd">
+<?xml-model href="project.rnc" type="application/relax-ng-compact-syntax"?>
+<!-- foo -->
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="200"
+  height="100"
+  viewBox="0 0 200 100"
+>
+  <title>Style inheritance and the use element</title>
+  <desc _attr="attr">
+    &anp; &#12345;
+    <![CDATA[
+      foo
+    ]]>
+    bar
+  </desc>
+  <?pagebreak?>
+
+  <style />
+  <style />
+  <style> </style>
+  <style type="text/css">
+circle {
+  stroke-opacity: 0.7;
+}
+.special circle {
+  stroke: green;
+}
+use {
+  stroke: purple;
+  fill: orange;
+}
+  </style>
+  <script value="lint" />
+
+  <yaml
+    myveryveryveryverylongattributename="myveryveryveryverylongattributevalue"
+  >
+- 1
+  - 2
+- 3
+  </yaml>
+
+  <!-- inner comment -->
+
+  <?pagebreak?>
+    <g class="special" style="fill: blue">
+        <circle id="c" cy="50" cx="50" r="40" stroke-width="20" />
+    </g>
+  <use xlink:href="#c" x="100" />
+  <ignored>
+    <!-- prettier-ignore-start -->
+      <   ignored   />
+    <!-- prettier-ignore-end -->
+  </ignored>
+  <p>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at est eget enim consectetur accumsan. Aliquam pretium sodales ipsum quis dignissim. Sed id sem vel diam luctus fringilla. Aliquam quis egestas magna. Curabitur molestie lorem et odio porta, et molestie libero laoreet. Morbi rhoncus sagittis cursus. Nullam vehicula pretium consequat. Praesent porta ante at posuere sollicitudin. Nullam commodo tempor arcu, at condimentum neque elementum ut.
+  </p>
+  <span>
+    content
+  </span>
+
+  <div> text   with space<div><hr /></div>   </div>
+
+  <div>
+    even more
+    <content />
+  </div>
+
+  <div xml:space="preserve">
+      <content />
+  </div>
+
+  <div
+    verylongattribute="verylongvalue"
+    anotherverylongattribute="anotherverylongvalue"
+  />
+
+  <div attr1='singleQuotes' att2="doubleQuotes" />
+
+   <!-- Basic sorting of xml attributes -->
+  <div z="third" y="second" x="first" />
+
+  <container xmlns:ios="iosURI" xmlns:android="androidURI">
+    <foo
+      xmlns:tools="toolsURI"
+      android:d="d"
+      android:c="c"
+      some="non-ns-ed-attributes"
+      here="!"
+      tools:other="thing"
+      android:b="b"
+      xmlns="highest priority"
+      android:a="a"
+    > 
+      <bar
+        xmlns:otherTools="otherToolsURI"
+        ios:d="d"
+        ios:c="c"
+        tools:other="thing"
+        another="one"
+        android:b="b"
+        otherTools:baz="bing"
+        ios:a="a"
+      />
+    </foo>
+    <foo xmlns:foo="foo" foo:foo="foo" />
+    <foo foo:foo="foo" xmlns:foo="foo" />
+  </container>
+  <EscapeNeeded name="Pete &quot;Maverick&quot; Mitchell" />
+
+  <NoEscapeNeeded>He said, "Don't quote me."</NoEscapeNeeded>
+
+  <NoEscapeNeeded name='Pete "Maverick" Mitchell' />
+
+  <NoEscapeNeeded name="Pete 'Maverick' Mitchell" />
+
+  <xsl:text>slide </xsl:text>
+</svg>
+<!-- bar -->
+"
+`;
+
+exports[`xmlSelfClosingTags => never 1`] = `
+"<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE module PUBLIC "-//Puppy Crawl//DTD Check Configuration 1.3//EN"
+  "https://www.puppycrawl.com/dtds/configuration_1_3.dtd">
+<?xml-model href="project.rnc" type="application/relax-ng-compact-syntax"?>
+<!-- foo -->
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="200"
+  height="100"
+  viewBox="0 0 200 100"
+>
+  <title>Style inheritance and the use element</title>
+  <desc _attr="attr">
+    &anp; &#12345;
+    <![CDATA[
+      foo
+    ]]>
+    bar
+  </desc>
+  <?pagebreak?>
+
+  <style></style>
+  <style></style>
+  <style></style>
+  <style type="text/css">
+circle {
+  stroke-opacity: 0.7;
+}
+.special circle {
+  stroke: green;
+}
+use {
+  stroke: purple;
+  fill: orange;
+}
+  </style>
+  <script value="lint"></script>
+
+  <yaml
+    myveryveryveryverylongattributename="myveryveryveryverylongattributevalue"
+  >
+- 1
+  - 2
+- 3
+  </yaml>
+
+  <!-- inner comment -->
+
+  <?pagebreak?>
+  <g class="special" style="fill: blue">
+    <circle id="c" cy="50" cx="50" r="40" stroke-width="20"></circle>
+  </g>
+  <use xlink:href="#c" x="100"></use>
+  <ignored>
+    <!-- prettier-ignore-start -->
+      <   ignored   />
+    <!-- prettier-ignore-end -->
+  </ignored>
+  <p>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at est eget
+    enim consectetur accumsan. Aliquam pretium sodales ipsum quis dignissim. Sed
+    id sem vel diam luctus fringilla. Aliquam quis egestas magna. Curabitur
+    molestie lorem et odio porta, et molestie libero laoreet. Morbi rhoncus
+    sagittis cursus. Nullam vehicula pretium consequat. Praesent porta ante at
+    posuere sollicitudin. Nullam commodo tempor arcu, at condimentum neque
+    elementum ut.
+  </p>
+  <span>content</span>
+
+  <div>
+    text with space
+    <div>
+      <hr></hr>
+    </div>
+  </div>
+
+  <div>
+    even more
+    <content></content>
+  </div>
+
+  <div xml:space="preserve">
+      <content></content>
+  </div>
+
+  <div
+    verylongattribute="verylongvalue"
+    anotherverylongattribute="anotherverylongvalue"
+  ></div>
+
+  <div attr1='singleQuotes' att2="doubleQuotes"></div>
+
+  <!-- Basic sorting of xml attributes -->
+  <div z="third" y="second" x="first"></div>
+
+  <container xmlns:ios="iosURI" xmlns:android="androidURI">
+    <foo
+      xmlns:tools="toolsURI"
+      android:d="d"
+      android:c="c"
+      some="non-ns-ed-attributes"
+      here="!"
+      tools:other="thing"
+      android:b="b"
+      xmlns="highest priority"
+      android:a="a"
+    >
+      <bar
+        xmlns:otherTools="otherToolsURI"
+        ios:d="d"
+        ios:c="c"
+        tools:other="thing"
+        another="one"
+        android:b="b"
+        otherTools:baz="bing"
+        ios:a="a"
+      ></bar>
+    </foo>
+    <foo xmlns:foo="foo" foo:foo="foo"></foo>
+    <foo foo:foo="foo" xmlns:foo="foo"></foo>
+  </container>
+  <EscapeNeeded name="Pete &quot;Maverick&quot; Mitchell"></EscapeNeeded>
+
+  <NoEscapeNeeded>He said, "Don't quote me."</NoEscapeNeeded>
+
+  <NoEscapeNeeded name='Pete "Maverick" Mitchell'></NoEscapeNeeded>
+
+  <NoEscapeNeeded name="Pete 'Maverick' Mitchell"></NoEscapeNeeded>
+
+  <xsl:text>slide </xsl:text>
+</svg>
+<!-- bar -->
+"
+`;
+
+exports[`xmlSelfClosingTags => never 2`] = `
+"<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE module PUBLIC "-//Puppy Crawl//DTD Check Configuration 1.3//EN"
+  "https://www.puppycrawl.com/dtds/configuration_1_3.dtd">
+<?xml-model href="project.rnc" type="application/relax-ng-compact-syntax"?>
+<!-- foo -->
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="200"
+  height="100"
+  viewBox="0 0 200 100"
+>
+  <title>Style inheritance and the use element</title>
+  <desc _attr="attr">
+    &anp; &#12345;
+    <![CDATA[
+      foo
+    ]]>
+    bar
+  </desc>
+  <?pagebreak?>
+
+  <style></style>
+  <style></style>
+  <style> </style>
+  <style type="text/css">
+circle {
+  stroke-opacity: 0.7;
+}
+.special circle {
+  stroke: green;
+}
+use {
+  stroke: purple;
+  fill: orange;
+}
+  </style>
+  <script value="lint"></script>
+
+  <yaml
+    myveryveryveryverylongattributename="myveryveryveryverylongattributevalue"
+  >
+- 1
+  - 2
+- 3
+  </yaml>
+
+  <!-- inner comment -->
+
+  <?pagebreak?>
+    <g class="special" style="fill: blue">
+        <circle id="c" cy="50" cx="50" r="40" stroke-width="20"></circle>
+    </g>
+  <use xlink:href="#c" x="100"></use>
+  <ignored>
+    <!-- prettier-ignore-start -->
+      <   ignored   />
+    <!-- prettier-ignore-end -->
+  </ignored>
+  <p>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at est eget enim consectetur accumsan. Aliquam pretium sodales ipsum quis dignissim. Sed id sem vel diam luctus fringilla. Aliquam quis egestas magna. Curabitur molestie lorem et odio porta, et molestie libero laoreet. Morbi rhoncus sagittis cursus. Nullam vehicula pretium consequat. Praesent porta ante at posuere sollicitudin. Nullam commodo tempor arcu, at condimentum neque elementum ut.
+  </p>
+  <span>
+    content
+  </span>
+
+  <div> text   with space<div><hr></hr></div>   </div>
+
+  <div>
+    even more
+    <content></content>
+  </div>
+
+  <div xml:space="preserve">
+      <content></content>
+  </div>
+
+  <div
+    verylongattribute="verylongvalue"
+    anotherverylongattribute="anotherverylongvalue"
+  ></div>
+
+  <div attr1='singleQuotes' att2="doubleQuotes"></div>
+
+   <!-- Basic sorting of xml attributes -->
+  <div z="third" y="second" x="first"></div>
+
+  <container xmlns:ios="iosURI" xmlns:android="androidURI">
+    <foo
+      xmlns:tools="toolsURI"
+      android:d="d"
+      android:c="c"
+      some="non-ns-ed-attributes"
+      here="!"
+      tools:other="thing"
+      android:b="b"
+      xmlns="highest priority"
+      android:a="a"
+    > 
+      <bar
+        xmlns:otherTools="otherToolsURI"
+        ios:d="d"
+        ios:c="c"
+        tools:other="thing"
+        another="one"
+        android:b="b"
+        otherTools:baz="bing"
+        ios:a="a"
+      ></bar>
+    </foo>
+    <foo xmlns:foo="foo" foo:foo="foo"></foo>
+    <foo foo:foo="foo" xmlns:foo="foo"></foo>
+  </container>
+  <EscapeNeeded name="Pete &quot;Maverick&quot; Mitchell"></EscapeNeeded>
+
+  <NoEscapeNeeded>He said, "Don't quote me."</NoEscapeNeeded>
+
+  <NoEscapeNeeded name='Pete "Maverick" Mitchell'></NoEscapeNeeded>
+
+  <NoEscapeNeeded name="Pete 'Maverick' Mitchell"></NoEscapeNeeded>
+
+  <xsl:text>slide </xsl:text>
+</svg>
+<!-- bar -->
+"
+`;
+
+exports[`xmlSelfClosingTags => preserve 1`] = `
+"<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE module PUBLIC "-//Puppy Crawl//DTD Check Configuration 1.3//EN"
+  "https://www.puppycrawl.com/dtds/configuration_1_3.dtd">
+<?xml-model href="project.rnc" type="application/relax-ng-compact-syntax"?>
+<!-- foo -->
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="200"
+  height="100"
+  viewBox="0 0 200 100"
+>
+  <title>Style inheritance and the use element</title>
+  <desc _attr="attr">
+    &anp; &#12345;
+    <![CDATA[
+      foo
+    ]]>
+    bar
+  </desc>
+  <?pagebreak?>
+
+  <style />
+  <style></style>
+  <style></style>
+  <style type="text/css">
+circle {
+  stroke-opacity: 0.7;
+}
+.special circle {
+  stroke: green;
+}
+use {
+  stroke: purple;
+  fill: orange;
+}
+  </style>
+  <script value="lint" />
+
+  <yaml
+    myveryveryveryverylongattributename="myveryveryveryverylongattributevalue"
+  >
+- 1
+  - 2
+- 3
+  </yaml>
+
+  <!-- inner comment -->
+
+  <?pagebreak?>
+  <g class="special" style="fill: blue">
+    <circle id="c" cy="50" cx="50" r="40" stroke-width="20" />
+  </g>
+  <use xlink:href="#c" x="100" />
+  <ignored>
+    <!-- prettier-ignore-start -->
+      <   ignored   />
+    <!-- prettier-ignore-end -->
+  </ignored>
+  <p>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at est eget
+    enim consectetur accumsan. Aliquam pretium sodales ipsum quis dignissim. Sed
+    id sem vel diam luctus fringilla. Aliquam quis egestas magna. Curabitur
+    molestie lorem et odio porta, et molestie libero laoreet. Morbi rhoncus
+    sagittis cursus. Nullam vehicula pretium consequat. Praesent porta ante at
+    posuere sollicitudin. Nullam commodo tempor arcu, at condimentum neque
+    elementum ut.
+  </p>
+  <span>content</span>
+
+  <div>
+    text with space
+    <div>
+      <hr />
+    </div>
+  </div>
+
+  <div>
+    even more
+    <content />
+  </div>
+
+  <div xml:space="preserve">
+      <content />
+  </div>
+
+  <div
+    verylongattribute="verylongvalue"
+    anotherverylongattribute="anotherverylongvalue"
+  />
+
+  <div attr1='singleQuotes' att2="doubleQuotes" />
+
+  <!-- Basic sorting of xml attributes -->
+  <div z="third" y="second" x="first" />
+
+  <container xmlns:ios="iosURI" xmlns:android="androidURI">
+    <foo
+      xmlns:tools="toolsURI"
+      android:d="d"
+      android:c="c"
+      some="non-ns-ed-attributes"
+      here="!"
+      tools:other="thing"
+      android:b="b"
+      xmlns="highest priority"
+      android:a="a"
+    >
+      <bar
+        xmlns:otherTools="otherToolsURI"
+        ios:d="d"
+        ios:c="c"
+        tools:other="thing"
+        another="one"
+        android:b="b"
+        otherTools:baz="bing"
+        ios:a="a"
+      />
+    </foo>
+    <foo xmlns:foo="foo" foo:foo="foo" />
+    <foo foo:foo="foo" xmlns:foo="foo" />
+  </container>
+  <EscapeNeeded name="Pete &quot;Maverick&quot; Mitchell" />
+
+  <NoEscapeNeeded>He said, "Don't quote me."</NoEscapeNeeded>
+
+  <NoEscapeNeeded name='Pete "Maverick" Mitchell' />
+
+  <NoEscapeNeeded name="Pete 'Maverick' Mitchell" />
+
+  <xsl:text>slide </xsl:text>
+</svg>
+<!-- bar -->
+"
+`;
+
+exports[`xmlSelfClosingTags => preserve 2`] = `
+"<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE module PUBLIC "-//Puppy Crawl//DTD Check Configuration 1.3//EN"
+  "https://www.puppycrawl.com/dtds/configuration_1_3.dtd">
+<?xml-model href="project.rnc" type="application/relax-ng-compact-syntax"?>
+<!-- foo -->
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="200"
+  height="100"
+  viewBox="0 0 200 100"
+>
+  <title>Style inheritance and the use element</title>
+  <desc _attr="attr">
+    &anp; &#12345;
+    <![CDATA[
+      foo
+    ]]>
+    bar
+  </desc>
+  <?pagebreak?>
+
+  <style />
+  <style></style>
+  <style> </style>
+  <style type="text/css">
+circle {
+  stroke-opacity: 0.7;
+}
+.special circle {
+  stroke: green;
+}
+use {
+  stroke: purple;
+  fill: orange;
+}
+  </style>
+  <script value="lint" />
+
+  <yaml
+    myveryveryveryverylongattributename="myveryveryveryverylongattributevalue"
+  >
+- 1
+  - 2
+- 3
+  </yaml>
+
+  <!-- inner comment -->
+
+  <?pagebreak?>
+    <g class="special" style="fill: blue">
+        <circle id="c" cy="50" cx="50" r="40" stroke-width="20" />
+    </g>
+  <use xlink:href="#c" x="100" />
+  <ignored>
+    <!-- prettier-ignore-start -->
+      <   ignored   />
+    <!-- prettier-ignore-end -->
+  </ignored>
+  <p>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at est eget enim consectetur accumsan. Aliquam pretium sodales ipsum quis dignissim. Sed id sem vel diam luctus fringilla. Aliquam quis egestas magna. Curabitur molestie lorem et odio porta, et molestie libero laoreet. Morbi rhoncus sagittis cursus. Nullam vehicula pretium consequat. Praesent porta ante at posuere sollicitudin. Nullam commodo tempor arcu, at condimentum neque elementum ut.
+  </p>
+  <span>
+    content
+  </span>
+
+  <div> text   with space<div><hr /></div>   </div>
+
+  <div>
+    even more
+    <content />
+  </div>
+
+  <div xml:space="preserve">
+      <content />
+  </div>
+
+  <div
+    verylongattribute="verylongvalue"
+    anotherverylongattribute="anotherverylongvalue"
+  />
+
+  <div attr1='singleQuotes' att2="doubleQuotes" />
+
+   <!-- Basic sorting of xml attributes -->
+  <div z="third" y="second" x="first" />
+
+  <container xmlns:ios="iosURI" xmlns:android="androidURI">
+    <foo
+      xmlns:tools="toolsURI"
+      android:d="d"
+      android:c="c"
+      some="non-ns-ed-attributes"
+      here="!"
+      tools:other="thing"
+      android:b="b"
+      xmlns="highest priority"
+      android:a="a"
+    > 
+      <bar
+        xmlns:otherTools="otherToolsURI"
+        ios:d="d"
+        ios:c="c"
+        tools:other="thing"
+        another="one"
+        android:b="b"
+        otherTools:baz="bing"
+        ios:a="a"
+      />
+    </foo>
+    <foo xmlns:foo="foo" foo:foo="foo" />
+    <foo foo:foo="foo" xmlns:foo="foo" />
+  </container>
+  <EscapeNeeded name="Pete &quot;Maverick&quot; Mitchell" />
+
+  <NoEscapeNeeded>He said, "Don't quote me."</NoEscapeNeeded>
+
+  <NoEscapeNeeded name='Pete "Maverick" Mitchell' />
+
+  <NoEscapeNeeded name="Pete 'Maverick' Mitchell" />
+
+  <xsl:text>slide </xsl:text>
+</svg>
+<!-- bar -->
+"
+`;
+
 exports[`xmlSortAttributesByKey => true 1`] = `
 "<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE module PUBLIC "-//Puppy Crawl//DTD Check Configuration 1.3//EN"
@@ -1093,6 +1896,7 @@ exports[`xmlSortAttributesByKey => true 1`] = `
   </desc>
   <?pagebreak?>
 
+  <style />
   <style />
   <style> </style>
   <style type="text/css">
@@ -1220,6 +2024,7 @@ exports[`xmlWhitespaceSensitivity => ignore 1`] = `
   </desc>
   <?pagebreak?>
 
+  <style />
   <style />
   <style />
   <style type="text/css">
@@ -1356,6 +2161,7 @@ exports[`xmlWhitespaceSensitivity => preserve 1`] = `
   </desc>
   <?pagebreak?>
 
+  <style />
   <style />
   <style />
   <style type="text/css">
