@@ -483,49 +483,32 @@ function printElement(path, opts, print) {
       return group([...parts, space, "/>"]);
     }
 
-    // If the only content of this tag is chardata, then use a softline so
-    // that we won't necessarily break (to allow <foo>bar</foo>).
-    if (
-      fragments.length === 1 &&
-      content.chardata.filter((chardata) => chardata.TEXT).length === 1
-    ) {
-      return group([
-        openTag,
-        indent([softline, fragments[0].printed]),
-        softline,
-        closeTag
-      ]);
+    const docs = [];
+    let lastNode;
+
+    // if we have a single element as child, force it to a separate line
+    if (fragments.length === 1 && content.element.length === 1) {
+      docs.push(hardline);
+    } else {
+      docs.push(softline);
     }
 
-    let delimiter = hardline;
-
-    // If the only content is both chardata and references, then use a softline
-    // so that we won't necessarily break.
-    if (
-      fragments.length ===
-      content.chardata.filter((chardata) => chardata.TEXT).length +
-        content.reference.length
-    ) {
-      delimiter = " ";
-    }
-
-    const docs = [hardline];
-    let lastLine = fragments[0].startLine;
-
+    // insert hardlines before/after each element, so they go on separate lines from
+    // the surrounding text, but leave the mixed content between the elements alone
     fragments.forEach((node, index) => {
       if (index !== 0) {
-        if (node.startLine - lastLine >= 2) {
+        if (node.startLine - lastNode.endLine >= 2) {
           docs.push(hardline, hardline);
-        } else {
-          docs.push(delimiter);
+        } else if (node.type === "element" || lastNode.type === "element") {
+          docs.push(hardline);
         }
       }
 
       docs.push(node.printed);
-      lastLine = node.endLine;
+      lastNode = node;
     });
 
-    return group([openTag, indent(docs), hardline, closeTag]);
+    return group([openTag, indent(docs), softline, closeTag]);
   }
 
   return group([openTag, indent(print("content")), closeTag]);
