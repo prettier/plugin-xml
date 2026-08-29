@@ -111,6 +111,7 @@ function printContentFragments(path, print) {
     ...path.map(printIToken, "Comment"),
     ...path.map(
       ({ node }) => ({
+        type: "chardata",
         offset: node.location.startOffset,
         printed: print()
       }),
@@ -118,6 +119,7 @@ function printContentFragments(path, print) {
     ),
     ...path.map(
       ({ node }) => ({
+        type: "element",
         offset: node.location.startOffset,
         printed: print()
       }),
@@ -126,6 +128,7 @@ function printContentFragments(path, print) {
     ...path.map(printIToken, "PROCESSING_INSTRUCTION"),
     ...path.map(
       ({ node }) => ({
+        type: "reference",
         offset: node.location.startOffset,
         printed: print()
       }),
@@ -200,6 +203,7 @@ function printDocument(path, opts, print) {
 
   if (docTypeDecl) {
     fragments.push({
+      type: "doctype",
       offset: docTypeDecl.location.startOffset,
       printed: print("docTypeDecl")
     });
@@ -207,6 +211,7 @@ function printDocument(path, opts, print) {
 
   if (prolog) {
     fragments.push({
+      type: "prolog",
       offset: prolog.location.startOffset,
       printed: print("prolog")
     });
@@ -214,6 +219,7 @@ function printDocument(path, opts, print) {
 
   path.each(({ node }) => {
     fragments.push({
+      type: "misc",
       offset: node.location.startOffset,
       printed: print()
     });
@@ -221,6 +227,7 @@ function printDocument(path, opts, print) {
 
   if (element) {
     fragments.push({
+      type: "element",
       offset: element.location.startOffset,
       printed: print("element")
     });
@@ -258,6 +265,7 @@ function printCharDataPreserve(path, print) {
       prevFragment.printed = group([prevFragment.printed, content]);
     } else {
       response.push({
+        type: "chardata",
         offset: location.startOffset,
         startLine: location.startLine,
         endLine: location.endLine,
@@ -296,6 +304,7 @@ function printCharDataIgnore(path) {
 
     const location = chardata.location;
     response.push({
+      type: "chardata",
       offset: location.startOffset,
       startLine: location.startLine,
       endLine: location.endLine,
@@ -326,6 +335,7 @@ function printElementFragments(path, opts, print) {
   response = response.concat(
     path.map(
       ({ node: { location } }) => ({
+        type: "element",
         offset: location.startOffset,
         startLine: location.startLine,
         endLine: location.endLine,
