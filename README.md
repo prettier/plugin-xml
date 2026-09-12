@@ -51,6 +51,7 @@ Below are the options (from [`src/plugin.js`](src/plugin.js)) that `@prettier/pl
 | `tabWidth`                 | `--tab-width`                  |     `2`      | Same as in Prettier ([see prettier docs](https://prettier.io/docs/en/options.html#tab-width)).                           |
 | `xmlQuoteAttributes`       | `--xml-quote-attributes`       | `"preserve"` | Options are `"preserve"`, `"single"`, and `"double"`                                                                     |
 | `xmlSelfClosingSpace`      | `--xml-self-closing-space`     |    `true`    | Adds a space before self-closing tags.                                                                                   |
+| `xmlSelfClosingTags`       | `--xml-self-closing-tags`      | `"always"`   | Controls how empty XML tags are formatted. Options are `"always"`, `"preserve"`, and `"never"`. [See below](#self-closing-tags). |
 | `xmlSortAttributesByKey`   | `--xml-sort-attributes-by-key` |   `false`    | Orders XML attributes by key alphabetically while prioritizing xmlns attributes.                                         |
 | `xmlWhitespaceSensitivity` | `--xml-whitespace-sensitivity` |  `"strict"`  | Options are `"strict"`, `"preserve"`, and `"ignore"`. You may want `"ignore"` or `"preserve"`, [see below](#whitespace). |
 
@@ -67,6 +68,48 @@ Or, they can be passed to `prettier` as arguments:
 
 ```bash
 prettier --plugin=@prettier/plugin-xml --tab-width 4 --write '**/*.xml'
+```
+
+### Self-Closing Tags
+
+The `xmlSelfClosingTags` option controls how empty XML tags (tags with no content) are formatted. By default (`"always"`), the plugin will convert all empty tags to self-closing format:
+
+```xml
+<!-- Input -->
+<searchLayouts></searchLayouts>
+
+<!-- Output (default: "always") -->
+<searchLayouts />
+```
+
+If you want to preserve the original formatting from your source files, use `"preserve"`:
+
+```xml
+<!-- Input -->
+<searchLayouts></searchLayouts>
+<otherTag />
+
+<!-- Output (preserve) -->
+<searchLayouts></searchLayouts>
+<otherTag />
+```
+
+If you want to prevent self-closing tags entirely and always use open/close format, use `"never"`:
+
+```xml
+<!-- Input -->
+<searchLayouts />
+
+<!-- Output (never) -->
+<searchLayouts></searchLayouts>
+```
+
+This is particularly useful for certain XML formats (like Salesforce metadata) that require specific tag formats. To use this option:
+
+```json
+{
+  "xmlSelfClosingTags": "never"
+}
 ```
 
 ### Whitespace
