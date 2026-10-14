@@ -1179,9 +1179,9 @@
   integrity sha512-nAB74NfSNKknqQ1RrYj6uz8FcXEomu/MATJZxh/x+BArzN2U3JbOYC0APYzUIGhVY3m5hRxA8VPNdPBoG8txlA==
 
 "@xml-tools/parser@^1.0.11":
-  version "1.0.11"
-  resolved "https://registry.npmjs.org/@xml-tools/parser/-/parser-1.0.11.tgz"
-  integrity sha512-aKqQ077XnR+oQtHJlrAflaZaL7qZsulWc/i/ZEooar5JiWj1eLt0+Wg28cpa+XLney107wXqneC+oG1IZvxkTA==
+  version "1.0.12"
+  resolved "https://registry.yarnpkg.com/@xml-tools/parser/-/parser-1.0.12.tgz#e08b8b929604d3e25fb2d252e7a5ae9b80ed74c0"
+  integrity sha512-YNIPbmr/7ClPpWyk0MLImLBLyVLgW+BeOkbd4UDp8w0tCcgU8lmA4karXBF9EQwaQzDTzaBbJtmSA0G2NKKlPA==
   dependencies:
     chevrotain "7.1.1"
 
