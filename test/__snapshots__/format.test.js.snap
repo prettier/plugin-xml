@@ -1400,8 +1400,8 @@ use {
   </span>
 
   <div> text   with space<div>
-    <hr />
-  </div>   </div>
+      <hr />
+    </div>   </div>
 
   <div>
     even more

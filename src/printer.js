@@ -464,7 +464,7 @@ function printElement(path, opts, print) {
     ) {
       return group([
         openTag,
-        fragments.map(({ printed }) => printed),
+        indent(fragments.map(({ printed }) => printed)),
         closeTag
       ]);
     }

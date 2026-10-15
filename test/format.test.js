@@ -73,6 +73,52 @@ test("xmlWhitespaceSensitivity => preserve", async () => {
   expect(formatted).toMatchSnapshot();
 });
 
+test.each([2, 4])(
+  "preserve indents nested elements after text with tabWidth %i",
+  async (tabWidth) => {
+    const space = " ".repeat(tabWidth);
+    const input = [
+      "<root>",
+      `${space}<a>`,
+      `${space.repeat(2)}Text`,
+      `${space.repeat(2)}<b>`,
+      `${space.repeat(3)}<c />`,
+      `${space.repeat(2)}</b>`,
+      `${space}</a>`,
+      "</root>",
+      ""
+    ].join("\n");
+    const options = { xmlWhitespaceSensitivity: "preserve", tabWidth };
+
+    const formatted = await format(input, options);
+    expect(formatted).toBe(input);
+    expect(await format(formatted, options)).toBe(formatted);
+  }
+);
+
+test("preserve indents nested elements after text with tabs", async () => {
+  const input = "<a>\n\tText\n\t<b>\n\t\t<c />\n\t</b>\n</a>\n";
+  expect(
+    await format(input, { xmlWhitespaceSensitivity: "preserve", useTabs: true })
+  ).toBe(input);
+});
+
+test("preserve keeps inline mixed text whitespace", async () => {
+  const input = "<a> before  <b> middle  </b> after </a>\n";
+  expect(await format(input, { xmlWhitespaceSensitivity: "preserve" })).toBe(
+    input
+  );
+});
+
+test.each(["strict", "preserve", "ignore"])(
+  "xml:space preserves mixed content in %s mode",
+  async (xmlWhitespaceSensitivity) => {
+    const input =
+      '<a xml:space="preserve">\n  Text\n  <b>\n    <c />\n  </b>\n</a>\n';
+    expect(await format(input, { xmlWhitespaceSensitivity })).toBe(input);
+  }
+);
+
 test("xmlSortAttributesByKey => true", async () => {
   const formatted = await format(fixture, {
     xmlSortAttributesByKey: true
