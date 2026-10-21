@@ -184,11 +184,15 @@ function printContent(path, opts, print) {
 }
 
 function printDocTypeDecl(path, opts, print) {
-  const { DocType, Name, externalID, CLOSE } = path.node;
+  const { DocType, Name, externalID, internalSubset, CLOSE } = path.node;
   const parts = [DocType, " ", Name];
 
   if (externalID) {
     parts.push(" ", print("externalID"));
+  }
+
+  if (internalSubset !== null) {
+    parts.push(" [", doc.utils.replaceEndOfLine(internalSubset), "]");
   }
 
   return group([...parts, CLOSE]);
