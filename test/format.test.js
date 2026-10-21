@@ -104,3 +104,17 @@ test("xmlQuoteAttributes => double", async () => {
 
   expect(formatted).toMatchSnapshot();
 });
+
+test("DOCTYPE with an internal subset", async () => {
+  const content = `<?xml version="1.0"?>
+<!DOCTYPE x SYSTEM "x.dtd" [
+  <!ENTITY a "]>">
+  <!-- ] -->
+]>
+<x>&a;</x>
+`;
+
+  const formatted = await format(content);
+  expect(formatted).toMatchSnapshot();
+  expect(await format(formatted)).toBe(formatted);
+});

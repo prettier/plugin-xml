@@ -16,6 +16,56 @@ function createError(message, options) {
   return Object.assign(error, options);
 }
 
+// The @xml-tools/parser grammar has no rule for the internal subset of a
+// DOCTYPE (`<!DOCTYPE x [ ... ]>`). Find its `[ ... ]` range so it can be
+// blanked out before parsing and printed back verbatim.
+function findInternalSubset(text) {
+  let idx = 0;
+
+  // Skip whitespace, processing instructions and comments before the DOCTYPE.
+  for (;;) {
+    while (/\s/.test(text[idx] ?? "")) idx += 1;
+
+    const close = text.startsWith("<?", idx)
+      ? "?>"
+      : text.startsWith("<!--", idx)
+        ? "-->"
+        : null;
+    const end = close ? text.indexOf(close, idx) : -1;
+
+    if (end === -1) break;
+    idx = end + close.length;
+  }
+
+  if (!text.startsWith("<!DOCTYPE", idx)) {
+    return null;
+  }
+
+  let start = -1;
+  let quote = null;
+
+  for (idx += "<!DOCTYPE".length; idx < text.length; idx += 1) {
+    const char = text[idx];
+
+    if (quote) {
+      if (char === quote) quote = null;
+    } else if (char === '"' || char === "'") {
+      quote = char;
+    } else if (start === -1) {
+      if (char === "[") start = idx;
+      else if (char === ">") return null;
+    } else if (text.startsWith("<!--", idx)) {
+      const commentEnd = text.indexOf("-->", idx);
+      if (commentEnd === -1) return null;
+      idx = commentEnd + 2;
+    } else if (char === "]") {
+      return { start, end: idx };
+    }
+  }
+
+  return null;
+}
+
 function simplifyCST(node) {
   switch (node.name) {
     case "attribute": {
@@ -68,6 +118,7 @@ function simplifyCST(node) {
         DocType: DocType[0].image,
         Name: Name[0].image,
         externalID: externalID ? simplifyCST(externalID[0]) : null,
+        internalSubset: null,
         CLOSE: CLOSE[0].image,
         location: node.location
       };
@@ -166,7 +217,14 @@ function simplifyCST(node) {
 
 const parser = {
   parse(text) {
-    const { lexErrors, parseErrors, cst } = xmlToolsParse(text);
+    const subset = findInternalSubset(text);
+    const { lexErrors, parseErrors, cst } = xmlToolsParse(
+      subset
+        ? text.slice(0, subset.start) +
+            text.slice(subset.start, subset.end + 1).replace(/[^\r\n]/g, " ") +
+            text.slice(subset.end + 1)
+        : text
+    );
 
     // If there are any lexical errors, throw the first of them as an error.
     if (lexErrors.length > 0) {
@@ -200,7 +258,16 @@ const parser = {
     }
 
     // Otherwise return the CST.
-    return simplifyCST(cst);
+    const document = simplifyCST(cst);
+
+    if (subset) {
+      document.docTypeDecl.internalSubset = text.slice(
+        subset.start + 1,
+        subset.end
+      );
+    }
+
+    return document;
   },
   astFormat: "xml",
   locStart(node) {
