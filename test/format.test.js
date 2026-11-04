@@ -104,3 +104,13 @@ test("xmlQuoteAttributes => double", async () => {
 
   expect(formatted).toMatchSnapshot();
 });
+
+test("wrapped XML declaration is stable on reformat", async () => {
+  const input = '<?xml version="1.0" encoding="UTF-8"?>\n<root />\n';
+  const opts = { printWidth: 20 };
+
+  const once = await format(input, opts);
+  const twice = await format(once, opts);
+
+  expect(twice).toEqual(once);
+});
