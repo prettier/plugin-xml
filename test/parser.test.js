@@ -10,3 +10,11 @@ test("parseError", () => {
 
   expect(() => parser.parse("<foo /")).toThrow(expected);
 });
+
+test("DOCTYPE internal subset", () => {
+  const { docTypeDecl } = parser.parse(
+    '<!DOCTYPE x [<!ENTITY a "]">]>\n<x>&a;</x>'
+  );
+
+  expect(docTypeDecl.internalSubset).toBe('<!ENTITY a "]">');
+});
