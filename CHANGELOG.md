@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+### Changed
+
+- Format files whose `<!DOCTYPE>` has an internal subset (`[ ... ]`) instead of failing to parse; the subset is printed as written.
+
 ## [3.4.2] - 2025-07-08
 
 ### Changed
