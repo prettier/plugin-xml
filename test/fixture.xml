@@ -106,5 +106,30 @@
   <NoEscapeNeeded name="Pete 'Maverick' Mitchell"/>
 
   <xsl:text>slide </xsl:text>
+
+  <!-- the following pairs of elements should be formatted identically, regardless of embedded Unicode vs NCR/entities -->
+  <p>piñata</p>
+  <p>pi&#241;ata</p>
+
+  <p>piñata<br/></p>
+  <p>pi&#241;ata<br/></p>
+
+  <p><br/>piñata</p>
+  <p><br/>pi&#241;ata</p>
+
+  <p><br/><br/>piñata<br/><br/></p>
+  <p><br/><br/>pi&#241;ata<br/><br/></p>
+
+  <p>Let's go</p>
+  <p>Let&apos;s go</p>
+
+  <p>Let's go<br/></p>
+  <p>Let&apos;s go<br/></p>
+
+  <p><br/>Let's go</p>
+  <p><br/>Let&apos;s go</p>
+
+  <p><br/><br/>Let's go<br/><br/></p>
+  <p><br/><br/>Let&apos;s go<br/><br/></p>
 </svg>
 <!-- bar -->
