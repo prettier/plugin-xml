@@ -542,10 +542,16 @@ function printMisc(path, opts, print) {
 
 function printProlog(path, opts, print) {
   const { XMLDeclOpen, attribute, SPECIAL_CLOSE } = path.node;
-  const parts = [XMLDeclOpen];
+
+  // The XMLDeclOpen token includes the single whitespace character that follows
+  // "<?xml" (its pattern is /<\?xml[ \t\r\n]/). Printing that trailing
+  // whitespace verbatim is not stable: when the declaration breaks onto
+  // multiple lines a captured newline turns into an extra blank line on the
+  // next pass. Drop it and let the layout below supply the spacing.
+  const parts = ["<?xml"];
 
   if (attribute) {
-    parts.push(indent([softline, join(line, path.map(print, "attribute"))]));
+    parts.push(indent([line, join(line, path.map(print, "attribute"))]));
   }
 
   return group([
