@@ -63,6 +63,19 @@ file](https://prettier.io/docs/en/configuration.html). For example:
 }
 ```
 
+For a TypeScript configuration, import the plugin to add its XML options to
+Prettier's `Options` type:
+
+```ts
+import xml from "@prettier/plugin-xml";
+import type { Options } from "prettier";
+
+export default {
+  plugins: [xml],
+  xmlWhitespaceSensitivity: "ignore"
+} satisfies Options;
+```
+
 Or, they can be passed to `prettier` as arguments:
 
 ```bash

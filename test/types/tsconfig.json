@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "exactOptionalPropertyTypes": true,
+    "module": "NodeNext",
+    "noEmit": true,
+    "strict": true,
+    "target": "ES2022",
+    "types": []
+  },
+  "files": ["plugin.ts"]
+}
